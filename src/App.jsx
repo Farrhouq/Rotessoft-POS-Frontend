@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import "./css/main.css";
@@ -7,10 +7,11 @@ import "./charts/ChartjsConfig";
 
 // Import pages
 import Dashboard from "./pages/Dashboard";
-import SlideBar from "./partials/Sidebar";
+import SideBar from "./partials/Sidebar";
 
 function App() {
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     document.querySelector("html").style.scrollBehavior = "auto";
@@ -20,9 +21,18 @@ function App() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <SlideBar />
+      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <Routes>
-        <Route exact path="/" element={<Dashboard />} />
+        <Route
+          exact
+          path="/"
+          element={
+            <Dashboard
+              sidebarOpen={sidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+            />
+          }
+        />
       </Routes>
     </div>
   );
