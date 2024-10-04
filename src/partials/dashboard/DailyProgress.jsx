@@ -9,90 +9,8 @@ import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 function DashboardCard01() {
-  const chartData = {
-    labels: [
-      "12-01-2022",
-      "01-01-2023",
-      "02-01-2023",
-      "03-01-2023",
-      "04-01-2023",
-      "05-01-2023",
-      "06-01-2023",
-      "07-01-2023",
-      "08-01-2023",
-      "09-01-2023",
-      "10-01-2023",
-      "11-01-2023",
-      "12-01-2023",
-      "01-01-2024",
-      "02-01-2024",
-      "03-01-2024",
-      "04-01-2024",
-      "05-01-2024",
-      "06-01-2024",
-      "07-01-2024",
-      "08-01-2024",
-      "09-01-2024",
-      "10-01-2024",
-      "11-01-2024",
-      "12-01-2024",
-      "01-01-2025",
-    ],
-    datasets: [
-      // Indigo line
-      {
-        data: [
-          732, 610, 610, 504, 504, 504, 349, 349, 504, 342, 504, 610, 391, 192,
-          154, 273, 191, 191, 126, 263, 349, 252, 423, 622, 470, 532,
-        ],
-        fill: true,
-        backgroundColor: function (context) {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
-          return chartAreaGradient(ctx, chartArea, [
-            {
-              stop: 0,
-              color: `rgba(${hexToRGB(tailwindConfig().theme.colors.violet[500])}, 0)`,
-            },
-            {
-              stop: 1,
-              color: `rgba(${hexToRGB(tailwindConfig().theme.colors.violet[500])}, 0.2)`,
-            },
-          ]);
-        },
-        borderColor: tailwindConfig().theme.colors.violet[500],
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: tailwindConfig().theme.colors.violet[500],
-        pointHoverBackgroundColor: tailwindConfig().theme.colors.violet[500],
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,
-        clip: 20,
-        tension: 0.2,
-      },
-      // Gray line
-      {
-        data: [
-          532, 532, 532, 404, 404, 314, 314, 314, 314, 314, 234, 314, 234, 234,
-          314, 314, 314, 388, 314, 202, 202, 202, 202, 314, 720, 642,
-        ],
-        borderColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.gray[500])}, 0.25)`,
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        pointBackgroundColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.gray[500])}, 0.25)`,
-        pointHoverBackgroundColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.gray[500])}, 0.25)`,
-        pointBorderWidth: 0,
-        pointHoverBorderWidth: 0,
-        clip: 20,
-        tension: 0.2,
-      },
-    ],
-  };
-
   return (
-    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-5 bg-white dark:bg-gray-800 shadow-sm rounded-xl pr-5 pl-5 pb-24">
+    <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-5 bg-white dark:bg-gray-800 shadow-sm rounded-xl pr-5 pl-5 pb-28">
       <div className="px-5 pt-5">
         <header className="flex justify-between items-start mb-2">
           <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
@@ -139,10 +57,10 @@ function DashboardCard01() {
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
-      <div className="grow max-sm:max-h-[128px] xl:max-h-[128px] mt-7 font-bold flex w-full justify-between flex-wrap items-start">
+      <div className="grow max-sm:max-h-[128px] xl:max-h-[128px] mt-7 font-bold flex w-full justify-between flex-nowrap items-start">
         {/* Change the height attribute to adjust the chart height */}
         {/* <LineChart data={chartData} width={389} height={128} /> */}
-        <div className="w-[45%] h-fit">
+        <div className="w-[50%] h-fit">
           <CircularProgressbar
             styles={buildStyles({
               fontFamily: "",
@@ -156,18 +74,16 @@ function DashboardCard01() {
           />
         </div>
 
-        <div className="flex flex-col gap-3 mt-6 text-sm">
+        <div className="flex flex-col gap-2 mt-6 text-sm w-[45%]">
           <div className="flex items-center">
             <div className="w-4 h-4 bg-violet-500 rounded-full mr-2"></div>
-            <span className="text-gray-500 dark:text-gray-400">
-              Sales made today: 3000
-            </span>
+            <p className="text-gray-500 dark:text-gray-400">Today: 3000</p>
           </div>
           <div className="flex items-center">
             <div className="w-4 h-4 bg-gray-200 rounded-full mr-2"></div>
-            <span className="text-gray-500 dark:text-gray-600">
+            <p className="text-gray-500 dark:text-gray-600">
               Daily target: 23555
-            </span>
+            </p>
           </div>
         </div>
       </div>

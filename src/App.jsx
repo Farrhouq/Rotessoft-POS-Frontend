@@ -8,6 +8,8 @@ import "./charts/ChartjsConfig";
 // Import pages
 import Dashboard from "./pages/Dashboard";
 import SideBar from "./partials/Sidebar";
+import Sales from "./pages/Sales";
+import Products from "./pages/Products";
 
 function App() {
   const location = useLocation();
@@ -33,6 +35,9 @@ function App() {
             />
           }
         />
+
+        <Route exact path="/sales" element={<Sales />} />
+        <Route exact path="/products" element={<Products />} />
       </Routes>
     </div>
   );

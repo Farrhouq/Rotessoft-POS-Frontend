@@ -3364,6 +3364,10 @@ span.flatpickr-weekday:is(.dark *){
   padding-bottom: 5rem;
 }
 
+.pb-28{
+  padding-bottom: 7rem;
+}
+
 .text-left{
   text-align: left;
 }

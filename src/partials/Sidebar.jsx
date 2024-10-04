@@ -116,20 +116,20 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
             <ul className="mt-3">
               {/* Dashboard */}
               <li
-                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("/") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}
+                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname == "/" && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}
               >
                 <NavLink
                   end
-                  to="https://cruip.com/mosaic/"
+                  to="/"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("calendar")
+                    pathname == "/"
                       ? ""
                       : "hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   <div className="flex items-center">
                     <svg
-                      className={`w-4 shrink-0 fill-current ${pathname.includes("/") ? "text-violet-500" : "text-gray-400 dark:text-gray-500"}`}
+                      className={`w-4 shrink-0 fill-current ${pathname == "/" ? "text-violet-500" : "text-gray-400 dark:text-gray-500"}`}
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 512 512"
                     >
@@ -148,7 +148,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               >
                 <NavLink
                   end
-                  to="https://cruip.com/mosaic/"
+                  to="/sales"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
                     pathname.includes("sales")
                       ? ""
@@ -176,16 +176,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               >
                 <NavLink
                   end
-                  to="https://cruip.com/mosaic/"
+                  to="/products"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("calendar")
+                    pathname.includes("products")
                       ? ""
                       : "hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   <div className="flex items-center">
                     <svg
-                      className={`w-4 shrink-0 fill-current ${pathname.includes("sales") ? "text-violet-500" : "text-gray-400 dark:text-gray-500"}`}
+                      className={`w-4 shrink-0 fill-current ${pathname.includes("products") ? "text-violet-500" : "text-gray-400 dark:text-gray-500"}`}
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 576 512"
                     >

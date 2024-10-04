@@ -1,13 +1,13 @@
-import SalesTable from "../partials/sales/SalesTable";
+import Inventory from "../partials/products/Inventory";
 
-const Sales = () => {
+const Products = () => {
   return (
     <main className="grow">
       <div className="sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <SalesTable />
+        <Inventory />
       </div>
     </main>
   );
 };
 
-export default Sales;
+export default Products;
