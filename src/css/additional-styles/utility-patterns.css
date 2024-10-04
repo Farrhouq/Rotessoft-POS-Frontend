@@ -54,7 +54,7 @@ input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 .form-input,
@@ -108,7 +108,7 @@ input[type="search"]::-webkit-search-results-decoration {
     top: 2px;
     left: 2px;
     right: 50%;
-    transition: all .15s ease-out;
+    transition: all 0.15s ease-out;
 }
 
 .form-switch input[type="checkbox"]:checked + label {
@@ -129,10 +129,10 @@ input[type="search"]::-webkit-search-results-decoration {
 
 /* Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }

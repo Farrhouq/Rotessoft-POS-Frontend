@@ -10,6 +10,8 @@ import Dashboard from "./pages/Dashboard";
 import SideBar from "./partials/Sidebar";
 import Sales from "./pages/Sales";
 import Products from "./pages/Products";
+import Header from "./partials/Header";
+import AddSale from "./pages/AddSale";
 
 function App() {
   const location = useLocation();
@@ -24,21 +26,26 @@ function App() {
   return (
     <div className="flex h-screen overflow-hidden">
       <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            <Dashboard
-              sidebarOpen={sidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-            />
-          }
-        />
 
-        <Route exact path="/sales" element={<Sales />} />
-        <Route exact path="/products" element={<Products />} />
-      </Routes>
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              <Dashboard
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+              />
+            }
+          />
+
+          <Route exact path="/sales" element={<Sales />} />
+          <Route exact path="/products" element={<Products />} />
+          <Route exact path="/sales/add/" element={<AddSale />} />
+        </Routes>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import Header from "../partials/Header";
 import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
@@ -7,13 +6,11 @@ import DailyProgress from "../partials/dashboard/DailyProgress";
 import WeeklyOverview from "../partials/dashboard/WeeklyOverview";
 import TopProducts from "../partials/dashboard/TopProducts";
 import "react-circular-progressbar/dist/styles.css";
+import { Link } from "react-router-dom";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
   return (
-    <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-      {/*  Site header */}
-      <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
+    <>
       <main className="grow">
         <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
           {/* Dashboard actions */}
@@ -28,9 +25,9 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
             {/* Right: Actions */}
             <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
               {/* Filter button */}
-              <FilterButton align="right" />
+              {/* <FilterButton align="right" /> */}
               {/* Datepicker built with flatpickr */}
-              <Datepicker align="right" />
+              {/* <Datepicker align="right" /> */}
               {/* Add view button */}
               <button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
                 <svg
@@ -41,45 +38,22 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
                 >
                   <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
-                <span className="max-xs:sr-only">Add View</span>
+                <Link to="/sales/add/">
+                  <span className="max-xs:sr-only">Add Sale</span>
+                </Link>
               </button>
             </div>
           </div>
 
           {/* Cards */}
           <div className="grid grid-cols-12 gap-6">
-            {/* Line chart (Acme Plus) */}
-            {/* Line chart (Acme Advanced) */}
-            {/* Line chart (Acme Professional) */}
-            {/* Bar chart (Direct vs Indirect) */}
-            {/* Line chart (Real Time Value) */}
-            {/* Doughnut chart (Top Countries) */}
-            {/* Table (Top Channels) */}
-            {/* Line chart (Sales Over Time) */}
-            {/* Stacked bar chart (Sales VS Refunds) */}
-            {/* Card (Customers) */}
-            {/* Card (Reasons for Refunds) */}
-            {/* Card (Recent Activity) */}
-            {/* Card (Income/Expenses) */}
-            {/* <DashboardCard13 /> */}
-
-            {/* <SalesProgress /> */}
-            {/* <DashboardCard06 /> */}
             <DailyProgress />
             <WeeklyOverview />
-            {/* <DashboardCard03 /> */}
-            {/* <DashboardCard04 /> */}
-            {/* <DashboardCard05 /> */}
             <TopProducts />
-            {/* <DashboardCard08 /> */}
-            {/* <DashboardCard09 /> */}
-            {/* <DashboardCard10 /> */}
-            {/* <DashboardCard11 /> */}
-            {/* <DashboardCard12 /> */}
           </div>
         </div>
       </main>
-    </div>
+    </>
   );
 }
 
