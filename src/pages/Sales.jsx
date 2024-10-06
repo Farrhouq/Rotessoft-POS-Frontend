@@ -12,7 +12,7 @@ const Sales = () => {
   ];
   return (
     <main className="grow">
-      <div className="sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+      <div className="sm:px-6 lg:px-8 py-8 p-4 w-full max-w-9xl mx-auto">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold mb-6">Today's Sales</h1>
           {/* a button for add sales. white with black text */}

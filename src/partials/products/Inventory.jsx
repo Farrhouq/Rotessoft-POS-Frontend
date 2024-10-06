@@ -1,12 +1,54 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import AddProductModal from "../../components/AddProductModal";
+import RestockModal from "../../components/RestockModal";
+import { useState } from "react";
 
 function Inventory() {
+  const [addProductModalOpen, setAddProductModalOpen] = useState(false);
+  const [restockModalOpen, setRestockModalOpen] = useState(false);
+
   return (
     <div className="w-full bg-white dark:bg-gray-800 shadow-sm rounded-xl">
       <header className="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
-        <h2 className="font-semibold text-gray-800 dark:text-gray-100">
-          My products
-        </h2>
+        <div className="flex justify-between flex-col gap-2 md:flex-row">
+          <h1 className="text-3xl font-bold">My Products</h1>
+          {/* button group */}
+          <div className="flex gap-2">
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                setRestockModalOpen(!restockModalOpen);
+              }}
+            >
+              <button className="btn h-fit bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:text-gray-800 dark:hover:bg-green-600">
+                <span className="">Restock</span>
+              </button>
+            </div>
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                setAddProductModalOpen(!addProductModalOpen);
+              }}
+            >
+              <button className="btn h-fit bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
+                <span className="">Add Product</span>
+              </button>
+            </div>
+            <AddProductModal
+              id="search-modal"
+              searchId="search"
+              modalOpen={addProductModalOpen}
+              setModalOpen={setAddProductModalOpen}
+            />
+            <RestockModal
+              id="search-modal"
+              searchId="search"
+              modalOpen={restockModalOpen}
+              setModalOpen={setRestockModalOpen}
+            />
+          </div>
+        </div>
       </header>
       <div className="p-3">
         {/* Table */}
