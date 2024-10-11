@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import SalesTable from "../partials/sales/SalesTable";
+import api from "../apiClient";
+import axios from "axios";
+import { useEffect } from "react";
 
 const Sales = () => {
   const sales = [
@@ -10,6 +13,13 @@ const Sales = () => {
     { product: "Vimeo.com", quantity: 4, price: 2236, time: "13:00" },
     { product: "Indiehackers.com", quantity: 5, price: 2034, time: "14:00" },
   ];
+
+  useEffect(() => {
+    api.get("sale/").then((res) => {
+      console.log(res.data);
+    });
+  }, []);
+
   return (
     <main className="grow">
       <div className="sm:px-6 lg:px-8 py-8 p-4 w-full max-w-9xl mx-auto">

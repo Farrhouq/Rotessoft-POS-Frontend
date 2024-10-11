@@ -12,6 +12,7 @@ import Sales from "./pages/Sales";
 import Products from "./pages/Products";
 import Header from "./partials/Header";
 import AddSale from "./pages/AddSale";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   const location = useLocation();
@@ -40,10 +41,10 @@ function App() {
               />
             }
           />
-
           <Route exact path="/sales" element={<Sales />} />
           <Route exact path="/products" element={<Products />} />
           <Route exact path="/sales/add/" element={<AddSale />} />
+          <Route exact path="/login/" element={<LoginPage />} />
         </Routes>
       </div>
     </div>

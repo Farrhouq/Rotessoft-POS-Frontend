@@ -6,6 +6,7 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const location = useLocation();
   const { pathname } = location;
+  if (pathname.includes("login")) return;
 
   const trigger = useRef(null);
   const sidebar = useRef(null);

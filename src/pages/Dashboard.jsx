@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../partials/Header";
 import FilterButton from "../components/DropdownFilter";
 import Datepicker from "../components/Datepicker";
@@ -7,8 +7,11 @@ import WeeklyOverview from "../partials/dashboard/WeeklyOverview";
 import TopProducts from "../partials/dashboard/TopProducts";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
+import { checkLogin } from "../utils/Utils";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
+  useEffect(checkLogin, []);
+
   return (
     <>
       <main className="grow">

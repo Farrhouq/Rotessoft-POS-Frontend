@@ -1,9 +1,9 @@
-import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfigFile from '@tailwindConfig'
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfigFile from "@tailwindConfig";
 
 export const tailwindConfig = () => {
-  return resolveConfig(tailwindConfigFile)
-}
+  return resolveConfig(tailwindConfigFile);
+};
 
 export const hexToRGB = (h) => {
   let r = 0;
@@ -21,14 +21,23 @@ export const hexToRGB = (h) => {
   return `${+r},${+g},${+b}`;
 };
 
-export const formatValue = (value) => Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumSignificantDigits: 3,
-  notation: 'compact',
-}).format(value);
+export const formatValue = (value) =>
+  Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumSignificantDigits: 3,
+    notation: "compact",
+  }).format(value);
 
-export const formatThousands = (value) => Intl.NumberFormat('en-US', {
-  maximumSignificantDigits: 3,
-  notation: 'compact',
-}).format(value);
+export const formatThousands = (value) =>
+  Intl.NumberFormat("en-US", {
+    maximumSignificantDigits: 3,
+    notation: "compact",
+  }).format(value);
+
+export const checkLogin = () => {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    window.location.href = "/login";
+  }
+};

@@ -5,9 +5,14 @@ import Notifications from "../components/DropdownNotifications";
 import Help from "../components/DropdownHelp";
 import UserMenu from "../components/DropdownProfile";
 import ThemeToggle from "../components/ThemeToggle";
+import { useLocation } from "react-router-dom";
 
 function Header({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
+  const location = useLocation();
+  const { pathname } = location;
+
+  if (pathname.includes("login")) return;
 
   return (
     <header
