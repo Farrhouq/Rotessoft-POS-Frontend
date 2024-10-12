@@ -37,7 +37,6 @@ api.interceptors.request.use(
       const lastAccessToken = localStorage.getItem("lastAccessToken");
       const timeDifference = new Date() - new Date(lastAccessToken);
       const secondsPassed = Math.floor(timeDifference / 1000);
-      console.log(secondsPassed);
       if (secondsPassed > TOKEN_EXPIRATION) {
         // If the access token has expired, refresh it
         accessToken = await refreshAccessToken();

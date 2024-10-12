@@ -87,7 +87,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
             </svg>
           </button>
           {/* Logo */}
-          <NavLink end to="/" className="block">
+          <NavLink
+            end
+            to="/"
+            className="block"
+            onClick={() => setSidebarOpen(false)}
+          >
             <svg
               className="fill-violet-500"
               xmlns="http://www.w3.org/2000/svg"
@@ -120,6 +125,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname == "/" && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}
               >
                 <NavLink
+                  onClick={() => setSidebarOpen(false)}
                   end
                   to="/"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
@@ -148,6 +154,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("sales") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}
               >
                 <NavLink
+                  onClick={() => setSidebarOpen(false)}
                   end
                   to="/sales"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
@@ -176,6 +183,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname.includes("products") && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}
               >
                 <NavLink
+                  onClick={() => setSidebarOpen(false)}
                   end
                   to="/products/"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${

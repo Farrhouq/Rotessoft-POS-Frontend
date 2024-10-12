@@ -1,5 +1,6 @@
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfigFile from "@tailwindConfig";
+import { jwtDecode } from "jwt-decode";
 
 export const tailwindConfig = () => {
   return resolveConfig(tailwindConfigFile);
@@ -40,4 +41,5 @@ export const checkLogin = () => {
   if (!token) {
     window.location.href = "/login";
   }
+  return jwtDecode(token).role;
 };

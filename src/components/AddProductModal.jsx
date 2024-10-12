@@ -1,28 +1,43 @@
-import React, { useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef, useEffect, useState } from "react";
 import Transition from "../utils/Transition";
-import Select from "react-select";
+import api from "../apiClient";
 
-function RestockModal({ modalOpen, setModalOpen }) {
+function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
   const modalContent = useRef(null);
-  const searchInput = useRef(null);
-  const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
 
-  // close on click outside
-  // useEffect(() => {
-  //   const clickHandler = ({ target }) => {
-  //     if (!modalOpen || modalContent.current.contains(target)) return;
-  //     setModalOpen(false);
-  //   };
-  //   document.addEventListener("click", clickHandler);
-  //   return () => document.removeEventListener("click", clickHandler);
-  // });
+  // State to store form data
+  const [productName, setProductName] = useState("");
+  const [price, setPrice] = useState("");
+  const [amountInStock, setAmountInStock] = useState(1);
 
-  // close if the esc key is pressed
+  // Handle form submission
+  const addProduct = (e) => {
+    e.preventDefault();
+
+    // Payload to send in the POST request
+    const productData = {
+      name: productName,
+      price: price,
+      amount_in_stock: amountInStock,
+    };
+
+    // Make API call to add product
+    api
+      .post("product/", productData)
+      .then((res) => {
+        console.log(res.data);
+        // Close the modal after successful submission
+        setModalOpen(false);
+        // Update the products list
+        setProducts([...products, res.data]);
+      })
+      .catch((err) => {
+        console.error(err);
+        // Handle error
+      });
+  };
+
+  // close on ESC key press
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
       if (!modalOpen || keyCode !== 27) return;
@@ -31,10 +46,6 @@ function RestockModal({ modalOpen, setModalOpen }) {
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
   });
-
-  useEffect(() => {
-    // modalOpen && searchInput.current.focus();
-  }, [modalOpen]);
 
   return (
     <>
@@ -65,21 +76,27 @@ function RestockModal({ modalOpen, setModalOpen }) {
       >
         <div
           ref={modalContent}
-          className="bg-white w-screen dark:bg-gray-800 border border-transparent dark:border-gray-700/60  max-w-2xl max-h-full rounded-lg shadow-lg"
+          className="bg-white w-screen dark:bg-gray-800 border border-transparent dark:border-gray-700/60 max-w-2xl max-h-full rounded-lg shadow-lg"
         >
           {/* form */}
-          <form className="w-full border-gray-200 dark:border-gray-700/60 px-3 py-5">
+          <form
+            className="w-full border-gray-200 dark:border-gray-700/60 px-3 py-5"
+            onSubmit={addProduct}
+          >
             <h3 className="text-lg font-medium text-gray-900 dark:text-white">
               Add Product
             </h3>
             <hr className="my-4 text-gray-900" />
-            <div className="grid gap-6 mb-6  pt-2 w-full">
+            <div className="grid gap-6 mb-6 pt-2 w-full">
               <div className="col-span-12 w-full">
                 <label>Product Name</label>
                 <input
                   type="text"
                   className="bg-gray-50 h-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter product name..."
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)} // Update state
+                  required
                 />
               </div>
 
@@ -87,9 +104,10 @@ function RestockModal({ modalOpen, setModalOpen }) {
                 <label>Price</label>
                 <input
                   type="number"
-                  id="last_name"
                   className="bg-gray-50 h-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter price..."
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)} // Update state
                   required
                 />
               </div>
@@ -97,11 +115,11 @@ function RestockModal({ modalOpen, setModalOpen }) {
               <div className="col-span-6">
                 <label>Amount In Stock</label>
                 <input
-                  type="text"
-                  id="last_name"
+                  type="number"
                   className="bg-gray-50 h-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Doe"
-                  value={1}
+                  placeholder="Enter stock amount..."
+                  value={amountInStock}
+                  onChange={(e) => setAmountInStock(e.target.value)} // Update state
                   required
                 />
               </div>
@@ -113,6 +131,13 @@ function RestockModal({ modalOpen, setModalOpen }) {
             >
               Submit
             </button>
+            <button
+              type="button"
+              onClick={() => setModalOpen(false)}
+              className="text-white dark:text-white ml-3 bg-red-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-red-700 dark:focus:ring-blue-800"
+            >
+              Cancel
+            </button>
           </form>
         </div>
       </Transition>
@@ -120,4 +145,4 @@ function RestockModal({ modalOpen, setModalOpen }) {
   );
 }
 
-export default RestockModal;
+export default AddProductModal;

@@ -10,7 +10,9 @@ import { Link } from "react-router-dom";
 import { checkLogin } from "../utils/Utils";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
-  useEffect(checkLogin, []);
+  useEffect(() => {
+    const userRole = checkLogin();
+  }, []);
 
   return (
     <>
