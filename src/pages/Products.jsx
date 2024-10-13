@@ -7,10 +7,14 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const role = checkLogin();
-    api.get("product/").then((res) => {
-      setProducts(res.data);
-    });
-    checkLogin();
+    if (localStorage.getItem("products")) {
+      setProducts(JSON.parse(localStorage.getItem("products")));
+    } else {
+      apiClient.get("product/").then((res) => {
+        setProducts(res.data);
+        localStorage.setItem("products", JSON.stringify(res.data));
+      });
+    }
   }, []);
   return (
     <main className="grow">

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import "./css/main.css";
 
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <div className="flex h-screen overflow-hidden">
+      <Toaster />
       <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">

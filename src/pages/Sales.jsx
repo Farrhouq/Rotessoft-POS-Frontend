@@ -1,22 +1,15 @@
 import { Link } from "react-router-dom";
 import SalesTable from "../partials/sales/SalesTable";
 import api from "../apiClient";
-import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { checkLogin } from "../utils/Utils";
 
 const Sales = () => {
-  const sales = [
-    // a list of objects with product, quantity, and price properties
-    { product: "Github.com", quantity: 1, price: 3877, time: "10:00" },
-    { product: "Facebook", quantity: 2, price: 3426, time: "11:00" },
-    { product: "Google (organic)", quantity: 3, price: 2444, time: "12:00" },
-    { product: "Vimeo.com", quantity: 4, price: 2236, time: "13:00" },
-    { product: "Indiehackers.com", quantity: 5, price: 2034, time: "14:00" },
-  ];
+  const [sales, setSales] = useState([]);
 
   useEffect(() => {
     api.get("sale/").then((res) => {
-      console.log(res.data);
+      setSales(res.data);
     });
   }, []);
 

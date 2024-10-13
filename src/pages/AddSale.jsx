@@ -1,47 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
-
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
-
-const products = [
-  { name: "Github.com", price: 3877 },
-  { name: "Facebook", price: 3426 },
-  { name: "Google (organic)", price: 2444 },
-  { name: "Vimeo.com", price: 2236 },
-  { name: "Indiehackers.com", price: 2034 },
-];
-// const options = [
-//   { name: "Swedish", value: "sv" },
-//   { name: "English", value: "en" },
-//   {
-//     type: "group",
-//     name: "Group name",
-//     items: [{ name: "Spanish", value: "es" }],
-//   },
-// ];
+import apiClient from "../apiClient";
+import toaster from "react-hot-toast";
 
 function AddSale() {
   const [sales, setSales] = useState([]);
-  const [currentSale, setCurrentSale] = useState({ product: "", quantity: "" });
+  const [currentSale, setCurrentSale] = useState({
+    product: "",
+    quantity: "",
+    id: "",
+  });
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    if (localStorage.getItem("products")) {
+      setProducts(JSON.parse(localStorage.getItem("products")));
+    } else {
+      apiClient.get("product/").then((res) => {
+        setProducts(res.data);
+        localStorage.setItem("products", JSON.stringify(res.data));
+      });
+    }
+  }, []);
 
   const handleInputChange = (e) => {
-    const { value } = e;
-    setCurrentSale({ product: value, quantity: currentSale.quantity });
+    const { value, label } = e;
+    console.log(e);
+    setCurrentSale({
+      product: label,
+      quantity: currentSale.quantity,
+      id: value,
+    });
   };
 
   const handleQtyChange = (e) => {
     const qty = e.target.value;
-    setCurrentSale({ product: currentSale.product, quantity: qty });
+    setCurrentSale({
+      product: currentSale.product,
+      quantity: qty,
+      id: currentSale.id,
+    });
   };
 
   const addSale = () => {
+    console.log(currentSale);
     if (currentSale.product && currentSale.quantity) {
-      setSales((prev) => [...prev, { ...currentSale, id: Date.now() }]);
-      setCurrentSale({ product: "", quantity: "" });
+      setSales((prev) => [...prev, currentSale]);
+      setCurrentSale({ product: "", quantity: "", id: "" });
     }
   };
 
@@ -50,8 +55,12 @@ function AddSale() {
   };
 
   const saveSales = () => {
-    console.log("Saving sales:", sales);
-    // Here you would typically send the sales data to a server
+    if (!sales.length) return;
+    apiClient.post("sale/", { sales }).then((res) => {
+      setSales([]);
+      setCurrentSale({ product: "", quantity: "", id: "" });
+      toaster.success("Sale saved");
+    });
   };
 
   const totalPrice = sales.reduce((sum, sale) => {
@@ -69,7 +78,7 @@ function AddSale() {
             <Select
               className="dark:bg-gray-800"
               options={products.map((product) => ({
-                value: product.name,
+                value: product.id,
                 label: product.name,
               }))}
               onChange={(e) => handleInputChange(e)}
