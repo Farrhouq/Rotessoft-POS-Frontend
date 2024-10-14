@@ -1,4 +1,4 @@
-function AddSalesTable({ sales }) {
+function SalesTable({ sales }) {
   return (
     <table
       style={{ padding: "40px" }}
@@ -17,14 +17,17 @@ function AddSalesTable({ sales }) {
             key={index}
             className="border-b border-gray-200 dark:border-gray-800 mb-5 p-5"
           >
-            <td className="p-4 mb-5">
-              {sale.product}, {sale.product}
-            </td>
+            <td className="p-4 mb-5">{sale.__str__}</td>
             <td className="p-4 mb-5 text-green-600 dark:text-green-500">
-              ${sale.price}
+              ₵ {sale.total}
             </td>
             <td className="p-4">
-              <button className="hover:text-red-600">{sale.time}</button>
+              <button className="hover:text-red-600 lowercase">
+                {new Date(sale.created_at).toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                })}
+              </button>
             </td>
           </tr>
         ))}
@@ -33,4 +36,4 @@ function AddSalesTable({ sales }) {
   );
 }
 
-export default AddSalesTable;
+export default SalesTable;

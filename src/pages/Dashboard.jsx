@@ -1,17 +1,64 @@
 import React, { useEffect, useState } from "react";
-import Header from "../partials/Header";
-import FilterButton from "../components/DropdownFilter";
-import Datepicker from "../components/Datepicker";
+// import Header from "../partials/Header";
+// import FilterButton from "../components/DropdownFilter";
+// import Datepicker from "../components/Datepicker";
 import DailyProgress from "../partials/dashboard/DailyProgress";
 import WeeklyOverview from "../partials/dashboard/WeeklyOverview";
 import TopProducts from "../partials/dashboard/TopProducts";
 import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
 import { checkLogin } from "../utils/Utils";
+import apiClient from "../apiClient";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
+  const [dashboardData, setDashboardData] = useState({});
+  const [todayTotal, setTodayTotal] = useState(0);
+  const [dailyTarget, setDailyTarget] = useState(10);
+  const [weeklySales, setWeeklySales] = useState([]);
+  const [weeklyTotal, setWeeklyTotal] = useState(0);
+  const [dateLabels, setDateLabels] = useState([]);
+  const [dailyTotals, setDailyTotals] = useState([]);
+
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${month}-${day}-${year}`; // return 'dd-mm-yyyy'
+  };
+
+  function animateNumber(target, setValue, duration) {
+    const start = 0; // Starting number
+    const incrementTime = duration / target; // Time interval for incrementing
+    let current = start;
+
+    const interval = setInterval(() => {
+      if (current + 149 < target) current += 149;
+      else current = target;
+      setValue(current);
+
+      if (current >= target) {
+        clearInterval(interval);
+      }
+    }, incrementTime + 70);
+  }
+
   useEffect(() => {
     const userRole = checkLogin();
+    apiClient.get("dashboard/").then((res) => {
+      setDashboardData(res.data);
+      animateNumber(res.data.total_sales_today, setTodayTotal, 1);
+      setDailyTarget(res.data.daily_target);
+      let weeklyTotal = 0;
+      for (let week of res.data.daily_sales) {
+        weeklyTotal += week.total;
+      }
+      setWeeklyTotal(weeklyTotal);
+      setWeeklySales(res.data.daily_sales);
+      setDateLabels(
+        res.data.daily_sales.map((week) =>
+          formatDate(week.sale__created_at__date),
+        ),
+      );
+      setDailyTotals(res.data.daily_sales.map((week) => week.total));
+    });
   }, []);
 
   return (
@@ -52,8 +99,12 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
 
           {/* Cards */}
           <div className="grid grid-cols-12 gap-6">
-            <DailyProgress />
-            <WeeklyOverview />
+            <DailyProgress today={todayTotal} dailyTarget={dailyTarget} />
+            <WeeklyOverview
+              weeklyTotal={weeklyTotal}
+              dateLabels={dateLabels}
+              dailyTotals={dailyTotals}
+            />
             <TopProducts />
           </div>
         </div>

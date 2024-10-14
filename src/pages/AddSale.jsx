@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import apiClient from "../apiClient";
 import toaster from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 function AddSale() {
+  const navigate = useNavigate();
   const [sales, setSales] = useState([]);
   const [currentSale, setCurrentSale] = useState({
     product: "",
@@ -59,6 +61,7 @@ function AddSale() {
     apiClient.post("sale/", { sales }).then((res) => {
       setSales([]);
       setCurrentSale({ product: "", quantity: "", id: "" });
+      navigate("/sales/");
       toaster.success("Sale saved");
     });
   };

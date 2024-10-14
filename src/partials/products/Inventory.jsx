@@ -14,7 +14,7 @@ function Inventory({ products, setProducts }) {
         <div className="flex justify-between flex-col gap-2 md:flex-row">
           <h1 className="text-3xl font-bold">Products</h1>
           {/* button group */}
-          <div className="flex gap-2">
+          {/* <div className="flex gap-2">
             <div
               onClick={(e) => {
                 e.stopPropagation();
@@ -49,7 +49,7 @@ function Inventory({ products, setProducts }) {
               modalOpen={restockModalOpen}
               setModalOpen={setRestockModalOpen}
             />
-          </div>
+          </div> */}
         </div>
       </header>
       <div className="p-3">

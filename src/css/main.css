@@ -2637,6 +2637,14 @@ span.flatpickr-weekday:is(.dark *){
   margin-top: auto;
 }
 
+.mr-1{
+  margin-right: 0.25rem;
+}
+
+.mt-12{
+  margin-top: 3rem;
+}
+
 .block{
   display: block;
 }
@@ -2818,6 +2826,11 @@ span.flatpickr-weekday:is(.dark *){
   width: 100vw;
 }
 
+.w-fit{
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .min-w-36{
   min-width: 9rem;
 }
@@ -2958,6 +2971,10 @@ span.flatpickr-weekday:is(.dark *){
   align-items: center;
 }
 
+.items-baseline{
+  align-items: baseline;
+}
+
 .justify-start{
   justify-content: flex-start;
 }
@@ -2984,6 +3001,10 @@ span.flatpickr-weekday:is(.dark *){
 
 .gap-6{
   gap: 1.5rem;
+}
+
+.gap-1{
+  gap: 0.25rem;
 }
 
 .gap-x-4{
@@ -3258,6 +3279,21 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+.bg-gray-300{
+  --tw-bg-opacity: 1;
+  background-color: rgb(191 196 205 / var(--tw-bg-opacity));
+}
+
+.bg-red-200{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 178 178 / var(--tw-bg-opacity));
+}
+
+.bg-red-100{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 209 209 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-30{
   --tw-bg-opacity: 0.3;
 }
@@ -3518,6 +3554,22 @@ span.flatpickr-weekday:is(.dark *){
   line-height: 1.5;
 }
 
+.text-\[12px\]{
+  font-size: 12px;
+}
+
+.text-\[16px\]{
+  font-size: 16px;
+}
+
+.text-\[14px\]{
+  font-size: 14px;
+}
+
+.text-\[18px\]{
+  font-size: 18px;
+}
+
 .font-bold{
   font-weight: 700;
 }
@@ -3536,6 +3588,10 @@ span.flatpickr-weekday:is(.dark *){
 
 .uppercase{
   text-transform: uppercase;
+}
+
+.lowercase{
+  text-transform: lowercase;
 }
 
 .italic{
@@ -3653,6 +3709,11 @@ span.flatpickr-weekday:is(.dark *){
 .text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-green-200{
+  --tw-text-opacity: 1;
+  color: rgb(139 240 176 / var(--tw-text-opacity));
 }
 
 .underline{
@@ -3865,16 +3926,6 @@ span.flatpickr-weekday:is(.dark *){
 .hover\:bg-purple-700:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(126 34 206 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-red-500:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 86 86 / var(--tw-bg-opacity));
-}
-
-.hover\:bg-red-400:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 116 116 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-red-700:hover{
@@ -4546,6 +4597,18 @@ span.flatpickr-weekday:is(.dark *){
 
   .xl\:max-h-\[128px\]{
     max-height: 128px;
+  }
+
+  .xl\:max-h-\[148px\]{
+    max-height: 148px;
+  }
+
+  .xl\:max-h-\[168px\]{
+    max-height: 168px;
+  }
+
+  .xl\:max-h-\[155px\]{
+    max-height: 155px;
   }
 }
 

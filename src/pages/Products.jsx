@@ -1,4 +1,4 @@
-import api from "../apiClient";
+import apiClient from "../apiClient";
 import Inventory from "../partials/products/Inventory";
 import { checkLogin } from "../utils/Utils";
 import { useEffect, useState } from "react";

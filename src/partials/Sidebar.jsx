@@ -156,7 +156,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 <NavLink
                   onClick={() => setSidebarOpen(false)}
                   end
-                  to="/sales"
+                  to="/sales/"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
                     pathname.includes("sales")
                       ? ""

@@ -43,8 +43,8 @@ function App() {
               />
             }
           />
-          <Route exact path="/sales" element={<Sales />} />
-          <Route exact path="/products" element={<Products />} />
+          <Route exact path="/sales/" element={<Sales />} />
+          <Route exact path="/products/" element={<Products />} />
           <Route exact path="/sales/add/" element={<AddSale />} />
           <Route exact path="/login/" element={<LoginPage />} />
         </Routes>

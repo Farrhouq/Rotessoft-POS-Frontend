@@ -8,6 +8,7 @@ const Sales = () => {
   const [sales, setSales] = useState([]);
 
   useEffect(() => {
+    const userRole = checkLogin();
     api.get("sale/").then((res) => {
       setSales(res.data);
     });
@@ -17,7 +18,28 @@ const Sales = () => {
     <main className="grow">
       <div className="sm:px-6 lg:px-8 py-8 p-4 w-full max-w-9xl mx-auto">
         <div className="flex justify-between">
-          <h1 className="text-3xl font-bold mb-6">Today's Sales</h1>
+          <div className="flex gap-1 mb-6">
+            <div className="text-3xl font-bold flex flex-col gap-2 items-start">
+              <p> Today's Sales</p>
+              <div className="flex items-center">
+                <span className="mr-1 ml-2 text-[18px]">Gh₵</span>
+                <span className="text-green-700">
+                  {JSON.parse(localStorage.getItem("dailyTotals")).slice(-1)[0]}
+                  .00
+                </span>
+                <span className="ml-3 text-sm font-lg font-bold text-red-700 w-fit px-2 py-1 bg-red-500/20 rounded-full">
+                  14%
+                </span>
+              </div>
+              {/* <span className="ml-2 text-red-500">(34%)</span> */}
+            </div>
+            {/* <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">
+              +49%
+            </div> */}
+            {/* <div className="text-sm font-medium text-red-700 w-fit px-1.5 bg-red-500/20 rounded-full">
+              -14%
+            </div> */}
+          </div>
           {/* a button for add sales. white with black text */}
           <Link to="/sales/add/">
             <button className="btn h-fit bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">

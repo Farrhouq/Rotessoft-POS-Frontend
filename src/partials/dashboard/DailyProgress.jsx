@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LineChart from "../../charts/LineChart01";
-import { chartAreaGradient } from "../../charts/ChartjsConfig";
+// import LineChart from "../../charts/LineChart01";
+// import { chartAreaGradient } from "../../charts/ChartjsConfig";
 import EditMenu from "../../components/DropdownEditMenu";
 
 // Import utilities
 import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
-function DashboardCard01() {
+function DailyProgress({ today, dailyTarget }) {
   return (
     <div className="flex flex-col col-span-full sm:col-span-6 xl:col-span-5 bg-white dark:bg-gray-800 shadow-sm rounded-xl px-2 md:px-5 pb-20">
       <div className="px-5 pt-5">
@@ -49,7 +49,7 @@ function DashboardCard01() {
         </div> */}
         <div className="flex items-start">
           <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
-            $24,780
+            ₵{today}.00
           </div>
           <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">
             +49%
@@ -57,9 +57,8 @@ function DashboardCard01() {
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
-      <div className="grow max-sm:max-h-[128px] xl:max-h-[128px] mt-7 font-bold flex w-full justify-between flex-nowrap items-start">
+      <div className="grow max-sm:max-h-[128px] xl:max-h-[155px] mt-7 font-bold flex w-full justify-between flex-nowrap items-start">
         {/* Change the height attribute to adjust the chart height */}
-        {/* <LineChart data={chartData} width={389} height={128} /> */}
         <div className="w-[50%] h-fit">
           <CircularProgressbar
             styles={buildStyles({
@@ -68,8 +67,8 @@ function DashboardCard01() {
               pathColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.violet[500])}, 1)`,
               trailColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.gray[600])}, 0.1)`,
             })}
-            value={60}
-            text={`${30}%`}
+            value={(today * 100) / dailyTarget}
+            text={`${(today * 100) / dailyTarget}%`}
             strokeWidth={15}
           />
         </div>
@@ -77,12 +76,12 @@ function DashboardCard01() {
         <div className="flex flex-col gap-2 mt-6 text-sm w-[45%]">
           <div className="flex items-center">
             <div className="w-4 h-4 bg-violet-500 rounded-full mr-2"></div>
-            <p className="text-gray-500 dark:text-gray-400">Today: 3000</p>
+            <p className="text-gray-500 dark:text-gray-400">Today: {today}</p>
           </div>
           <div className="flex items-center">
             <div className="w-4 h-4 bg-gray-200 rounded-full mr-2"></div>
             <p className="text-gray-500 dark:text-gray-600">
-              Daily target: 23555
+              Daily target: {dailyTarget}
             </p>
           </div>
         </div>
@@ -91,4 +90,4 @@ function DashboardCard01() {
   );
 }
 
-export default DashboardCard01;
+export default DailyProgress;
