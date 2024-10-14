@@ -8,11 +8,6 @@ import EditMenu from "../../components/DropdownEditMenu";
 import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 
 function WeeklyOverView({ weeklyTotal, dateLabels, dailyTotals }) {
-  useEffect(() => {
-    console.log("Date Labels: ", dateLabels);
-    console.log("Daily Totals: ", dailyTotals);
-  }, [dateLabels, dailyTotals]);
-
   const chartData = {
     labels: dateLabels,
     datasets: [
@@ -89,9 +84,9 @@ function WeeklyOverView({ weeklyTotal, dateLabels, dailyTotals }) {
           <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
             ₵{weeklyTotal}
           </div>
-          <div className="text-sm font-medium text-red-700 px-1.5 bg-red-500/20 rounded-full">
+          {/* <div className="text-sm font-medium text-red-700 px-1.5 bg-red-500/20 rounded-full">
             -14%
-          </div>
+          </div> */}
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}

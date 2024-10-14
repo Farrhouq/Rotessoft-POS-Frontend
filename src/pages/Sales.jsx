@@ -14,6 +14,10 @@ const Sales = () => {
     });
   }, []);
 
+  const dailyTarget = localStorage.getItem("dailyTarget");
+  const today = JSON.parse(localStorage.getItem("dailyTotals")).slice(-1)[0];
+  const percentProgress = (today / dailyTarget) * 100;
+
   return (
     <main className="grow">
       <div className="sm:px-6 lg:px-8 py-8 p-4 w-full max-w-9xl mx-auto">
@@ -24,21 +28,16 @@ const Sales = () => {
               <div className="flex items-center">
                 <span className="mr-1 ml-2 text-[18px]">Gh₵</span>
                 <span className="text-green-700">
-                  {JSON.parse(localStorage.getItem("dailyTotals")).slice(-1)[0]}
+                  {today}
                   .00
                 </span>
-                <span className="ml-3 text-sm font-lg font-bold text-red-700 w-fit px-2 py-1 bg-red-500/20 rounded-full">
-                  14%
+                <span
+                  className={`${percentProgress >= 100 ? `text-green-700 bg-green-500/20` : `text-red-700 bg-red-500/20`} ml-3 text-sm font-lg font-bold w-fit px-2 py-1 rounded-full`}
+                >
+                  {percentProgress.toFixed()}%
                 </span>
               </div>
-              {/* <span className="ml-2 text-red-500">(34%)</span> */}
             </div>
-            {/* <div className="text-sm font-medium text-green-700 px-1.5 bg-green-500/20 rounded-full">
-              +49%
-            </div> */}
-            {/* <div className="text-sm font-medium text-red-700 w-fit px-1.5 bg-red-500/20 rounded-full">
-              -14%
-            </div> */}
           </div>
           {/* a button for add sales. white with black text */}
           <Link to="/sales/add/">

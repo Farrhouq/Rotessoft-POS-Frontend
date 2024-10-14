@@ -61,6 +61,12 @@ function AddSale() {
     apiClient.post("sale/", { sales }).then((res) => {
       setSales([]);
       setCurrentSale({ product: "", quantity: "", id: "" });
+      let dailyTotals = JSON.parse(localStorage.getItem("dailyTotals"));
+      let todayTotal = dailyTotals.pop();
+      todayTotal += res.data.total;
+      console.log(todayTotal);
+      dailyTotals.push(todayTotal);
+      localStorage.setItem("dailyTotals", JSON.stringify(dailyTotals));
       navigate("/sales/");
       toaster.success("Sale saved");
     });

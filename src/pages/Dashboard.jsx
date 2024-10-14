@@ -14,10 +14,11 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [dashboardData, setDashboardData] = useState({});
   const [todayTotal, setTodayTotal] = useState(0);
   const [dailyTarget, setDailyTarget] = useState(10);
-  const [weeklySales, setWeeklySales] = useState([]);
   const [weeklyTotal, setWeeklyTotal] = useState(0);
   const [dateLabels, setDateLabels] = useState([]);
   const [dailyTotals, setDailyTotals] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+  const [yesterdayTotal, setYesterdayTotal] = useState(0);
 
   const formatDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
@@ -44,6 +45,8 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     const userRole = checkLogin();
     apiClient.get("dashboard/").then((res) => {
       setDashboardData(res.data);
+      setTopProducts(res.data.top_products);
+      setYesterdayTotal(res.data.daily_sales.slice(-2)[0].total);
       animateNumber(res.data.total_sales_today, setTodayTotal, 1);
       setDailyTarget(res.data.daily_target);
       let weeklyTotal = 0;
@@ -51,7 +54,11 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
         weeklyTotal += week.total;
       }
       setWeeklyTotal(weeklyTotal);
-      setWeeklySales(res.data.daily_sales);
+      localStorage.setItem(
+        "dailyTotals",
+        JSON.stringify(res.data.daily_sales.map((week) => week.total)),
+      );
+      localStorage.setItem("dailyTarget", res.data.daily_target);
       setDateLabels(
         res.data.daily_sales.map((week) =>
           formatDate(week.sale__created_at__date),
@@ -99,13 +106,17 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
 
           {/* Cards */}
           <div className="grid grid-cols-12 gap-6">
-            <DailyProgress today={todayTotal} dailyTarget={dailyTarget} />
+            <DailyProgress
+              today={todayTotal}
+              yesterday={yesterdayTotal}
+              dailyTarget={dailyTarget}
+            />
             <WeeklyOverview
               weeklyTotal={weeklyTotal}
               dateLabels={dateLabels}
               dailyTotals={dailyTotals}
             />
-            <TopProducts />
+            <TopProducts products={topProducts} />
           </div>
         </div>
       </main>
