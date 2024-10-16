@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { checkLogin } from "../utils/Utils";
 
 import SidebarLinkGroup from "./SidebarLinkGroup";
 
@@ -8,6 +9,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const { pathname } = location;
   if (pathname.includes("login")) return;
   if (pathname.includes("register")) return;
+  const userRole = checkLogin();
+  if (userRole == "admin") return;
 
   const trigger = useRef(null);
   const sidebar = useRef(null);

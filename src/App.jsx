@@ -17,6 +17,7 @@ import LoginPage from "./pages/LoginPage";
 import AdminRegistration from "./pages/admin/AdminRegistration";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import EnterOTP from "./pages/EnterOTP";
+import Employee from "./pages/admin/Employee";
 
 function App() {
   const location = useLocation();
@@ -53,6 +54,7 @@ function App() {
           <Route exact path="/login/enter-code/" element={<EnterOTP />} />
           <Route exact path="/register/" element={<AdminRegistration />} />
           <Route exact path="/admin/" element={<AdminDashboard />} />
+          <Route exact path="/admin/shop/staff/" element={<Employee />} />
         </Routes>
       </div>
     </div>

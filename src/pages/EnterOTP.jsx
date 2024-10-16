@@ -13,6 +13,22 @@ export default function Component() {
     inputRefs.current[0]?.focus();
   }, []);
 
+  const handlePaste = (e, index) => {
+    e.preventDefault();
+    if (index != 0) return;
+    const pastedData = e.clipboardData.getData("text").slice(0, 6);
+    const newOtp = [...otp];
+    for (let i = 0; i < pastedData.length; i++) {
+      if (i < 6) {
+        newOtp[i] = pastedData[i];
+      }
+    }
+    setOtp(newOtp);
+    if (inputRefs.current[5]) {
+      inputRefs.current[5].focus();
+    }
+  };
+
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
 
@@ -89,6 +105,7 @@ export default function Component() {
             {otp.map((data, index) => {
               return (
                 <input
+                  onPaste={(e) => handlePaste(e, index)}
                   className="w-12 h-12 text-center text-2xl font-semibold border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none transition"
                   type="text"
                   name="otp"

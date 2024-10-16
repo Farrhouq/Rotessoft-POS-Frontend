@@ -45,6 +45,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
 
   useEffect(() => {
     const userRole = checkLogin();
+    localStorage.removeItem("products");
     if (userRole == "admin") {
       navigate("/admin/");
     }
