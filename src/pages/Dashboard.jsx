@@ -9,6 +9,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
 import { checkLogin } from "../utils/Utils";
 import apiClient from "../apiClient";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [dashboardData, setDashboardData] = useState({});
@@ -19,6 +20,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [dailyTotals, setDailyTotals] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
   const [yesterdayTotal, setYesterdayTotal] = useState(0);
+  const navigate = useNavigate();
 
   const formatDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
@@ -43,6 +45,9 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
 
   useEffect(() => {
     const userRole = checkLogin();
+    if (userRole == "admin") {
+      navigate("/admin/");
+    }
     apiClient.get("dashboard/").then((res) => {
       setDashboardData(res.data);
       setTopProducts(res.data.top_products);

@@ -110,7 +110,7 @@ function Inventory({ products, setProducts }) {
                   </td>
                   <td className="p-2">
                     <div className="text-center text-green-500">
-                      ${product.price}
+                      ₵{product.price}
                     </div>
                   </td>
                   <td className="p-2">

@@ -1,10 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=fallback');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=fallback");
 
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
 
 /* Additional styles */
-@import 'additional-styles/utility-patterns.css';
-@import 'additional-styles/flatpickr.css';
+@import "additional-styles/utility-patterns.css";
+@import "additional-styles/flatpickr.css";
 
-@import 'tailwindcss/utilities';
+@import "tailwindcss/utilities";
+
+.half-underline {
+    position: relative;
+    display: inline-block;
+}
+.half-underline::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30%; /* Adjust to change how much of the text is underlined */
+    height: 2px; /* Thickness of the underline */
+    @apply bg-violet-500; /* Uses the current text color */
+}

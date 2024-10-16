@@ -160,10 +160,10 @@ function AddSale() {
                       {sale.quantity}
                     </td>
                     <td className="px-6 text py-4 whitespace-nowrap">
-                      ${price.toFixed(2)}
+                      ₵{price.toFixed(2)}
                     </td>
                     <td className="px-6 text py-4 whitespace-nowrap">
-                      ${total.toFixed(2)}
+                      ₵{total.toFixed(2)}
                     </td>
                     <td className="px-6 text py-4 whitespace-nowrap">
                       <svg
@@ -235,7 +235,7 @@ function AddSale() {
 
         <div className="mt-6 flex justify-between items-center">
           <div className="text-xl font-semibold">
-            Total Price: ${totalPrice.toFixed(2)}
+            Total Price: ₵{totalPrice.toFixed(2)}
           </div>
           <button
             onClick={saveSales}

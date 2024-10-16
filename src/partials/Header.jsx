@@ -13,6 +13,7 @@ function Header({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const { pathname } = location;
 
   if (pathname.includes("login")) return;
+  if (pathname.includes("register")) return;
 
   return (
     <header

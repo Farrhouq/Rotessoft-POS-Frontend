@@ -1,1 +1,18 @@
 refresh products button
+
+
+The thing err, it's going to be registered based on only our permission.
+So it shouldn't have a sign up page that's hosted.
+What I'm thinking is that, the signup page or so will be on our pc,
+which will call the right (api) endpoints. Or better still, the admin page can be
+our point of registration.
+
+- owner:
+    - first name
+    - last name
+    - email or phone
+    - address
+- business:
+    - name
+    - location
+    - daily target (optional, maybe)

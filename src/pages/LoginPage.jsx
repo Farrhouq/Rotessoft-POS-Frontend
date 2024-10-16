@@ -3,11 +3,12 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import apiClient from "../apiClient"; // Adjust to where your axios instance is
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toaster from "react-hot-toast";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [password, setPasswoxrd] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     // Validate inputs
-    if (!email || !password) {
+    if (!email) {
       setError("Both email/phone and password are required");
       return;
     }
@@ -25,28 +26,22 @@ export default function LoginPage() {
       setLoading(true);
       setError(null);
 
-      const response = await axios.post(
-        "http://localhost:8000/account/api/token/",
-        {
-          username: email,
-          password: password,
-        },
-      );
+      const response = await axios.post("http://localhost:8000/otp/send/", {
+        username: email,
+      });
+      localStorage.setItem("username", email);
 
       // Assuming you get access token and refresh token in the response
-      console.log(response.data);
-      const { access, refresh } = response.data;
+      // console.log(response.data);
+      // const { access, refresh } = response.data;
 
       // Store tokens in localStorage (or secure storage depending on the use case)
-      localStorage.setItem("accessToken", access);
-      localStorage.setItem("refreshToken", refresh);
-      localStorage.setItem("lastAccessToken", new Date().toISOString());
-      localStorage.setItem("lastRefreshToken", new Date().toISOString());
-      navigate("/");
+      navigate("/login/enter-code/");
 
       // Redirect or do other stuff here, e.g. redirect to dashboard
     } catch (error) {
-      setError("Login failed. Check your credentials and try again.");
+      setError("Invalid email or phone");
+      toaster.error("Invalid email or phone");
       console.error("Login error: ", error);
     } finally {
       setLoading(false);
@@ -106,7 +101,7 @@ export default function LoginPage() {
               placeholder="Enter email or phone number"
             />
           </div>
-          <div>
+          {/* <div>
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -136,8 +131,8 @@ export default function LoginPage() {
                 )}
               </button>
             </div>
-          </div>
-          <div className="flex items-center justify-between">
+          </div> */}
+          {/* <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
                 id="remember-me"
@@ -160,7 +155,7 @@ export default function LoginPage() {
                 Forgot your password?
               </a>
             </div>
-          </div>
+          </div> */}
           <div>
             <button
               type="submit"

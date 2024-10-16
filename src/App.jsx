@@ -14,6 +14,9 @@ import Products from "./pages/Products";
 import Header from "./partials/Header";
 import AddSale from "./pages/AddSale";
 import LoginPage from "./pages/LoginPage";
+import AdminRegistration from "./pages/admin/AdminRegistration";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import EnterOTP from "./pages/EnterOTP";
 
 function App() {
   const location = useLocation();
@@ -47,6 +50,9 @@ function App() {
           <Route exact path="/products/" element={<Products />} />
           <Route exact path="/sales/add/" element={<AddSale />} />
           <Route exact path="/login/" element={<LoginPage />} />
+          <Route exact path="/login/enter-code/" element={<EnterOTP />} />
+          <Route exact path="/register/" element={<AdminRegistration />} />
+          <Route exact path="/admin/" element={<AdminDashboard />} />
         </Routes>
       </div>
     </div>
