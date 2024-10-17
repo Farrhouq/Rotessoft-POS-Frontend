@@ -15,7 +15,9 @@ import Header from "./partials/Header";
 import AddSale from "./pages/AddSale";
 import LoginPage from "./pages/LoginPage";
 import AdminRegistration from "./pages/admin/AdminRegistration";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import DashboardOfDashboards from "./pages/admin/DashboardOfDashboards";
+import MasterDashboard from "./pages/MasterDashboard";
+// import Dashboard from "./pages/Dashboard";
 import EnterOTP from "./pages/EnterOTP";
 import Employee from "./pages/admin/Employee";
 
@@ -41,7 +43,7 @@ function App() {
             exact
             path="/"
             element={
-              <Dashboard
+              <MasterDashboard
                 sidebarOpen={sidebarOpen}
                 setSidebarOpen={setSidebarOpen}
               />
@@ -53,7 +55,7 @@ function App() {
           <Route exact path="/login/" element={<LoginPage />} />
           <Route exact path="/login/enter-code/" element={<EnterOTP />} />
           <Route exact path="/register/" element={<AdminRegistration />} />
-          <Route exact path="/admin/" element={<AdminDashboard />} />
+          <Route exact path="/admin/" element={<DashboardOfDashboards />} />
           <Route exact path="/admin/shop/staff/" element={<Employee />} />
         </Routes>
       </div>

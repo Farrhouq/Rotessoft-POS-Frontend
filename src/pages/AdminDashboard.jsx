@@ -18,6 +18,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [topProducts, setTopProducts] = useState([]);
   const [yesterdayTotal, setYesterdayTotal] = useState(0);
   const navigate = useNavigate();
+  const shopId = localStorage.getItem("shopId");
 
   const formatDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
@@ -42,16 +43,14 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
 
   useEffect(() => {
     const userRole = checkLogin();
-    localStorage.removeItem("products");
-    if (userRole == "admin") {
-      navigate("/admin/");
+    if (userRole != "admin") {
+      navigate("/login/");
     }
-    apiClient.get("dashboard/").then((res) => {
+    apiClient.get(`dashboard/?store=${shopId}`).then((res) => {
       setDashboardData(res.data);
       setTopProducts(res.data.top_products);
       setYesterdayTotal(res.data.daily_sales.slice(-2)[0].total);
       animateNumber(res.data.total_sales_today, setTodayTotal, 1);
-      localStorage.setItem("todayTotal", todayTotal);
       setDailyTarget(res.data.daily_target);
       let weeklyTotal = 0;
       for (let week of res.data.daily_sales) {
@@ -81,7 +80,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
             {/* Left: Title */}
             <div className="mb-4 sm:mb-0">
               <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
-                Dashboard
+                Dashboard (Admin)
               </h1>
             </div>
 
@@ -92,19 +91,6 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
               {/* Datepicker built with flatpickr */}
               {/* <Datepicker align="right" /> */}
               {/* Add view button */}
-              <button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
-                {/* <svg
-                  className="fill-current shrink-0 xs:hidden"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg> */}
-                <Link to="/sales/add/">
-                  <span className="">Add Sale</span>
-                </Link>
-              </button>
             </div>
           </div>
 

@@ -10,7 +10,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   if (pathname.includes("login")) return;
   if (pathname.includes("register")) return;
   const userRole = checkLogin();
-  if (userRole == "admin") return;
+  // if (userRole == "admin") return;
 
   const trigger = useRef(null);
   const sidebar = useRef(null);

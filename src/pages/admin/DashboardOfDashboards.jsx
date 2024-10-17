@@ -6,12 +6,17 @@ import "react-circular-progressbar/dist/styles.css";
 import { Link } from "react-router-dom";
 import { checkLogin } from "../../utils/Utils";
 import apiClient from "../../apiClient";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [shops, setShops] = useState([]);
   const [todayTotal, setTodayTotal] = useState(0);
   const userRole = checkLogin();
-  if (userRole != "admin") return;
+  const navigate = useNavigate();
+
+  if (userRole != "admin") {
+    navigate("/login/");
+  }
 
   useEffect(() => {
     apiClient.get("store/").then((res) => {

@@ -16,3 +16,6 @@ our point of registration.
     - name
     - location
     - daily target (optional, maybe)
+
+product | amount_in_stock | price
+product | amount_in_stock | cost_price | selling_price | profit_per_unit

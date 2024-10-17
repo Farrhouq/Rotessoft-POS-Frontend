@@ -61,12 +61,8 @@ function AddSale() {
     apiClient.post("sale/", { sales }).then((res) => {
       setSales([]);
       setCurrentSale({ product: "", quantity: "", id: "" });
-      let dailyTotals = JSON.parse(localStorage.getItem("dailyTotals"));
-      let todayTotal = dailyTotals.pop();
-      todayTotal += res.data.total;
-      console.log(todayTotal);
-      dailyTotals.push(todayTotal);
-      localStorage.setItem("dailyTotals", JSON.stringify(dailyTotals));
+      let todayTotal = +localStorage.getItem("todayTotal") + res.data.total;
+      localStorage.setItem("todayTotal", todayTotal);
       navigate("/sales/");
       toaster.success("Sale saved");
     });
@@ -74,7 +70,7 @@ function AddSale() {
 
   const totalPrice = sales.reduce((sum, sale) => {
     const product = products.find((p) => p.name === sale.product);
-    return sum + (product ? product.price * sale.quantity : 0);
+    return sum + (product ? product.selling_price * sale.quantity : 0);
   }, 0);
 
   return (
@@ -149,7 +145,7 @@ function AddSale() {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {sales.map((sale) => {
                 const product = products.find((p) => p.name === sale.product);
-                const price = product ? product.price : 0;
+                const price = product ? product.selling_price : 0;
                 const total = price * sale.quantity;
                 return (
                   <tr key={sale.id}>

@@ -4,7 +4,7 @@ import AddProductModal from "../../components/AddProductModal";
 import RestockModal from "../../components/RestockModal";
 import { useState } from "react";
 
-function Inventory({ products, setProducts }) {
+function Inventory({ userRole, products, setProducts }) {
   const [addProductModalOpen, setAddProductModalOpen] = useState(false);
   const [restockModalOpen, setRestockModalOpen] = useState(false);
 
@@ -14,42 +14,44 @@ function Inventory({ products, setProducts }) {
         <div className="flex justify-between flex-col gap-2 md:flex-row">
           <h1 className="text-3xl font-bold">Products</h1>
           {/* button group */}
-          {/* <div className="flex gap-2">
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                setRestockModalOpen(!restockModalOpen);
-              }}
-            >
-              <button className="btn h-fit bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:text-gray-800 dark:hover:bg-green-600">
-                <span className="">Restock</span>
-              </button>
+          {userRole == "admin" && (
+            <div className="flex gap-2">
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setRestockModalOpen(!restockModalOpen);
+                }}
+              >
+                <button className="btn h-fit bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:text-gray-800 dark:hover:bg-green-600">
+                  <span className="">Restock</span>
+                </button>
+              </div>
+              <div
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAddProductModalOpen(!addProductModalOpen);
+                }}
+              >
+                <button className="btn h-fit bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
+                  <span className="">Add Product</span>
+                </button>
+              </div>
+              <AddProductModal
+                id="search-modal"
+                searchId="search"
+                modalOpen={addProductModalOpen}
+                setModalOpen={setAddProductModalOpen}
+                products={products}
+                setProducts={setProducts}
+              />
+              <RestockModal
+                id="search-modal"
+                searchId="search"
+                modalOpen={restockModalOpen}
+                setModalOpen={setRestockModalOpen}
+              />
             </div>
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                setAddProductModalOpen(!addProductModalOpen);
-              }}
-            >
-              <button className="btn h-fit bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
-                <span className="">Add Product</span>
-              </button>
-            </div>
-            <AddProductModal
-              id="search-modal"
-              searchId="search"
-              modalOpen={addProductModalOpen}
-              setModalOpen={setAddProductModalOpen}
-              products={products}
-              setProducts={setProducts}
-            />
-            <RestockModal
-              id="search-modal"
-              searchId="search"
-              modalOpen={restockModalOpen}
-              setModalOpen={setRestockModalOpen}
-            />
-          </div> */}
+          )}
         </div>
       </header>
       <div className="p-3">
@@ -67,12 +69,29 @@ function Inventory({ products, setProducts }) {
                     Amount in stock
                   </div>
                 </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">Price</div>
-                </th>
-                <th className="p-2">
-                  <div className="font-semibold text-center">Total</div>
-                </th>
+                {userRole == "staff" ? (
+                  <th className="p-2">
+                    <div className="font-semibold text-center">Price</div>
+                  </th>
+                ) : (
+                  <>
+                    <th className="p-2">
+                      <div className="font-semibold text-center">
+                        Cost price
+                      </div>
+                    </th>
+                    <th className="p-2">
+                      <div className="font-semibold text-center">
+                        Selling price
+                      </div>
+                    </th>
+                    <th className="p-2">
+                      <div className="font-semibold text-center">
+                        Profit per unit
+                      </div>
+                    </th>
+                  </>
+                )}
               </tr>
             </thead>
             {/* Table body */}
@@ -81,18 +100,6 @@ function Inventory({ products, setProducts }) {
                 <tr key={product.id}>
                   <td className="p-2">
                     <div className="flex items-center">
-                      {/* <svg
-                        className="shrink-0 mr-2 sm:mr-3"
-                        width="36"
-                        height="36"
-                        viewBox="0 0 36 36"
-                      >
-                        <circle fill="#24292E" cx="18" cy="18" r="18" />
-                        <path
-                          d="M18 10.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V24c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z"
-                          fill="#FFF"
-                        />
-                      </svg> */}
                       <svg
                         className="shrink-0 mr-2 sm:mr-3 w-4 fill-current text-violet-500 dark:text-gray-500"
                         xmlns="http://www.w3.org/2000/svg"
@@ -108,14 +115,34 @@ function Inventory({ products, setProducts }) {
                   <td className="p-2">
                     <div className="text-center">{product.amount_in_stock}</div>
                   </td>
-                  <td className="p-2">
-                    <div className="text-center text-green-500">
-                      ₵{product.price}
-                    </div>
-                  </td>
-                  <td className="p-2">
-                    <div className="text-center">267</div>
-                  </td>
+                  {userRole == "staff" ? (
+                    <td className="p-2">
+                      <div className="text-center text-green-500">
+                        ₵{product.selling_price}
+                      </div>
+                    </td>
+                  ) : (
+                    <>
+                      <td className="p-2">
+                        <div className="text-center text-green-500">
+                          ₵{product.selling_price}
+                        </div>
+                      </td>
+                      <td className="p-2">
+                        <div className="text-center text-green-500">
+                          ₵{product.cost_price}
+                        </div>
+                      </td>
+                      <td className="p-2">
+                        <div className="text-center text-green-500">
+                          ₵
+                          {(product.selling_price - product.cost_price).toFixed(
+                            2,
+                          )}
+                        </div>
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>

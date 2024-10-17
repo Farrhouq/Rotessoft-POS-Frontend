@@ -1,13 +1,15 @@
 import React, { useRef, useEffect, useState } from "react";
 import Transition from "../utils/Transition";
 import api from "../apiClient";
+import toaster from "react-hot-toast";
 
 function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
   const modalContent = useRef(null);
 
   // State to store form data
   const [productName, setProductName] = useState("");
-  const [price, setPrice] = useState("");
+  const [sellingPrice, setSellingPrice] = useState("");
+  const [costPrice, setCostPrice] = useState("");
   const [amountInStock, setAmountInStock] = useState(1);
 
   // Handle form submission
@@ -17,19 +19,28 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
     // Payload to send in the POST request
     const productData = {
       name: productName,
-      price: price,
+      selling_price: sellingPrice,
+      cost_price: costPrice,
       amount_in_stock: amountInStock,
     };
 
     // Make API call to add product
     api
-      .post("product/", productData)
+      .post("product/", {
+        ...productData,
+        store: localStorage.getItem("shopId"),
+      })
       .then((res) => {
         console.log(res.data);
         // Close the modal after successful submission
         setModalOpen(false);
         // Update the products list
         setProducts([...products, res.data]);
+        toaster.success("Product added successfully!");
+        setProductName("");
+        setSellingPrice("");
+        setCostPrice("");
+        setAmountInStock(1);
       })
       .catch((err) => {
         console.error(err);
@@ -101,13 +112,24 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
               </div>
 
               <div className="col-span-6">
-                <label>Price</label>
+                <label>Selling price</label>
                 <input
                   type="number"
                   className="bg-gray-50 h-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter price..."
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)} // Update state
+                  placeholder="Enter selling price..."
+                  value={sellingPrice}
+                  onChange={(e) => setSellingPrice(e.target.value)} // Update state
+                  required
+                />
+              </div>
+              <div className="col-span-6">
+                <label>Cost price</label>
+                <input
+                  type="number"
+                  className="bg-gray-50 h-fit border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Enter cost price..."
+                  value={costPrice}
+                  onChange={(e) => setCostPrice(e.target.value)} // Update state
                   required
                 />
               </div>
@@ -123,21 +145,22 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
                   required
                 />
               </div>
+              <div className="col-span-12 flex gap-2">
+                <button
+                  type="submit"
+                  className="text-white w-fit bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Submit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="text-white dark:text-white w-fit bg-red-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center hover:bg-red-700 dark:focus:ring-blue-800"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
-
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Submit
-            </button>
-            <button
-              type="button"
-              onClick={() => setModalOpen(false)}
-              className="text-white dark:text-white ml-3 bg-red-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center hover:bg-red-700 dark:focus:ring-blue-800"
-            >
-              Cancel
-            </button>
           </form>
         </div>
       </Transition>
