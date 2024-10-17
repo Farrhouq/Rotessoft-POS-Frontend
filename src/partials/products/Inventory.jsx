@@ -37,18 +37,16 @@ function Inventory({ userRole, products, setProducts }) {
                 </button>
               </div>
               <AddProductModal
-                id="search-modal"
-                searchId="search"
                 modalOpen={addProductModalOpen}
                 setModalOpen={setAddProductModalOpen}
                 products={products}
                 setProducts={setProducts}
               />
               <RestockModal
-                id="search-modal"
-                searchId="search"
                 modalOpen={restockModalOpen}
                 setModalOpen={setRestockModalOpen}
+                products={products}
+                setProducts={setProducts}
               />
             </div>
           )}

@@ -46,6 +46,9 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     if (userRole != "admin") {
       navigate("/login/");
     }
+    if (shopId == null) {
+      navigate("/admin/");
+    }
     apiClient.get(`dashboard/?store=${shopId}`).then((res) => {
       setDashboardData(res.data);
       setTopProducts(res.data.top_products);

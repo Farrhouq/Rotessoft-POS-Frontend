@@ -3,6 +3,7 @@ import apiClient from "../apiClient";
 import toaster from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { checkLogin } from "../utils/Utils";
 
 export default function Component() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -64,7 +65,12 @@ export default function Component() {
           localStorage.setItem("lastAccessToken", new Date().toISOString());
           localStorage.setItem("lastRefreshToken", new Date().toISOString());
           toaster.success(res.data.message);
-          navigate("/");
+          let userRole = checkLogin();
+          if (userRole == "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
         });
     } else {
       console.log("Please enter a valid 6-digit OTP");
