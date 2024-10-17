@@ -47,10 +47,9 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
       (product) => product.id === selectedProduct.id,
     );
     api
-      .put(
+      .patch(
         `/product/${selectedProduct.id}/?store=${localStorage.getItem("shopId")}`,
         {
-          ...product,
           amount_in_stock: product.amount_in_stock + +restockQty,
         },
       )

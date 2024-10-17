@@ -45,7 +45,6 @@ function AddSale() {
   };
 
   const addSale = () => {
-    console.log(currentSale);
     if (currentSale.product && currentSale.quantity) {
       setSales((prev) => [...prev, currentSale]);
       setCurrentSale({ product: "", quantity: "", id: "" });

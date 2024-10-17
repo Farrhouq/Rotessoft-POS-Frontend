@@ -17,9 +17,9 @@ import LoginPage from "./pages/LoginPage";
 import AdminRegistration from "./pages/admin/AdminRegistration";
 import DashboardOfDashboards from "./pages/admin/DashboardOfDashboards";
 import MasterDashboard from "./pages/MasterDashboard";
-// import Dashboard from "./pages/Dashboard";
 import EnterOTP from "./pages/EnterOTP";
 import Employee from "./pages/admin/Employee";
+import EditProductForm from "./pages/admin/EditProduct";
 
 function App() {
   const location = useLocation();
@@ -57,6 +57,11 @@ function App() {
           <Route exact path="/register/" element={<AdminRegistration />} />
           <Route exact path="/admin/" element={<DashboardOfDashboards />} />
           <Route exact path="/admin/shop/staff/" element={<Employee />} />
+          <Route
+            exact
+            path="/admin/shop/edit-product/"
+            element={<EditProductForm />}
+          />
         </Routes>
       </div>
     </div>

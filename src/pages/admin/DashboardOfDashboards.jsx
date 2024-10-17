@@ -14,11 +14,10 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const userRole = checkLogin();
   const navigate = useNavigate();
 
-  if (userRole != "admin") {
-    navigate("/login/");
-  }
-
   useEffect(() => {
+    if (userRole != "admin") {
+      navigate("/");
+    }
     apiClient.get("store/").then((res) => {
       setShops(res.data);
       setTodayTotal(res.data.reduce((acc, shop) => acc + shop.today_total, 0));

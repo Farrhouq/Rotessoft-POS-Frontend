@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import AddProductModal from "../../components/AddProductModal";
 import RestockModal from "../../components/RestockModal";
 import { useState } from "react";
@@ -22,7 +22,7 @@ function Inventory({ userRole, products, setProducts }) {
                   setRestockModalOpen(!restockModalOpen);
                 }}
               >
-                <button className="btn h-fit bg-green-500 text-white hover:bg-green-600 dark:bg-green-500 dark:text-gray-800 dark:hover:bg-green-600">
+                <button className="btn h-fit bg-green-500 hover:bg-green-600 text-white dark:bg-green-600 dark:hover:bg-green-700">
                   <span className="">Restock</span>
                 </button>
               </div>
@@ -32,10 +32,15 @@ function Inventory({ userRole, products, setProducts }) {
                   setAddProductModalOpen(!addProductModalOpen);
                 }}
               >
-                <button className="btn h-fit bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
+                <button className="btn h-fit bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200">
                   <span className="">Add Product</span>
                 </button>
               </div>
+              <NavLink to="/admin/shop/edit-product/">
+                <button className="btn h-fit bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-200">
+                  <span className="">Edit Product</span>
+                </button>
+              </NavLink>
               <AddProductModal
                 modalOpen={addProductModalOpen}
                 setModalOpen={setAddProductModalOpen}
@@ -122,13 +127,13 @@ function Inventory({ userRole, products, setProducts }) {
                   ) : (
                     <>
                       <td className="p-2">
-                        <div className="text-center text-green-500">
-                          ₵{product.selling_price}
+                        <div className="text-center text-red-500">
+                          ₵{product.cost_price}
                         </div>
                       </td>
                       <td className="p-2">
                         <div className="text-center text-green-500">
-                          ₵{product.cost_price}
+                          ₵{product.selling_price}
                         </div>
                       </td>
                       <td className="p-2">

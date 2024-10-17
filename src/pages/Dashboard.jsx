@@ -51,7 +51,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
       setTopProducts(res.data.top_products);
       setYesterdayTotal(res.data.daily_sales.slice(-2)[0].total);
       animateNumber(res.data.total_sales_today, setTodayTotal, 1);
-      localStorage.setItem("todayTotal", todayTotal);
+      localStorage.setItem("todayTotal", res.data.total_sales_today);
       setDailyTarget(res.data.daily_target);
       let weeklyTotal = 0;
       for (let week of res.data.daily_sales) {

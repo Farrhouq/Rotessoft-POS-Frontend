@@ -10,7 +10,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   if (pathname.includes("login")) return;
   if (pathname.includes("register")) return;
   const userRole = checkLogin();
-  // if (userRole == "admin") return;
+  if (pathname == "/admin/") return;
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
@@ -124,6 +124,40 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               </span>
             </h3>
             <ul className="mt-3">
+              {/* Back to Main Dashboard */}
+              {userRole == "admin" && (
+                <li
+                  className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname == "/admin/" && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}
+                >
+                  <NavLink
+                    onClick={() => {
+                      setSidebarOpen(false);
+                      localStorage.removeItem("shopId");
+                    }}
+                    end
+                    to="/admin/"
+                    className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
+                      pathname == "/admin/"
+                        ? ""
+                        : "hover:text-gray-900 dark:hover:text-white"
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <svg
+                        className={`w-4 shrink-0 fill-current ${pathname == "/admin/" ? "text-violet-500" : "text-gray-400 dark:text-gray-500"}`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                      >
+                        <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                      </svg>
+                      <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Back to main dashboard
+                      </span>
+                    </div>
+                  </NavLink>
+                </li>
+              )}
+
               {/* Dashboard */}
               <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-[linear-gradient(135deg,var(--tw-gradient-stops))] ${pathname == "/" && "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"}`}

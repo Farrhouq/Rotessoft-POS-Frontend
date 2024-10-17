@@ -48,6 +48,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     }
     if (shopId == null) {
       navigate("/admin/");
+      return;
     }
     apiClient.get(`dashboard/?store=${shopId}`).then((res) => {
       setDashboardData(res.data);
