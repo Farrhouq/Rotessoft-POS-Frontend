@@ -36,6 +36,10 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
         setModalOpen(false);
         // Update the products list
         setProducts([...products, res.data]);
+        localStorage.setItem(
+          "products",
+          JSON.stringify([...products, res.data]),
+        );
         toaster.success("Product added successfully!");
         setProductName("");
         setSellingPrice("");

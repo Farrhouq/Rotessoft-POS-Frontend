@@ -95,6 +95,26 @@ const EditProductForm = () => {
     setSelectedProduct({ id: value, label });
   };
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    let confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?",
+    );
+    if (confirmDelete) {
+      apiClient
+        .delete(`product/${selectedProduct.id}/?store=${shopId}`)
+        .then((res) => {
+          toaster.success("Product deleted successfully!");
+          products.splice(
+            products.findIndex((p) => p.id === selectedProduct.id),
+            1,
+          );
+          localStorage.setItem("products", JSON.stringify(products));
+          navigate("/products/");
+        });
+    }
+  };
+
   return (
     <div className="flex-1 p-8 min-h-screen">
       <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">
@@ -214,12 +234,15 @@ const EditProductForm = () => {
           >
             Update Product
           </button>
-          <button
-            type="submit"
-            className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:bg-red-700 dark:hover:bg-red-800"
-          >
-            Delete
-          </button>
+          {selectedProduct.id && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 dark:bg-red-700 dark:hover:bg-red-800"
+            >
+              Delete
+            </button>
+          )}
         </div>
       </form>
     </div>
