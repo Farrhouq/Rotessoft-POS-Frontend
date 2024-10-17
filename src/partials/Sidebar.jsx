@@ -133,6 +133,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                     onClick={() => {
                       setSidebarOpen(false);
                       localStorage.removeItem("shopId");
+                      localStorage.removeItem("products");
                     }}
                     end
                     to="/admin/"

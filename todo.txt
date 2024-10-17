@@ -1,7 +1,7 @@
 --done--
 * back to dashboardofdashboads button on adminDashboard
+* edit product
+* delete product (might be in the same place as edit)
+* refresh products button
 
-refresh products button
 offline system for making things faster
-edit product
-delete product (might be in the same place as edit)

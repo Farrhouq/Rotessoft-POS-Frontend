@@ -92,7 +92,7 @@ function ShopCard({
           </div>
         </div>
 
-        <div className="text-xs font-semibold text-gray-400 mt-5 dark:text-gray-500 uppercase mb-1">
+        <div className="text-xs font-semibold text-gray-400 mt-10 dark:text-gray-500 uppercase mb-1">
           Stats
         </div>
         <div className="flex flex-col items-start">
