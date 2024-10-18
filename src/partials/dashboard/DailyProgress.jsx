@@ -52,12 +52,14 @@ function DailyProgress({ today, yesterday, dailyTarget }) {
           <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
             ₵{today}.00
           </div>
-          <div
-            className={`text-sm font-medium ${increasePercentage > 0 ? `text-green-700 bg-green-500/20` : `text-red-700 bg-red-500/20`}  px-1.5 rounded-full`}
-          >
-            {`${increasePercentage > 0 ? `+` : ``}`}
-            {increasePercentage.toFixed()}%
-          </div>
+          {!!increasePercentage && yesterday != 0 && (
+            <div
+              className={`text-sm font-medium ${increasePercentage > 0 ? `text-green-700 bg-green-500/20` : `text-red-700 bg-red-500/20`}  px-1.5 rounded-full`}
+            >
+              {`${increasePercentage > 0 ? `+` : ``}`}
+              {increasePercentage.toFixed()}%
+            </div>
+          )}
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}

@@ -14,8 +14,8 @@ export default function Component() {
   const staffId = localStorage.getItem("staffId");
   const shopId = localStorage.getItem("shopId");
   const method = staffId == "null" ? "post" : "put";
-  console.log(staffId);
-  console.log(method);
+  // console.log(staffId);
+  // console.log(method);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -45,7 +45,7 @@ export default function Component() {
       try {
         const response = await apiClient.get(`/account/staff/${staffId}/`);
         const data = response.data;
-        console.log(data);
+        // console.log(data);
         setFormData({
           firstName: data.user.first_name,
           lastName: data.user.last_name,
@@ -89,7 +89,7 @@ export default function Component() {
           store: shopId,
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           navigate("/admin/");
           localStorage.removeItem("staffId");
           toaster.success("Employee saved!");
@@ -111,7 +111,7 @@ export default function Component() {
           store: shopId,
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           navigate("/admin/");
           localStorage.removeItem("staffId");
           toaster.success("Employee saved!");

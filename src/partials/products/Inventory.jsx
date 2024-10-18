@@ -156,7 +156,15 @@ function Inventory({ userRole, products, setProducts }) {
                     </div>
                   </td>
                   <td className="p-2">
-                    <div className="text-center">{product.amount_in_stock}</div>
+                    <div
+                      className={`text-center font-bold
+                      ${product.amount_in_stock < 5 && product.amount_in_stock > 0 && `text-yellow-500`}
+                      ${product.amount_in_stock == 0 && `text-red-500`}
+                      ${product.amount_in_stock >= 5 && `text-green-500`}
+                      `}
+                    >
+                      {product.amount_in_stock}
+                    </div>
                   </td>
                   {userRole == "staff" ? (
                     <td className="p-2">

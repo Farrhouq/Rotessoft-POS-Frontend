@@ -52,8 +52,6 @@ export default function Component() {
     e.preventDefault();
     const otpValue = otp.join("");
     if (otpValue.length === 6) {
-      console.log("Submitted OTP:", otpValue);
-      // Here you would typically verify the OTP with your backend
       axios
         .post("http://localhost:8000/otp/verify/", {
           username: localStorage.getItem("username"),
@@ -73,7 +71,7 @@ export default function Component() {
           }
         });
     } else {
-      console.log("Please enter a valid 6-digit OTP");
+      toaster.error("Please enter a valid 6-digit OTP");
     }
   };
 

@@ -78,7 +78,7 @@ function Header({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 setModalOpen={setSearchModalOpen}
               /> */}
             </div>
-            {/* <Notifications align="right" /> */}
+            <Notifications align="right" />
             {/* <Help align="right" /> */}
             <ThemeToggle />
             {/*  Divider */}

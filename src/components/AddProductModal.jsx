@@ -31,7 +31,7 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
         store: localStorage.getItem("shopId"),
       })
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         // Close the modal after successful submission
         setModalOpen(false);
         // Update the products list

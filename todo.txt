@@ -6,6 +6,7 @@
 * append 0's at on the graph for a good look.
 
 offline system for making things faster
+alert for when products are finishing
 
 -- plan --
 so, for products,

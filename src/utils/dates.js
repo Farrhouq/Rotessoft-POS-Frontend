@@ -14,6 +14,7 @@ export function formatDate(date) {
 
 // Function to subtract days from a given date
 export function subtractDays(dateString, days) {
+  if (!dateString) dateString = formatDate(new Date());
   const [mm, dd, yyyy] = dateString.split("-").map(Number);
   const date = new Date(yyyy, mm - 1, dd);
   date.setDate(date.getDate() - days);

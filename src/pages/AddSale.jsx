@@ -27,7 +27,7 @@ function AddSale() {
 
   const handleInputChange = (e) => {
     const { value, label } = e;
-    console.log(e);
+    // console.log(e);
     setCurrentSale({
       product: label,
       quantity: currentSale.quantity,
@@ -51,20 +51,39 @@ function AddSale() {
     }
   };
 
+  const updateStock = (id, toSubtract) => {
+    // Update the products state
+    const newProducts = products.map((product) =>
+      product.id === id
+        ? { ...product, amount_in_stock: product.amount_in_stock - toSubtract }
+        : product,
+    );
+    setProducts(newProducts);
+    localStorage.setItem("products", JSON.stringify(newProducts));
+  };
+
   const deleteSale = (id) => {
     setSales((prev) => prev.filter((sale) => sale.id !== id));
   };
 
   const saveSales = () => {
     if (!sales.length) return;
-    apiClient.post("sale/", { sales }).then((res) => {
-      setSales([]);
-      setCurrentSale({ product: "", quantity: "", id: "" });
-      let todayTotal = +localStorage.getItem("todayTotal") + res.data.total;
-      localStorage.setItem("todayTotal", todayTotal);
-      navigate("/sales/");
-      toaster.success("Sale saved");
-    });
+    apiClient
+      .post("sale/", { sales })
+      .then((res) => {
+        setCurrentSale({ product: "", quantity: "", id: "" });
+        let todayTotal = +localStorage.getItem("todayTotal") + res.data.total;
+        localStorage.setItem("todayTotal", todayTotal);
+        for (let sale of sales) {
+          updateStock(sale.id, sale.quantity);
+        }
+        navigate("/sales/");
+        setSales([]);
+        toaster.success("Sale saved");
+      })
+      .catch((res) => {
+        toaster.error(res.response.data[0]);
+      });
   };
 
   const totalPrice = sales.reduce((sum, sale) => {

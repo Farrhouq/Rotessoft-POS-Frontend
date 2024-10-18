@@ -74,7 +74,6 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   };
 
   useEffect(() => {
-    console.log("running");
     const userRole = checkLogin();
     if (userRole != "admin") {
       navigate("/login/");
