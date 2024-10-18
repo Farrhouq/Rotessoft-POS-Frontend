@@ -22,7 +22,8 @@ const Sales = () => {
   }, []);
 
   const dailyTarget = localStorage.getItem("dailyTarget");
-  const today = localStorage.getItem("todayTotal");
+  const today = localStorage.getItem("todayTotal") || 0;
+  if (!today) localStorage.setItem("todayTotal", 0);
   const percentProgress = (today / dailyTarget) * 100;
 
   return (

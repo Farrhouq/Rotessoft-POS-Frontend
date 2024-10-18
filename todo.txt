@@ -3,5 +3,9 @@
 * edit product
 * delete product (might be in the same place as edit)
 * refresh products button
+* append 0's at on the graph for a good look.
 
 offline system for making things faster
+
+-- plan --
+so, for products,

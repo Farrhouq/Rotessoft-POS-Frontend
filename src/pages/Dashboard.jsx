@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { checkLogin } from "../utils/Utils";
 import apiClient from "../apiClient";
 import { useNavigate } from "react-router-dom";
+import { fillBackwardDates, formatDateLabels } from "../utils/dates";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [dashboardData, setDashboardData] = useState({});
@@ -18,11 +19,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [topProducts, setTopProducts] = useState([]);
   const [yesterdayTotal, setYesterdayTotal] = useState(0);
   const navigate = useNavigate();
-
-  const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split("-");
-    return `${month}-${day}-${year}`; // return 'dd-mm-yyyy'
-  };
+  // const [reloadVar, setReloadVar] = useState(false); // I'll be alternating this when you click on refresh so that useEffect will run again, reloading the data.
 
   function animateNumber(target, setValue, duration) {
     const start = 0; // Starting number
@@ -40,12 +37,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     }, incrementTime + 70);
   }
 
-  useEffect(() => {
-    const userRole = checkLogin();
-    localStorage.removeItem("products");
-    if (userRole == "admin") {
-      navigate("/admin/");
-    }
+  const loadDashboardData = () => {
     apiClient.get("dashboard/").then((res) => {
       setDashboardData(res.data);
       setTopProducts(res.data.top_products);
@@ -58,18 +50,28 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
         weeklyTotal += week.total;
       }
       setWeeklyTotal(weeklyTotal);
-      localStorage.setItem(
-        "dailyTotals",
-        JSON.stringify(res.data.daily_sales.map((week) => week.total)),
+      let daily_totals = res.data.daily_sales.map((week) => week.total);
+      let week_labels = res.data.daily_sales.map((week) =>
+        formatDateLabels(week.sale__created_at__date),
       );
+      daily_totals = Array(7 - daily_totals.length)
+        .fill(0)
+        .concat(daily_totals);
+      week_labels = fillBackwardDates(week_labels);
+      localStorage.setItem("dailyTotals", daily_totals);
       localStorage.setItem("dailyTarget", res.data.daily_target);
-      setDateLabels(
-        res.data.daily_sales.map((week) =>
-          formatDate(week.sale__created_at__date),
-        ),
-      );
-      setDailyTotals(res.data.daily_sales.map((week) => week.total));
+      setDateLabels(week_labels);
+      setDailyTotals(daily_totals);
     });
+  };
+
+  useEffect(() => {
+    const userRole = checkLogin();
+    localStorage.removeItem("products");
+    if (userRole == "admin") {
+      navigate("/admin/");
+    }
+    loadDashboardData();
   }, []);
 
   return (
