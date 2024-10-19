@@ -50,7 +50,7 @@ function DailyProgress({ today, yesterday, dailyTarget }) {
         </div>
         <div className="flex items-start">
           <div className="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
-            ₵{today}.00
+            ₵{today.toFixed(2)}
           </div>
           {!!increasePercentage && yesterday != 0 && (
             <div
@@ -73,8 +73,8 @@ function DailyProgress({ today, yesterday, dailyTarget }) {
               pathColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.violet[500])}, 1)`,
               trailColor: `rgba(${hexToRGB(tailwindConfig().theme.colors.gray[600])}, 0.1)`,
             })}
-            value={(today * 100) / dailyTarget}
-            text={`${(today * 100) / dailyTarget}%`}
+            value={((today * 100) / dailyTarget).toFixed()}
+            text={`${((today * 100) / dailyTarget).toFixed()}%`}
             strokeWidth={15}
           />
         </div>

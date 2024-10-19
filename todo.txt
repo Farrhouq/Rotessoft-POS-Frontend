@@ -4,9 +4,16 @@
 * delete product (might be in the same place as edit)
 * refresh products button
 * append 0's at on the graph for a good look.
+** alert for when products are finishing
 
 offline system for making things faster
-alert for when products are finishing
+add shop
+requestQueue.js: line 124
 
 -- plan --
-so, for products,
+so, for products, we're kinda sorted.
+it's updated in the frontend. I'll just use the indexeddb to queue the request.
+then I'll have another code for sending those requests, or queuing them.
+
+Now, for the sales...
+I'll do something similar.

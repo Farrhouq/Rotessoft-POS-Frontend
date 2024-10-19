@@ -8,6 +8,7 @@ import { checkLogin } from "../utils/Utils";
 import apiClient from "../apiClient";
 import { useNavigate } from "react-router-dom";
 import { fillBackwardDates, formatDateLabels } from "../utils/dates";
+import toaster from "react-hot-toast";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [dashboardData, setDashboardData] = useState({});
@@ -37,39 +38,51 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     }, incrementTime + 70);
   }
 
+  const useDashboardData = (data) => {
+    setTopProducts(data.top_products);
+    setYesterdayTotal(
+      data.length > 2 ? data.daily_sales.slice(-2)[0].total : 0,
+    );
+    animateNumber(data.total_sales_today, setTodayTotal, 1);
+    localStorage.setItem("todayTotal", data.total_sales_today);
+    setDailyTarget(data.daily_target);
+    let weeklyTotal = 0;
+    for (let week of data.daily_sales) {
+      weeklyTotal += week.total;
+    }
+    setWeeklyTotal(weeklyTotal);
+    let daily_totals = data.daily_sales.map((week) => week.total);
+    let week_labels = data.daily_sales.map((week) =>
+      formatDateLabels(week.sale__created_at__date),
+    );
+    daily_totals = Array(7 - daily_totals.length)
+      .fill(0)
+      .concat(daily_totals);
+    week_labels = fillBackwardDates(week_labels);
+    localStorage.setItem("dailyTotals", daily_totals);
+    localStorage.setItem("dailyTarget", data.daily_target);
+    setDateLabels(week_labels);
+    setDailyTotals(daily_totals);
+  };
+
   const loadDashboardData = () => {
-    apiClient.get("dashboard/").then((res) => {
-      setDashboardData(res.data);
-      setTopProducts(res.data.top_products);
-      setYesterdayTotal(
-        res.data.length > 2 ? res.data.daily_sales.slice(-2)[0].total : 0,
-      );
-      animateNumber(res.data.total_sales_today, setTodayTotal, 1);
-      localStorage.setItem("todayTotal", res.data.total_sales_today);
-      setDailyTarget(res.data.daily_target);
-      let weeklyTotal = 0;
-      for (let week of res.data.daily_sales) {
-        weeklyTotal += week.total;
-      }
-      setWeeklyTotal(weeklyTotal);
-      let daily_totals = res.data.daily_sales.map((week) => week.total);
-      let week_labels = res.data.daily_sales.map((week) =>
-        formatDateLabels(week.sale__created_at__date),
-      );
-      daily_totals = Array(7 - daily_totals.length)
-        .fill(0)
-        .concat(daily_totals);
-      week_labels = fillBackwardDates(week_labels);
-      localStorage.setItem("dailyTotals", daily_totals);
-      localStorage.setItem("dailyTarget", res.data.daily_target);
-      setDateLabels(week_labels);
-      setDailyTotals(daily_totals);
-    });
+    apiClient
+      .get("dashboard/")
+      .then((res) => {
+        setDashboardData(res.data);
+        localStorage.setItem("dashboardData", JSON.stringify(res.data));
+        useDashboardData(res.data);
+      })
+      .catch((res) => {
+        if (res.code == "ERR_NETWORK") toaster.error("You're offline");
+        let dashboardData = JSON.parse(localStorage.getItem("dashboardData"));
+        useDashboardData(dashboardData);
+      });
   };
 
   useEffect(() => {
     const userRole = checkLogin();
-    localStorage.removeItem("products");
+    // localStorage.removeItem("products");
     if (userRole == "admin") {
       navigate("/admin/");
     }

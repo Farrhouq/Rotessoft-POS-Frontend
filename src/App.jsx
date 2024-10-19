@@ -20,12 +20,17 @@ import MasterDashboard from "./pages/MasterDashboard";
 import EnterOTP from "./pages/EnterOTP";
 import Employee from "./pages/admin/Employee";
 import EditProductForm from "./pages/admin/EditProduct";
+import { processQueue } from "./utils/requestQueue";
 
 function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
+    window.addEventListener("online", () => {
+      processQueue();
+    });
+
     document.querySelector("html").style.scrollBehavior = "auto";
     window.scroll({ top: 0 });
     document.querySelector("html").style.scrollBehavior = "";

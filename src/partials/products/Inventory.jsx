@@ -5,38 +5,15 @@ import RestockModal from "../../components/RestockModal";
 import { useState } from "react";
 import apiClient from "../../apiClient";
 
-function Inventory({ userRole, products, setProducts }) {
+function Inventory({
+  userRole,
+  products,
+  setProducts,
+  refreshProducts,
+  loading,
+}) {
   const [addProductModalOpen, setAddProductModalOpen] = useState(false);
   const [restockModalOpen, setRestockModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const refreshProducts = () => {
-    // setProducts([]);
-    localStorage.removeItem("products");
-    setLoading(true);
-    if (userRole == "admin")
-      apiClient
-        .get(`product/?store=${localStorage.getItem("shopId")}`)
-        .then((res) => {
-          setProducts(res.data);
-          localStorage.setItem("products", JSON.stringify(res.data));
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
-    else
-      apiClient
-        .get(`product/`)
-        .then((res) => {
-          setProducts(res.data);
-          localStorage.setItem("products", JSON.stringify(res.data));
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
-  };
 
   return (
     <div className="w-full bg-white dark:bg-gray-800 shadow-sm rounded-xl">

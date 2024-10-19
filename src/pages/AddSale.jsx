@@ -3,6 +3,7 @@ import Select from "react-select";
 import apiClient from "../apiClient";
 import toaster from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { addRequestToQueue, processQueue } from "../utils/requestQueue";
 
 function AddSale() {
   const navigate = useNavigate();
@@ -52,39 +53,101 @@ function AddSale() {
   };
 
   const updateStock = (id, toSubtract) => {
+    console.log("updating stock...");
     // Update the products state
-    const newProducts = products.map((product) =>
+    let localProducts = JSON.parse(localStorage.getItem("products"));
+    let product = localProducts.find((product) => product.id === id);
+    console.log(product, "product_found...");
+    if (product.amount_in_stock < toSubtract) {
+      toaster.error(`Not enough stock for product ${product.name}`);
+      return null;
+    }
+    const newProducts = localProducts.map((product) =>
       product.id === id
         ? { ...product, amount_in_stock: product.amount_in_stock - toSubtract }
         : product,
     );
-    setProducts(newProducts);
     localStorage.setItem("products", JSON.stringify(newProducts));
+    return newProducts;
   };
 
   const deleteSale = (id) => {
     setSales((prev) => prev.filter((sale) => sale.id !== id));
   };
 
+  const calculateTotal = () => {
+    let total = 0;
+    for (let sale of sales) {
+      const product = products.find((p) => p.id === sale.id);
+      total += product.selling_price * sale.quantity;
+    }
+    return total;
+  };
+
   const saveSales = () => {
     if (!sales.length) return;
-    apiClient
-      .post("sale/", { sales })
-      .then((res) => {
-        setCurrentSale({ product: "", quantity: "", id: "" });
-        let todayTotal = +localStorage.getItem("todayTotal") + res.data.total;
-        localStorage.setItem("todayTotal", todayTotal);
-        for (let sale of sales) {
-          updateStock(sale.id, sale.quantity);
-        }
-        navigate("/sales/");
-        setSales([]);
-        toaster.success("Sale saved");
-      })
-      .catch((res) => {
-        toaster.error(res.response.data[0]);
-      });
+    setCurrentSale({ product: "", quantity: "", id: "" });
+    let todayTotal = +localStorage.getItem("todayTotal") + calculateTotal();
+    localStorage.setItem("todayTotal", todayTotal);
+    let error = false;
+    let newProducts;
+    let oldProducts = JSON.parse(localStorage.getItem("products"));
+    for (let sale of sales) {
+      newProducts = updateStock(sale.id, sale.quantity);
+      if (!newProducts) {
+        error = true;
+        break;
+      }
+    }
+    if (error) {
+      localStorage.setItem("products", JSON.stringify(oldProducts));
+      return;
+    }
+    navigate("/sales/");
+    setSales([]);
+    toaster.success("Sale saved");
+
+    // apiClient
+    // .post("sale/", { sales })
+    // // .then((res) => {})
+    // .catch((res) => {
+    addRequestToQueue("POST", "sale/", { sales });
+    let localSales = JSON.parse(localStorage.getItem("sales"));
+    let saleStr = "";
+    for (let s of sales) {
+      saleStr += s.product;
+      if (sales.indexOf(s) != sales.length - 1) saleStr += ", ";
+    }
+    let newSale = {
+      created_at: new Date(),
+      __str__: saleStr,
+      total: calculateTotal(),
+    };
+    localSales.unshift(newSale);
+    localStorage.setItem("sales", JSON.stringify(localSales));
+    processQueue();
+    // toaster.error(res.response.data[0]);
+    // });
   };
+  // const saveSales = () => {
+  //   if (!sales.length) return;
+  //   apiClient
+  //     .post("sale/", { sales })
+  //     .then((res) => {
+  //       setCurrentSale({ product: "", quantity: "", id: "" });
+  //       let todayTotal = +localStorage.getItem("todayTotal") + res.data.total;
+  //       localStorage.setItem("todayTotal", todayTotal);
+  //       for (let sale of sales) {
+  //         updateStock(sale.id, sale.quantity);
+  //       }
+  //       navigate("/sales/");
+  //       setSales([]);
+  //       toaster.success("Sale saved");
+  //     })
+  //     .catch((res) => {
+  //       toaster.error(res.response.data[0]);
+  //     });
+  // };
 
   const totalPrice = sales.reduce((sum, sale) => {
     const product = products.find((p) => p.name === sale.product);
@@ -201,7 +264,7 @@ function AddSale() {
         <div className="md:hidden flex flex-col">
           {sales.map((sale) => {
             const product = products.find((p) => p.name === sale.product);
-            const price = product ? product.price : 0;
+            const price = product ? product.selling_price : 0;
             const total = price * sale.quantity;
             return (
               <div

@@ -3,21 +3,36 @@ import SalesTable from "../partials/sales/SalesTable";
 import api from "../apiClient";
 import { useEffect, useState } from "react";
 import { checkLogin } from "../utils/Utils";
+import { addRequestToQueue, processQueue } from "../utils/requestQueue";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
   const userRole = checkLogin();
   const shopId = localStorage.getItem("shopId");
 
-  useEffect(() => {
-    if (userRole == "staff")
+  processQueue();
+
+  const fetchSales = (role) => {
+    console.log("fetching...");
+    if (role == "staff")
       api.get("sale/").then((res) => {
         setSales(res.data);
+        localStorage.setItem("sales", JSON.stringify(res.data));
       });
     else {
       api.get(`sale/?store=${shopId}`).then((res) => {
         setSales(res.data);
+        localStorage.setItem("sales", JSON.stringify(res.data));
       });
+    }
+  };
+
+  useEffect(() => {
+    let localSales = localStorage.getItem("sales");
+    if (!localSales) {
+      fetchSales(userRole);
+    } else {
+      setSales(JSON.parse(localSales));
     }
   }, []);
 
@@ -35,10 +50,7 @@ const Sales = () => {
               <p> Today's Sales</p>
               <div className="flex items-center">
                 <span className="mr-1 ml-2 text-[18px]">Gh₵</span>
-                <span className="text-green-700">
-                  {today}
-                  .00
-                </span>
+                <span className="text-green-700">{(+today).toFixed(2)}</span>
                 <span
                   className={`${percentProgress >= 100 ? `text-green-700 bg-green-500/20` : `text-red-700 bg-red-500/20`} ml-3 text-sm font-lg font-bold w-fit px-2 py-1 rounded-full`}
                 >

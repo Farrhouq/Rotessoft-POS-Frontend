@@ -25,7 +25,7 @@ const refreshAccessToken = async () => {
     localStorage.setItem("lastAccessToken", new Date().toISOString());
     return newAccessToken;
   } catch (error) {
-    window.location.href = "/login";
+    // window.location.href = "/login";
   }
 };
 
