@@ -6,6 +6,8 @@ import "./css/main.css";
 
 import "./charts/ChartjsConfig";
 
+import { processQueue } from "./utils/requestQueue";
+
 // Import pages
 import Dashboard from "./pages/Dashboard";
 import SideBar from "./partials/Sidebar";
@@ -14,17 +16,26 @@ import Products from "./pages/Products";
 import Header from "./partials/Header";
 import AddSale from "./pages/AddSale";
 import LoginPage from "./pages/LoginPage";
-import AdminRegistration from "./pages/admin/AdminRegistration";
 import DashboardOfDashboards from "./pages/admin/DashboardOfDashboards";
 import MasterDashboard from "./pages/MasterDashboard";
 import EnterOTP from "./pages/EnterOTP";
 import Employee from "./pages/admin/Employee";
 import EditProductForm from "./pages/admin/EditProduct";
-import { processQueue } from "./utils/requestQueue";
+
+const isDevelopment = import.meta.env.VITE_ENV === "development";
 
 function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [AdminRegistration, setAdminRegistration] = useState(null);
+
+  useEffect(() => {
+    if (isDevelopment) {
+      import("./pages/admin/AdminRegistration").then((module) => {
+        setAdminRegistration(() => module.default);
+      });
+    }
+  });
 
   useEffect(() => {
     window.addEventListener("online", () => {
@@ -59,7 +70,9 @@ function App() {
           <Route exact path="/sales/add/" element={<AddSale />} />
           <Route exact path="/login/" element={<LoginPage />} />
           <Route exact path="/login/enter-code/" element={<EnterOTP />} />
-          <Route exact path="/register/" element={<AdminRegistration />} />
+          {AdminRegistration && (
+            <Route exact path="/register/" element={<AdminRegistration />} />
+          )}
           <Route exact path="/admin/" element={<DashboardOfDashboards />} />
           <Route exact path="/admin/shop/staff/" element={<Employee />} />
           <Route
