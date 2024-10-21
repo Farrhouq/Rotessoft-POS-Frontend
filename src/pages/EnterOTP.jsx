@@ -4,6 +4,7 @@ import toaster from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { checkLogin } from "../utils/Utils";
+import { BACKEND_URL } from "../consts";
 
 export default function Component() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -53,7 +54,7 @@ export default function Component() {
     const otpValue = otp.join("");
     if (otpValue.length === 6) {
       axios
-        .post("http://localhost:8000/otp/verify/", {
+        .post(`${BACKEND_URL}/otp/verify/`, {
           username: localStorage.getItem("username"),
           otp: otpValue,
         })

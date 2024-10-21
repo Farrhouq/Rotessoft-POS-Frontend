@@ -3,11 +3,12 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import "./css/main.css";
+
 import "./charts/ChartjsConfig";
 
 import { processQueue } from "./utils/requestQueue";
 
-// Import other pages
+// Import pages
 import Dashboard from "./pages/Dashboard";
 import SideBar from "./partials/Sidebar";
 import Sales from "./pages/Sales";
@@ -21,12 +22,19 @@ import EnterOTP from "./pages/EnterOTP";
 import Employee from "./pages/admin/Employee";
 import EditProductForm from "./pages/admin/EditProduct";
 
-const isDevelopment = import.meta.env.MODE === "development";
-
 function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [AdminRegistration, setAdminRegistration] = useState(null);
+
+  useEffect(() => {
+    const isDevelopment = import.meta.env.VITE_ENV === "development";
+    if (isDevelopment) {
+      import("./pages/admin/AdminRegistration").then((module) => {
+        setAdminRegistration(() => module.default);
+      });
+    }
+  });
 
   useEffect(() => {
     window.addEventListener("online", () => {
@@ -36,16 +44,7 @@ function App() {
     document.querySelector("html").style.scrollBehavior = "auto";
     window.scroll({ top: 0 });
     document.querySelector("html").style.scrollBehavior = "";
-
-    // Conditionally load AdminRegistration only in development
-    if (isDevelopment) {
-      import("./pages/admin/AdminRegistration")
-        .then((module) => setAdminRegistration(() => module.default))
-        .catch((error) =>
-          console.error("Error loading AdminRegistration:", error),
-        );
-    }
-  }, [location.pathname]);
+  }, [location.pathname]); // triggered on route change
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -70,12 +69,9 @@ function App() {
           <Route exact path="/sales/add/" element={<AddSale />} />
           <Route exact path="/login/" element={<LoginPage />} />
           <Route exact path="/login/enter-code/" element={<EnterOTP />} />
-
-          {/* Conditionally render AdminRegistration if in development */}
-          {isDevelopment && AdminRegistration && (
+          {AdminRegistration && (
             <Route exact path="/register/" element={<AdminRegistration />} />
           )}
-
           <Route exact path="/admin/" element={<DashboardOfDashboards />} />
           <Route exact path="/admin/shop/staff/" element={<Employee />} />
           <Route

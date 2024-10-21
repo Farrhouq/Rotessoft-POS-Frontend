@@ -4,6 +4,7 @@ import apiClient from "../apiClient"; // Adjust to where your axios instance is
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toaster from "react-hot-toast";
+import { BACKEND_URL } from "../consts";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +27,7 @@ export default function LoginPage() {
       setLoading(true);
       setError(null);
 
-      const response = await axios.post("http://localhost:8000/otp/send/", {
+      const response = await axios.post(`${BACKEND_URL}/otp/send/`, {
         username: email,
       });
       localStorage.setItem("username", email);

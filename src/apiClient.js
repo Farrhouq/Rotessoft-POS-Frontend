@@ -1,10 +1,11 @@
 import axios from "axios";
+import { BACKEND_URL } from "./consts";
 
-const TOKEN_EXPIRATION = 60; // 15 minutes in milliseconds
+const TOKEN_EXPIRATION = 1800; // Access token expiration time in seconds
 
 // Create an axios instance
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/",
+  baseURL: `${BACKEND_URL}/`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -15,7 +16,7 @@ const refreshAccessToken = async () => {
   try {
     const refreshToken = localStorage.getItem("refreshToken"); // Get stored refresh token
     const response = await axios.post(
-      "http://localhost:8000/account/api/token/refresh/",
+      `${BACKEND_URL}/account/api/token/refresh/`,
       {
         refresh: refreshToken,
       },
@@ -52,42 +53,8 @@ api.interceptors.request.use(
 );
 
 // Axios response interceptor to catch 401 (Unauthorized) errors
-api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  // async (error) => {
-  //   const originalRequest = error.config;
-
-  //   if (error.response.status === 401 && !originalRequest._retry) {
-  //     originalRequest._retry = true; // Prevent infinite loops by checking this flag
-
-  //     try {
-  //       const newAccessToken = await refreshAccessToken(); // Get new access token
-  //       originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`; // Update the request with the new token
-
-  //       // Retry the original request with the new token
-  //       return api(originalRequest);
-  //     } catch (refreshError) {
-  //       // If refreshing the token fails, handle logout or re-authentication
-  //       console.error("Could not refresh token", refreshError);
-  //       // Optionally, log out the user here if the refresh token is also invalid.
-  //       return Promise.reject(refreshError);
-  //     }
-  //   }
-
-  //   return Promise.reject(error); // If it's not a 401 or retry failed, reject the error
-  // },
-);
-
-// Usage example for making requests
-// const getData = async () => {
-//   try {
-//     const response = await api.get("/protected-resource");
-//     console.log("Data:", response.data);
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//   }
-// };
+api.interceptors.response.use((response) => {
+  return response;
+});
 
 export default api;
