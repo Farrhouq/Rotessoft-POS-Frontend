@@ -39,7 +39,7 @@ export const formatThousands = (value) =>
 export const checkLogin = () => {
   const token = localStorage.getItem("accessToken");
   if (!token) {
-    window.location.href = "/login";
+    window.location.href = "/login/";
   }
   return jwtDecode(token).role;
 };
