@@ -10,30 +10,31 @@ const Sales = () => {
   const userRole = checkLogin();
   const shopId = localStorage.getItem("shopId");
 
-  processQueue();
+  // processQueue();
 
-  const fetchSales = (role) => {
-    console.log("fetching...");
+  const fetchSales = async (role) => {
     if (role == "staff")
-      api.get("sale/").then((res) => {
+      return api.get("sale/").then((res) => {
         setSales(res.data);
         localStorage.setItem("sales", JSON.stringify(res.data));
+        let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
+        localStorage.setItem("todayTotal", today);
       });
     else {
-      api.get(`sale/?store=${shopId}`).then((res) => {
+      return api.get(`sale/?store=${shopId}`).then((res) => {
         setSales(res.data);
         localStorage.setItem("sales", JSON.stringify(res.data));
+        let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
+        localStorage.setItem("todayTotal", today);
       });
     }
   };
 
   useEffect(() => {
-    let localSales = localStorage.getItem("sales");
-    if (!localSales) {
-      fetchSales(userRole);
-    } else {
+    fetchSales(userRole).catch(() => {
+      let localSales = localStorage.getItem("sales");
       setSales(JSON.parse(localSales));
-    }
+    });
   }, []);
 
   const dailyTarget = localStorage.getItem("dailyTarget");
