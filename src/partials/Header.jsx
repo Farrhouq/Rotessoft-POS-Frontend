@@ -12,8 +12,8 @@ function Header({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const location = useLocation();
   const { pathname } = location;
 
-  if (pathname.includes("login")) return;
-  if (pathname.includes("register")) return;
+  if (pathname.includes("login")) return null;
+  if (pathname.includes("register")) return null;
 
   return (
     <header

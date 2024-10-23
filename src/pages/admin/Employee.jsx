@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import toaster from "react-hot-toast";
 import { checkLogin } from "../../utils/Utils";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +13,7 @@ export default function Component() {
   const staffId = localStorage.getItem("staffId");
   const shopId = localStorage.getItem("shopId");
   const method = staffId == "null" ? "post" : "put";
+  const [emailOrPhone, setEmailOrPhone] = useState("email");
   // console.log(staffId);
   // console.log(method);
   const [formData, setFormData] = useState({
@@ -70,9 +70,33 @@ export default function Component() {
     }));
   };
 
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  function isValidPhoneNumber(phone) {
+    const phoneRegex = /^0\d{9}$/;
+    return phoneRegex.test(phone);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     let email, phone;
+    let emailPhone = formData.emailPhone;
+
+    if (emailPhone.includes("@")) {
+      if (!isValidEmail(emailPhone)) {
+        toaster.error("Enter a valid email");
+        return;
+      }
+    } else {
+      if (!isValidPhoneNumber(emailPhone)) {
+        toaster.error("Enter a valid phone number");
+        return;
+      }
+    }
+
     if (formData.emailPhone.includes("@")) email = formData.emailPhone;
     else phone = formData.emailPhone;
     if (method == "put") {

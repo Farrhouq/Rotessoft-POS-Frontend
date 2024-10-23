@@ -65,11 +65,20 @@ export default function Component() {
           localStorage.setItem("lastRefreshToken", new Date().toISOString());
           toaster.success(res.data.message);
           let userRole = checkLogin();
+          if (userRole != "admin" && userRole != "staff") {
+            toaster.error("Invalid user");
+            navigate("/login/");
+            return;
+          }
           if (userRole == "admin") {
             navigate("/admin");
-          } else {
+            toaster.success("Login successful");
+          } else if (userRole == "staff") {
             navigate("/");
+            toaster.success("Login successful");
           }
+          localStorage.setItem("store_name", res.data.store_name);
+          localStorage.setItem("brand_name", res.data.store_name);
         });
     } else {
       toaster.error("Please enter a valid 6-digit OTP");
@@ -136,7 +145,7 @@ export default function Component() {
         </form>
         <div className="text-center">
           <a
-            href="#"
+            href="/login/"
             className="font-medium text-purple-600 hover:text-purple-500"
           >
             Didn't receive a code? Resend

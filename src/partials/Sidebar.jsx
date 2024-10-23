@@ -134,6 +134,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                       setSidebarOpen(false);
                       localStorage.removeItem("shopId");
                       localStorage.removeItem("products");
+                      localStorage.setItem(
+                        "store_name",
+                        localStorage.getItem("brand_name"),
+                      );
                     }}
                     end
                     to="/admin/"

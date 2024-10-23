@@ -31,6 +31,7 @@ function ShopCard({
               <Link
                 onClick={() => {
                   localStorage.setItem("shopId", shopId);
+                  localStorage.setItem("store_name", name);
                 }}
                 className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3"
                 to="/"
@@ -43,6 +44,7 @@ function ShopCard({
                 onClick={() => {
                   localStorage.setItem("staffId", staffId);
                   localStorage.setItem("shopId", shopId);
+                  localStorage.setItem("store_name", name);
                 }}
                 className="font-medium text-sm text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 flex py-1 px-3"
                 to="/admin/shop/staff/"
