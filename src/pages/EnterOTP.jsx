@@ -79,6 +79,10 @@ export default function Component() {
           }
           localStorage.setItem("store_name", res.data.store_name);
           localStorage.setItem("brand_name", res.data.store_name);
+        })
+        .catch(() => {
+          toaster.error("OTP expired. Please login again.");
+          navigate("/login/");
         });
     } else {
       toaster.error("Please enter a valid 6-digit OTP");
