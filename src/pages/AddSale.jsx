@@ -103,14 +103,7 @@ function AddSale() {
       localStorage.setItem("products", JSON.stringify(oldProducts));
       return;
     }
-    navigate("/sales/");
-    setSales([]);
-    toaster.success("Sale saved");
 
-    // apiClient
-    // .post("sale/", { sales })
-    // // .then((res) => {})
-    // .catch((res) => {
     addRequestToQueue("POST", "sale/", { sales });
     let localSales = JSON.parse(localStorage.getItem("sales"));
     let saleStr = "";
@@ -125,29 +118,27 @@ function AddSale() {
     };
     localSales.unshift(newSale);
     localStorage.setItem("sales", JSON.stringify(localSales));
-    processQueue();
-    // toaster.error(res.response.data[0]);
-    // });
+    processQueue().finally(() => {
+      setSales([]);
+      toaster.success("Sale saved");
+
+      //
+      apiClient
+        .get("sale/")
+        .then((res) => {
+          setSales(res.data);
+          localStorage.setItem("sales", JSON.stringify(res.data));
+          let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
+          localStorage.setItem("todayTotal", today);
+        })
+        .catch(() => {
+          toaster.error("You're offline. Sales will sync when online."); // might remove this code. Or add info like: Sales will sync when you're online. But I just don't want to make the place messy. Also I want to make it seamless.
+        });
+      //
+
+      navigate("/sales/");
+    });
   };
-  // const saveSales = () => {
-  //   if (!sales.length) return;
-  //   apiClient
-  //     .post("sale/", { sales })
-  //     .then((res) => {
-  //       setCurrentSale({ product: "", quantity: "", id: "" });
-  //       let todayTotal = +localStorage.getItem("todayTotal") + res.data.total;
-  //       localStorage.setItem("todayTotal", todayTotal);
-  //       for (let sale of sales) {
-  //         updateStock(sale.id, sale.quantity);
-  //       }
-  //       navigate("/sales/");
-  //       setSales([]);
-  //       toaster.success("Sale saved");
-  //     })
-  //     .catch((res) => {
-  //       toaster.error(res.response.data[0]);
-  //     });
-  // };
 
   const totalPrice = sales.reduce((sum, sale) => {
     const product = products.find((p) => p.name === sale.product);
@@ -185,6 +176,7 @@ function AddSale() {
           <input
             type="number"
             name="quantity"
+            min="1"
             value={currentSale.quantity}
             onChange={handleQtyChange}
             placeholder="Quantity"

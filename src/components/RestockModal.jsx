@@ -59,8 +59,10 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
         setModalOpen(false);
         setRestockQty("");
         setSelectedProduct({ id: null, label: "" });
-        // setProductId();
         e.target.reset();
+      })
+      .catch(() => {
+        toaster.error("You are offline.");
       });
   };
 

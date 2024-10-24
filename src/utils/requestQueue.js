@@ -99,7 +99,6 @@ async function processQueue() {
         if (cursor) {
           const request = cursor.value;
           // console.log(request, "is the request being done...");
-
           // Attempt to send the request using axios
           apiClient({
             method: request.method,
@@ -108,31 +107,19 @@ async function processQueue() {
           })
             .then((response) => {
               // console.log("Request succeeded:", response);
-
               // Re-open the transaction for the delete operation
               const deleteTx = db.transaction(storeName, "readwrite");
               const deleteStore = deleteTx.objectStore(storeName);
               let curr = cursor.key;
-              // console.log("this is where key interest lies!!!");
-              // cursor.continue();
-              // console.log("this is where key interest lies endddd!!!");
               const deleteRequest = deleteStore.delete(curr);
 
               deleteRequest.onsuccess = function () {
                 // console.log("Request deleted from queue");
                 processQueue();
-                // here, I'll try and fetch the sales from the backend. just for solidity.
-                // cursor.continue(); // Move to the next request in the queue
               };
-
-              // deleteRequest.onerror = function (event) {
-              //   console.error("Failed to delete request:", event.target.error);
-              //   // cursor.continue(); // Move to the next request even if delete fails
-              // };
             })
             .catch((error) => {
               console.error("Request failed, keeping in queue:", error);
-              // cursor.continue(); // Continue to the next request in the queue
             });
         } else {
           // console.log("No more requests in queue");
