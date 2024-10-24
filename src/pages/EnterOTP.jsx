@@ -81,7 +81,7 @@ export default function Component() {
           localStorage.setItem("brand_name", res.data.store_name);
         })
         .catch(() => {
-          toaster.error("OTP expired. Please login again.");
+          toaster.error("Invalid or expired code. Please login again.");
           navigate("/login/");
         });
     } else {
