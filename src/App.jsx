@@ -21,6 +21,7 @@ import MasterDashboard from "./pages/MasterDashboard";
 import EnterOTP from "./pages/EnterOTP";
 import Employee from "./pages/admin/Employee";
 import EditProductForm from "./pages/admin/EditProduct";
+import SaleDetail from "./pages/SaleDetail";
 
 function App() {
   const location = useLocation();
@@ -69,6 +70,7 @@ function App() {
             }
           />
           <Route exact path="/sales/" element={<Sales />} />
+          <Route exact path="/sale-detail/" element={<SaleDetail />} />
           <Route exact path="/products/" element={<Products />} />
           <Route exact path="/sales/add/" element={<AddSale />} />
           <Route exact path="/login/" element={<LoginPage />} />

@@ -22,3 +22,18 @@
     height: 2px; /* Thickness of the underline */
     @apply bg-violet-500; /* Uses the current text color */
 }
+
+@media print {
+    body * {
+        display: none;
+    }
+    #receipt {
+        display: flex;
+        width: 80mm; /* Adjust for receipt size */
+    }
+    /* Optional styling for better format */
+    #receipt {
+        font-size: 12px;
+        line-height: 1.2;
+    }
+}

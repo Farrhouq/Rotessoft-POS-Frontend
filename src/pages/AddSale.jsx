@@ -84,7 +84,7 @@ function AddSale() {
     return total;
   };
 
-  const saveSales = () => {
+  const saveSales = (receipt) => {
     if (!sales.length) return;
     setCurrentSale({ product: "", quantity: "", id: "" });
     let todayTotal = +localStorage.getItem("todayTotal") + calculateTotal();
@@ -136,9 +136,118 @@ function AddSale() {
         });
       //
 
-      navigate("/sales/");
+      if (!receipt) navigate("/sales/");
+      else navigate("/sale-detail/", { state: { savedSale: sales } });
     });
   };
+
+  function printReceipt() {
+    const receiptContent = `
+          <html>
+              <head>
+                  <style>
+                      /* Custom styles for the receipt */
+                      body {
+                          font-family: Arial, sans-serif;
+                          margin: 0;
+                          padding: 0;
+                          width: 80mm; /* Set to receipt width */
+                      }
+                      .receipt {
+                          padding: 10px;
+                          font-size: 6px;
+                          line-height: 1.4;
+                      }
+                      .receipt h1, .receipt h2, .receipt p {
+                          margin: 0;
+                          text-align: center;
+                      }
+                      .receipt .header, .receipt .footer {
+                          text-align: center;
+                          margin-bottom: 10px;
+                      }
+                      .receipt .items {
+                          width: 100%;
+                          margin-top: 10px;
+                      }
+                      .receipt .items th, .receipt .items td {
+                          text-align: left;
+                          padding: 5px;
+                          font-size: 12px;
+                      }
+                      .receipt .total {
+                          text-align: right;
+                          margin-top: 10px;
+                      }
+                      .receipt .total .amount {
+                          font-weight: bold;
+                      }
+                  </style>
+              </head>
+              <body>
+                  <div class="receipt">
+                      <div class="header">
+                          <h1>Parinjani Mobile Technology</h1>
+                          <p>(Dealers in Mobile Phones, Accessories, etc.)</p>
+                          <p>Locate Us: Dakpema Roundabout, Tamale-Accra Road</p>
+                          <p>Tel: 024 4 885 589 | 0209 252 462</p>
+                      </div>
+                      <p>Cashier: UNIVERSAL MAN</p>
+                      <p>Customer: SHERIF</p>
+                      <table class="items">
+                          <thead>
+                              <tr>
+                                  <th>#</th>
+                                  <th>Item Name</th>
+                                  <th>Qty</th>
+                                  <th>Price</th>
+                                  <th>Total</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                  <td>1</td>
+                                  <td>TECNO POP 9 (64)</td>
+                                  <td>1</td>
+                                  <td>300.00</td>
+                                  <td>1,300.00</td>
+                              </tr>
+                              <tr>
+                                  <td>2</td>
+                                  <td>PROTECTOR</td>
+                                  <td>1</td>
+                                  <td>20.00</td>
+                                  <td>20.00</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                      <div class="total">
+                          <p>Purchase Total: GH₵ 1,320.00</p>
+                          <p>Amount Paid: GH₵ 1,350.00</p>
+                          <p>Change: GH₵ 30.00</p>
+                          <p class="amount">Total Due: GH₵ 0.00</p>
+                      </div>
+                      <div class="footer">
+                          <p>We will serve you!</p>
+                          <p>Date: 10/25/2024 9:31:42 PM</p>
+                          <p>MoMo Number: 055 7960 396</p>
+                      </div>
+                  </div>
+              </body>
+          </html>
+      `;
+
+    const printWindow = window.open("", "_blank", "width=300,height=600");
+    printWindow.document.open();
+    printWindow.document.write(receiptContent);
+    printWindow.document.close();
+
+    // Wait a bit for the content to load, then print and close the window
+    printWindow.onload = () => {
+      printWindow.print();
+      printWindow.onafterprint = () => printWindow.close();
+    };
+  }
 
   const totalPrice = sales.reduce((sum, sale) => {
     const product = products.find((p) => p.name === sale.product);
@@ -194,7 +303,10 @@ function AddSale() {
         </div>
 
         {/* table */}
-        <div className="hidden md:block bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+        <div
+          id="receipt"
+          className="hidden md:block bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden"
+        >
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-700">
               <tr>
@@ -253,7 +365,7 @@ function AddSale() {
         </div>
 
         {/* for mobile */}
-        <div className="md:hidden flex flex-col">
+        <div id="receipt" className="md:hidden flex flex-col">
           {sales.map((sale) => {
             const product = products.find((p) => p.name === sale.product);
             const price = product ? product.selling_price : 0;
@@ -306,15 +418,25 @@ function AddSale() {
           <div className="text-xl font-semibold">
             Total Price: ₵{totalPrice.toFixed(2)}
           </div>
-          <button
-            onClick={saveSales}
-            className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 flex items-center"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-              <path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
-            </svg>
-            Save
-          </button>
+
+          <div className="flex gap-2">
+            <button
+              onClick={() => saveSales(false)}
+              className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 flex items-center"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
+              </svg>
+              Save
+            </button>
+
+            <button
+              onClick={() => saveSales(true)}
+              className="bg-green-700 hover:bg-green-600 text-white rounded-md px-4 py-2 flex items-center"
+            >
+              Save and print receipt
+            </button>
+          </div>
         </div>
       </div>
     </div>
