@@ -14,6 +14,7 @@ function Header({ sidebarOpen, setSidebarOpen, variant = "default" }) {
 
   if (pathname.includes("login")) return null;
   if (pathname.includes("register")) return null;
+  if (pathname.includes("add-store")) return null;
 
   return (
     <header

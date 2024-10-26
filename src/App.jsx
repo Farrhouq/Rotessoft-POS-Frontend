@@ -26,12 +26,16 @@ function App() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [AdminRegistration, setAdminRegistration] = useState(null);
+  const [AdminAddStore, setAdminAddStore] = useState(null);
 
   useEffect(() => {
     const isDevelopment = import.meta.env.VITE_ENV === "development";
     if (isDevelopment) {
       import("./pages/admin/AdminRegistration").then((module) => {
         setAdminRegistration(() => module.default);
+      });
+      import("./pages/admin/AddStore").then((module) => {
+        setAdminAddStore(() => module.default);
       });
     }
   });
@@ -70,7 +74,10 @@ function App() {
           <Route exact path="/login/" element={<LoginPage />} />
           <Route exact path="/login/enter-code/" element={<EnterOTP />} />
           {AdminRegistration && (
-            <Route exact path="/register/" element={<AdminRegistration />} />
+            <>
+              <Route exact path="/register/" element={<AdminRegistration />} />
+              <Route exact path="/add-store/" element={<AdminAddStore />} />
+            </>
           )}
           <Route exact path="/admin/" element={<DashboardOfDashboards />} />
           <Route exact path="/admin/shop/staff/" element={<Employee />} />

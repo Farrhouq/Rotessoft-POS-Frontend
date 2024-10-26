@@ -63,7 +63,14 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
             </div>
           </div>
 
-          <p className="uppercase text-sm font-semibold mb-2">My shops</p>
+          <div className="flex items-center mb-4">
+            <p className="uppercase text-sm font-semibold mb-2">My shops</p>
+            {/* <button className="btn bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
+              <Link to="/sales/add/">
+                <span className="">Add a shop</span>
+              </Link>
+            </button> */}
+          </div>
           {/* Cards */}
           <div className="grid grid-cols-12 gap-6">
             {/* <DailyProgress
@@ -89,6 +96,13 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
               />
             ))}
             {/* <TopProducts products={topProducts} /> */}
+            {/* <Link
+              to="add-shop/"
+              className="flex justify-center gap-7 col-span-full text-white sm:col-span-6 xl:col-span-5 bg-gray-800 dark:bg-white-800 text-5xl shadow-sm rounded-xl md:px-5 items-center"
+            >
+              <span className="text-4xl">+</span>
+              <span className="text-xl">Add shop</span>
+            </Link> */}
           </div>
         </div>
       </main>

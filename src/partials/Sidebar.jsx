@@ -9,6 +9,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const { pathname } = location;
   if (pathname.includes("login")) return;
   if (pathname.includes("register")) return;
+  if (pathname.includes("add-store")) return;
   const userRole = checkLogin();
   if (pathname == "/admin/") return;
 
