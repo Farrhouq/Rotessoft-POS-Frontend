@@ -13,6 +13,7 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
     id: null,
     label: "",
   });
+  const [loading, setLoading] = useState(false);
 
   // close on click outside
   // useEffect(() => {
@@ -46,6 +47,15 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
     const product = products.find(
       (product) => product.id === selectedProduct.id,
     );
+    if (!product) {
+      toaster.error("Please select a product.");
+      return;
+    }
+    if (!restockQty) {
+      toaster.error("Please enter a quantity.");
+      return;
+    }
+    setLoading(true);
     api
       .patch(
         `/product/${selectedProduct.id}/?store=${localStorage.getItem("shopId")}`,
@@ -54,6 +64,7 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
         },
       )
       .then((res) => {
+        setLoading(false);
         updateStock(selectedProduct.id, product.amount_in_stock + +restockQty);
         toaster.success("Product restocked!");
         setModalOpen(false);
@@ -62,6 +73,7 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
         e.target.reset();
       })
       .catch(() => {
+        setLoading(false);
         toaster.error("You are offline.");
       });
   };
@@ -159,7 +171,7 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
                   type="submit"
                   className="text-white w-fit bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Submit
+                  {loading ? "Submitting..." : "Restock"}
                 </button>
                 <button
                   type="button"

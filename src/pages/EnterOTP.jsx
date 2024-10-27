@@ -10,6 +10,7 @@ export default function Component() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     inputRefs.current[0]?.focus();
@@ -53,6 +54,7 @@ export default function Component() {
     e.preventDefault();
     const otpValue = otp.join("");
     if (otpValue.length === 6) {
+      setLoading(true);
       axios
         .post(`${BACKEND_URL}/otp/verify/`, {
           username: localStorage.getItem("username"),
@@ -64,6 +66,7 @@ export default function Component() {
           localStorage.setItem("lastAccessToken", new Date().toISOString());
           localStorage.setItem("lastRefreshToken", new Date().toISOString());
           toaster.success(res.data.message);
+          setLoading(false);
           let userRole = checkLogin();
           if (userRole != "admin" && userRole != "staff") {
             toaster.error("Invalid user");
@@ -71,7 +74,7 @@ export default function Component() {
             return;
           }
           if (userRole == "admin") {
-            navigate("/admin");
+            navigate("/admin/");
             toaster.success("Login successful");
           } else if (userRole == "staff") {
             navigate("/");
@@ -82,6 +85,7 @@ export default function Component() {
         })
         .catch(() => {
           toaster.error("Invalid or expired code. Please login again.");
+          setLoading(false);
           navigate("/login/");
         });
     } else {
@@ -143,7 +147,30 @@ export default function Component() {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
             >
-              Verify
+              {loading ? (
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              ) : (
+                "Verify"
+              )}
             </button>
           </div>
         </form>

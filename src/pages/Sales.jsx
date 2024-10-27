@@ -31,8 +31,9 @@ const Sales = () => {
   };
 
   useEffect(() => {
+    let localSales = localStorage.getItem("sales");
+    if (localSales) setSales(JSON.parse(localSales));
     fetchSales(userRole).catch(() => {
-      let localSales = localStorage.getItem("sales");
       setSales(JSON.parse(localSales));
     });
   }, []);
@@ -60,7 +61,6 @@ const Sales = () => {
               </div>
             </div>
           </div>
-          {/* a button for add sales. white with black text */}
           {userRole == "staff" && (
             <Link to="/sales/add/">
               <button className="btn h-fit bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">

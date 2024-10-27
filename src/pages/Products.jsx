@@ -12,11 +12,6 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
 
   const refreshProducts = () => {
-    // console.log("before here...");
-    // await processQueue();
-    // console.log("past here...");
-    // setProducts([]);
-    // localStorage.removeItem("products");
     setLoading(true);
     if (userRole == "admin")
       apiClient

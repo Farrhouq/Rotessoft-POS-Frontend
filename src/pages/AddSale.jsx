@@ -4,6 +4,7 @@ import apiClient from "../apiClient";
 import toaster from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { addRequestToQueue, processQueue } from "../utils/requestQueue";
+import { checkLogin } from "../utils/Utils";
 
 function AddSale() {
   const navigate = useNavigate();
@@ -86,6 +87,7 @@ function AddSale() {
 
   const saveSales = (receipt) => {
     if (!sales.length) return;
+
     setCurrentSale({ product: "", quantity: "", id: "" });
     let todayTotal = +localStorage.getItem("todayTotal") + calculateTotal();
     localStorage.setItem("todayTotal", todayTotal);
@@ -122,7 +124,7 @@ function AddSale() {
       setSales([]);
       toaster.success("Sale saved");
 
-      //
+      // Fetch sales again to update the sales list
       apiClient
         .get("sale/")
         .then((res) => {

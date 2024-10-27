@@ -26,6 +26,7 @@ export default function Component() {
     businessLocation: "",
     dailyTarget: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +38,7 @@ export default function Component() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     // Here you would typically send the data to your backend
     const loginData = await addLogin();
     axios
@@ -51,9 +53,11 @@ export default function Component() {
         },
       )
       .then((res) => {
+        setLoading(false);
         toaster.success(res.data.message);
       })
       .catch((res) => {
+        setLoading(false);
         toaster.error(res.response.data.message);
       });
   }
@@ -318,7 +322,7 @@ export default function Component() {
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
             >
-              Submit Information
+              {loading ? `Submitting...` : `Submit Information`}
             </button>
           </div>
         </form>

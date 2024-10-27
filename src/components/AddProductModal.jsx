@@ -11,6 +11,7 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
   const [sellingPrice, setSellingPrice] = useState("");
   const [costPrice, setCostPrice] = useState("");
   const [amountInStock, setAmountInStock] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   // Handle form submission
   const addProduct = (e) => {
@@ -25,6 +26,7 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
     };
 
     // Make API call to add product
+    setLoading(true);
     api
       .post("product/", {
         ...productData,
@@ -45,9 +47,12 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
         setSellingPrice("");
         setCostPrice("");
         setAmountInStock(1);
+        setLoading(false);
       })
       .catch((err) => {
         console.error(err);
+        toaster.error("Failed to add product. Please try again.");
+        setLoading(false);
         // Handle error
       });
   };
@@ -154,7 +159,7 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
                   type="submit"
                   className="text-white w-fit bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Submit
+                  {loading ? "Adding..." : "Add Product"}
                 </button>
                 <button
                   type="button"

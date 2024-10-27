@@ -50,7 +50,11 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
       setLoading(false);
       setDashboardData(res.data);
       setTopProducts(res.data.top_products);
-      setYesterdayTotal(res.data.daily_sales.slice(-2)[0].total);
+      try {
+        setYesterdayTotal(res.data.daily_sales.slice(-2)[0].total);
+      } catch {
+        setYesterdayTotal(0);
+      }
       animateNumber(res.data.total_sales_today, setTodayTotal, 1);
       localStorage.setItem("todayTotal", res.data.total_sales_today);
       setDailyTarget(res.data.daily_target);

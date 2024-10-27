@@ -5,15 +5,21 @@
 * refresh products button
 * append 0's at on the graph for a good look.
 ** alert for when products are finishing
-
-offline system for making things faster
-add shop
-requestQueue.js: line 124
-
--- plan --
+*-- plan --
 so, for products, we're kinda sorted.
 it's updated in the frontend. I'll just use the indexeddb to queue the request.
 then I'll have another code for sending those requests, or queuing them.
-
 Now, for the sales...
-I'll do something similar.
+*I'll do something similar.
+*offline system for making things faster
+*add shop
+*requestQueue.js: line 124
+*admin empty sales the graph doesn't show
+*admin first time login the side bar shows instead of hiding
+---
+
+sale detail, and print sale
+recording the time of the sale (for offline sales when pushing back)
+loading of the addproduct modal when submitting
+searchable products
+admin should be able to sell. (as a preference to some admins)
