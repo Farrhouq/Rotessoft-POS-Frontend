@@ -40,158 +40,96 @@ function SaleDetail() {
       toaster.error("Please enter the customer name and amount paid");
       return;
     }
+
     const totalPrice = savedSale.reduce((acc, curr) => {
       const product = products.find((p) => p.name === curr.product);
       const price = product ? product.selling_price : 0;
       return acc + price * curr.quantity;
     }, 0);
+
+    // Define the HTML content for the receipt
     const receiptContent = `
-        <html>
-          <head>
-              <style>
-                  /* Custom styles for the receipt */
-                  body {
-                      font-family: Arial, sans-serif;
-                      margin: 0;
-                      padding: 0;
-                      width: 40mm; /* Set to receipt width */
-                  }
-                  .receipt {
-                      padding: 10px;
-                      font-size: 6px;
-                      line-height: 1.4;
-                  }
-                  .receipt h1, .receipt h2, .receipt p {
-                      margin: 0;
-                      text-align: center;
-                  }
-                  .receipt .header, .receipt .footer {
-                      text-align: center;
-                      margin-bottom: 10px;
-                  }
-                  .receipt .items {
-                      width: 100%;
-                      margin-top: 10px;
-                  }
-                  .receipt .items th, .receipt .items td {
-                      text-align: left;
-                      padding: 5px;
-                      font-size: 6px;
-                  }
-                  .receipt .total {
-                      text-align: right;
-                      margin-top: 10px;
-                  }
-                  .receipt .total .amount {
-                      font-weight: bold;
-                  }
-
-                  .amount-container {
-                      display: flex;
-                      justify-content: space-between;
-                      width: 100%;
-                  }
-                  .sale-summary {
-                      font-weight: bold;
-                      text-decoration: underline
-                  }
-
-                  @media print {
-                    #print-button {
-                      display: none;
-                      visibility: hidden;
-                    }
-                  }
-
-              </style>
-          </head>
-          <body>
-              <div class="receipt">
-                  <div class="header">
-                      <h1>${localStorage.getItem("brand_name")}</h1>
-                      <p>(Dealers in Mobile Phones, Accessories, Decoding, Flashing, Repairing, Downloading Tones, CD Printing, Lamination, Design of Cards)</p>
-                      <p>Locate Us: Dakpema Roundabout, Tamale-Accra Road</p>
-                      <p>Tel: 0244 885 589 | 0209 252 462</p>
-                  </div>
-                  <p>Cashier: UNIVERSAL MAN</p>
-                  <p>Customer: ${customerName}</p>
-                  <div class="items">
-                    <table style="width: 100%;">
-                      <thead>
+        <div id="section-to-print" style="width: 70mm;">
+            <div class="receipt">
+                <h1>${localStorage.getItem("brand_name")}</h1>
+                <p>(Dealers in Mobile Phones, Accessories...)</p>
+                <p>Locate Us: Dakpema Roundabout, Tamale-Accra Road</p>
+                <p>Tel: 0244 885 589 | 0209 252 462</p>
+                <hr />
+                <p>Cashier: UNIVERSAL MAN</p>
+                <p>Customer: ${customerName}</p>
+                <table style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th>Product</th>
+                      <th>Qty</th>
+                      <th>Price</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${savedSale
+                      .map((saleProduct) => {
+                        const product = products.find(
+                          (p) => p.name === saleProduct.product,
+                        );
+                        const price = product ? product.selling_price : 0;
+                        const total = price * saleProduct.quantity;
+                        return `
                         <tr>
-                          <th>Product</th>
-                          <th>Quantity</th>
-                          <th>Price</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        ${savedSale
-                          .map((saleProduct) => {
-                            const product = products.find(
-                              (p) => p.name === saleProduct.product,
-                            );
-                            const price = product ? product.selling_price : 0;
-                            const total = price * saleProduct.quantity;
-                            return `
-                            <tr>
-                              <td>${saleProduct.product}</td>
-                              <td>${saleProduct.quantity}</td>
-                              <td>₵${price.toFixed(2)}</td>
-                              <td>₵${total.toFixed(2)}</td>
-                            </tr>`;
-                          })
-                          .join("")}
-                      </tbody>
-                    </table>
-                  </div>
-                  <hr >
-                  <p class="sale-summary">Sale Summary (GH₵)</p>
-                  <div class="total" style="display: flex; justify-content: flex-start; align-items: flex-start; gap: 2px; flex-direction: column">
-                      <p class="amount-container"><span class="amount"> Purchase Total: </span> <span>${totalPrice.toFixed(2)}</span></p>
-                      <p class="amount-container"><span class="amount">Amount Paid: </span> <span>${Number(amountPaid).toFixed(2)}</span></p>
-                      <p class="amount-container"><span class="amount">Change: </span> <span>${(amountPaid - totalPrice).toFixed(2) > 0 ? (amountPaid - totalPrice).toFixed(2) : `0.00`}</span></p>
-                      <p class="amount-container"><span class="amount">Total Due: </span> <span>${(totalPrice - amountPaid).toFixed(2) > 0 ? (totalPrice - amountPaid).toFixed(2) : `0.00`}</span></p>
-                  </div>
-                  <div class="footer" style="margin-top: 10px;">
-                      <p>Date: ${new Date().toLocaleString()}</p>
-                      <p>MoMo Number: 055 7960 396</p>
-                  </div>
-                  <p style="font-style: italic; margin-bottom: 4px;">Thank you for your patronage, dear customer</p>
-                  <span style="margin-bottom: 6px;">Sale id: ${generateSaleID().toUpperCase()}</span>
+                          <td>${saleProduct.product}</td>
+                          <td>${saleProduct.quantity}</td>
+                          <td>₵${price.toFixed(2)}</td>
+                          <td>₵${total.toFixed(2)}</td>
+                        </tr>`;
+                      })
+                      .join("")}
+                  </tbody>
+                </table>
+                <hr />
+                <p>Purchase Total: GH₵ ${totalPrice.toFixed(2)}</p>
+                <p>Amount Paid: GH₵ ${Number(amountPaid).toFixed(2)}</p>
+                <p>Change: GH₵ ${(amountPaid - totalPrice).toFixed(2)}</p>
+                <p>Total Due: GH₵ ${(totalPrice - amountPaid).toFixed(2) > 0 ? (totalPrice - amountPaid).toFixed(2) : "0.00"}</p>
+                <p>Date: ${new Date().toLocaleString()}</p>
+                <p>MoMo Number: 055 7960 396</p>
+                <p>Sale ID: ${generateSaleID().toUpperCase()}</p>
+                <p style="font-style: italic;">Thank you for your patronage!</p>
+            </div>
+        </div>`;
 
-                  <button id="print-button" style="background: blue; display:flex;align-items:center;justify-content:center;
-                  padding: 3px 5px; border-radius: 10%; border:none; color: white; font-size: 6px; margin-top: 10px;cursor: pointer"
-                  onClick=(print())>Print</button>
-              </div>
-          </body>
-        </html>
+    // Create and configure the iframe for printing
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "absolute";
+    iframe.style.width = "70mm";
+    iframe.style.height = "auto";
+    iframe.style.left = "-9999px"; // Move it off-screen
+    document.body.appendChild(iframe);
+
+    iframe.contentWindow.document.open();
+    iframe.contentWindow.document.write(receiptContent);
+    iframe.contentWindow.document.close();
+
+    // Add custom print styles with a script
+    const printScript = document.createElement("script");
+    const documentHeight = iframe.contentWindow.document.body.offsetHeight + 10; // Offset height for padding
+
+    printScript.innerHTML = `
+        function setPrintStyles(pagesize) {
+            var css = \`@media print { @page { size: \${pagesize} ${documentHeight}px; } }\`;
+            var style = document.createElement('style');
+            document.head.appendChild(style);
+            style.type = 'text/css';
+            style.appendChild(document.createTextNode(css));
+        }
+        setPrintStyles('70mm');
+        window.print();
       `;
 
-    const printWindow = window.open("", "_blank", "width=420,height=600"); // Adjusted width
-    printWindow.document.open();
-    printWindow.document.write(receiptContent);
-    printWindow.document.close();
+    iframe.contentWindow.document.body.appendChild(printScript);
 
-    // Wait a bit for the content to load, then print and handle the print dialog
-    printWindow.onload = () => {
-      // setTimeout(() => {
-      // printWindow.print();
-      // }, 400);
-
-      // Close the window after the print dialog is closed (whether successful or canceled)
-      printWindow.onafterprint = () => {
-        console.log("after print");
-        printWindow.close();
-        navigate("/sales/");
-      };
-
-      // // Optional: Use a timer to ensure the print window closes after a while
-      // setTimeout(() => {
-      //   if (printWindow) {
-      //     printWindow.close(); // Close window after timeout
-      //   }
-      // }, 10000); // Adjust time as necessary
+    iframe.contentWindow.onafterprint = () => {
+      document.body.removeChild(iframe);
     };
   }
 

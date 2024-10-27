@@ -31,10 +31,11 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   function animateNumber(target, setValue, duration) {
     const start = 0; // Starting number
     const incrementTime = duration / target; // Time interval for incrementing
+    const incrementValue = target / incrementTime; // Increment value
     let current = start;
 
     const interval = setInterval(() => {
-      if (current + 149 < target) current += 149;
+      if (current + incrementValue < target) current += incrementValue;
       else current = target;
       setValue(current);
 

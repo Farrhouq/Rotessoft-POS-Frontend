@@ -19,12 +19,19 @@ Now, for the sales...
 *admin should be able to sell. (as a preference to some admins)
 ---
 
-sale detail, and print sale
-recording the time of the sale (for offline sales when pushing back)
+
 loading of the addproduct modal when submitting
 searchable products
 edit info on receipts (add shop description and address to shop)
 shop customizable receipts (a bit of a stretch)
 add TOTAL column to admin products view
 
+
 sale made by: to sale object (backend)
+
+urgent!!
+--
+sale detail, and print sale
+receipt font size and paper length
+time maa di nyela wrong
+recording the time of the sale (for offline sales when pushing back)
