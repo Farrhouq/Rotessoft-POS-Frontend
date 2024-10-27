@@ -61,7 +61,7 @@ const Sales = () => {
               </div>
             </div>
           </div>
-          {userRole == "staff" && (
+          {
             <Link to="/sales/add/">
               <button className="btn h-fit bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white">
                 <svg
@@ -75,7 +75,7 @@ const Sales = () => {
                 <span className="max-xs:sr-only">Add Sale</span>
               </button>
             </Link>
-          )}
+          }
         </div>
         <SalesTable sales={sales} />
       </div>

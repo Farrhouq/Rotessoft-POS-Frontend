@@ -2541,6 +2541,10 @@ span.flatpickr-weekday:is(.dark *){
   margin-bottom: 1rem;
 }
 
+.-ml-1{
+  margin-left: -0.25rem;
+}
+
 .-mr-48{
   margin-right: -12rem;
 }
@@ -2651,10 +2655,6 @@ span.flatpickr-weekday:is(.dark *){
 
 .mt-auto{
   margin-top: auto;
-}
-
-.-ml-1{
-  margin-left: -0.25rem;
 }
 
 .block{
@@ -4641,6 +4641,14 @@ span.flatpickr-weekday:is(.dark *){
 
   .sm\:grid-cols-2{
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sm\:flex-row{
+    flex-direction: row;
+  }
+
+  .sm\:flex-col{
+    flex-direction: column;
   }
 
   .sm\:items-center{

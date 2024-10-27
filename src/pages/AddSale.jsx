@@ -9,18 +9,23 @@ import { checkLogin } from "../utils/Utils";
 function AddSale() {
   const navigate = useNavigate();
   const [sales, setSales] = useState([]);
+  const shopId = localStorage.getItem("shopId");
   const [currentSale, setCurrentSale] = useState({
     product: "",
     quantity: "",
     id: "",
   });
   const [products, setProducts] = useState([]);
+  const userRole = checkLogin();
 
   useEffect(() => {
+    if (!shopId && userRole != "staff") navigate("/");
+    const productsUrl =
+      userRole === "staff" ? "product/" : `product/?store=${shopId}`;
     if (localStorage.getItem("products")) {
       setProducts(JSON.parse(localStorage.getItem("products")));
     } else {
-      apiClient.get("product/").then((res) => {
+      apiClient.get(productsUrl).then((res) => {
         setProducts(res.data);
         localStorage.setItem("products", JSON.stringify(res.data));
       });
@@ -87,6 +92,7 @@ function AddSale() {
 
   const saveSales = (receipt) => {
     if (!sales.length) return;
+    const salesUrl = userRole === "staff" ? "sale/" : `sale/?store=${shopId}`;
 
     setCurrentSale({ product: "", quantity: "", id: "" });
     let todayTotal = +localStorage.getItem("todayTotal") + calculateTotal();
@@ -106,7 +112,7 @@ function AddSale() {
       return;
     }
 
-    addRequestToQueue("POST", "sale/", { sales });
+    addRequestToQueue("POST", salesUrl, { sales });
     let localSales = JSON.parse(localStorage.getItem("sales"));
     let saleStr = "";
     for (let s of sales) {
@@ -126,7 +132,7 @@ function AddSale() {
 
       // Fetch sales again to update the sales list
       apiClient
-        .get("sale/")
+        .get(salesUrl)
         .then((res) => {
           setSales(res.data);
           localStorage.setItem("sales", JSON.stringify(res.data));
@@ -142,114 +148,6 @@ function AddSale() {
       else navigate("/sale-detail/", { state: { savedSale: sales } });
     });
   };
-
-  function printReceipt() {
-    const receiptContent = `
-          <html>
-              <head>
-                  <style>
-                      /* Custom styles for the receipt */
-                      body {
-                          font-family: Arial, sans-serif;
-                          margin: 0;
-                          padding: 0;
-                          width: 80mm; /* Set to receipt width */
-                      }
-                      .receipt {
-                          padding: 10px;
-                          font-size: 6px;
-                          line-height: 1.4;
-                      }
-                      .receipt h1, .receipt h2, .receipt p {
-                          margin: 0;
-                          text-align: center;
-                      }
-                      .receipt .header, .receipt .footer {
-                          text-align: center;
-                          margin-bottom: 10px;
-                      }
-                      .receipt .items {
-                          width: 100%;
-                          margin-top: 10px;
-                      }
-                      .receipt .items th, .receipt .items td {
-                          text-align: left;
-                          padding: 5px;
-                          font-size: 12px;
-                      }
-                      .receipt .total {
-                          text-align: right;
-                          margin-top: 10px;
-                      }
-                      .receipt .total .amount {
-                          font-weight: bold;
-                      }
-                  </style>
-              </head>
-              <body>
-                  <div class="receipt">
-                      <div class="header">
-                          <h1>Parinjani Mobile Technology</h1>
-                          <p>(Dealers in Mobile Phones, Accessories, etc.)</p>
-                          <p>Locate Us: Dakpema Roundabout, Tamale-Accra Road</p>
-                          <p>Tel: 024 4 885 589 | 0209 252 462</p>
-                      </div>
-                      <p>Cashier: UNIVERSAL MAN</p>
-                      <p>Customer: SHERIF</p>
-                      <table class="items">
-                          <thead>
-                              <tr>
-                                  <th>#</th>
-                                  <th>Item Name</th>
-                                  <th>Qty</th>
-                                  <th>Price</th>
-                                  <th>Total</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr>
-                                  <td>1</td>
-                                  <td>TECNO POP 9 (64)</td>
-                                  <td>1</td>
-                                  <td>300.00</td>
-                                  <td>1,300.00</td>
-                              </tr>
-                              <tr>
-                                  <td>2</td>
-                                  <td>PROTECTOR</td>
-                                  <td>1</td>
-                                  <td>20.00</td>
-                                  <td>20.00</td>
-                              </tr>
-                          </tbody>
-                      </table>
-                      <div class="total">
-                          <p>Purchase Total: GH₵ 1,320.00</p>
-                          <p>Amount Paid: GH₵ 1,350.00</p>
-                          <p>Change: GH₵ 30.00</p>
-                          <p class="amount">Total Due: GH₵ 0.00</p>
-                      </div>
-                      <div class="footer">
-                          <p>We will serve you!</p>
-                          <p>Date: 10/25/2024 9:31:42 PM</p>
-                          <p>MoMo Number: 055 7960 396</p>
-                      </div>
-                  </div>
-              </body>
-          </html>
-      `;
-
-    const printWindow = window.open("", "_blank", "width=300,height=600");
-    printWindow.document.open();
-    printWindow.document.write(receiptContent);
-    printWindow.document.close();
-
-    // Wait a bit for the content to load, then print and close the window
-    printWindow.onload = () => {
-      printWindow.print();
-      printWindow.onafterprint = () => printWindow.close();
-    };
-  }
 
   const totalPrice = sales.reduce((sum, sale) => {
     const product = products.find((p) => p.name === sale.product);
@@ -416,7 +314,7 @@ function AddSale() {
           })}
         </div>
 
-        <div className="mt-6 flex justify-between items-center">
+        <div className="mt-6 flex justify-between sm:flex-row  flex-col items-start sm:items-center gap-4">
           <div className="text-xl font-semibold">
             Total Price: ₵{totalPrice.toFixed(2)}
           </div>

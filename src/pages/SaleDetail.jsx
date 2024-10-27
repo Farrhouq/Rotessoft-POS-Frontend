@@ -10,6 +10,10 @@ function SaleDetail() {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const { savedSale } = location.state || {};
+  if (!savedSale) {
+    navigate("/sales/");
+    return;
+  }
   const [customerName, setCustomerName] = useState("");
   const [amountPaid, setAmountPaid] = useState(0);
 
@@ -24,8 +28,18 @@ function SaleDetail() {
     }
   }, []);
 
+  function generateSaleID() {
+    return (
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 5)
+    );
+  }
+
   function printReceipt() {
-    if (!amountPaid || !customerName) return;
+    if (!amountPaid || !customerName) {
+      toaster.error("Please enter the customer name and amount paid");
+      return;
+    }
     const totalPrice = savedSale.reduce((acc, curr) => {
       const product = products.find((p) => p.name === curr.product);
       const price = product ? product.selling_price : 0;
@@ -81,12 +95,20 @@ function SaleDetail() {
                       font-weight: bold;
                       text-decoration: underline
                   }
+
+                  @media print {
+                    #print-button {
+                      display: none;
+                      visibility: hidden;
+                    }
+                  }
+
               </style>
           </head>
           <body>
               <div class="receipt">
                   <div class="header">
-                      <h1>Parinjani Mobile Technology</h1>
+                      <h1>${localStorage.getItem("brand_name")}</h1>
                       <p>(Dealers in Mobile Phones, Accessories, Decoding, Flashing, Repairing, Downloading Tones, CD Printing, Lamination, Design of Cards)</p>
                       <p>Locate Us: Dakpema Roundabout, Tamale-Accra Road</p>
                       <p>Tel: 0244 885 589 | 0209 252 462</p>
@@ -135,7 +157,12 @@ function SaleDetail() {
                       <p>Date: ${new Date().toLocaleString()}</p>
                       <p>MoMo Number: 055 7960 396</p>
                   </div>
-                  <p style="font-style: italic; margin-bottom: 6px;">Thank you for your patronage, dear customer</p>
+                  <p style="font-style: italic; margin-bottom: 4px;">Thank you for your patronage, dear customer</p>
+                  <span style="margin-bottom: 6px;">Sale id: ${generateSaleID().toUpperCase()}</span>
+
+                  <button id="print-button" style="background: blue; display:flex;align-items:center;justify-content:center;
+                  padding: 3px 5px; border-radius: 10%; border:none; color: white; font-size: 6px; margin-top: 10px;cursor: pointer"
+                  onClick=(print())>Print</button>
               </div>
           </body>
         </html>
@@ -149,13 +176,14 @@ function SaleDetail() {
     // Wait a bit for the content to load, then print and handle the print dialog
     printWindow.onload = () => {
       // setTimeout(() => {
-      printWindow.print();
+      // printWindow.print();
       // }, 400);
 
       // Close the window after the print dialog is closed (whether successful or canceled)
       printWindow.onafterprint = () => {
         console.log("after print");
         printWindow.close();
+        navigate("/sales/");
       };
 
       // // Optional: Use a timer to ensure the print window closes after a while
