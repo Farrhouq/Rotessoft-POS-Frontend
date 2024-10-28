@@ -49,19 +49,19 @@ function SaleDetail() {
 
     // Define the HTML content for the receipt
     const receiptContent = `
-        <div id="section-to-print" style="width: 70mm; font-family: Arial, sans-serif; line-height: 1.1;">
-            <div class="receipt" style="padding: 5px;">
-                <h1 style="font-size: 14px; text-align: center; margin: 0;">${localStorage.getItem("brand_name")}</h1>
-                <p style="font-size: 10px; text-align: center; margin: 2px 0;">(Dealers in Mobile Phones, Accessories...)</p>
-                <p style="font-size: 10px; text-align: center; margin: 2px 0;">Locate Us: Dakpema Roundabout, Tamale-Accra Road</p>
-                <p style="font-size: 10px; text-align: center; margin: 2px 0;">Tel: 0244 885 589 | 0209 252 462</p>
-                <hr style="border-top: 1px dashed #000; margin: 5px 0;" />
+        <div id="section-to-print" style="width: 70mm; font-family: Arial, sans-serif; line-height: 1.2;">
+            <div class="receipt" style="padding: 10px;">
+                <h1 style="font-size: 16px; text-align: center; margin: 0;">${localStorage.getItem("brand_name")}</h1>
+                <p style="font-size: 12px; text-align: center; margin: 5px 0;">(Dealers in Mobile Phones, Accessories...)</p>
+                <p style="font-size: 12px; text-align: center; margin: 5px 0;">Locate Us: Dakpema Roundabout, Tamale-Accra Road</p>
+                <p style="font-size: 12px; text-align: center; margin: 5px 0;">Tel: 0244 885 589 | 0209 252 462</p>
+                <hr style="border-top: 1px dashed #000; margin: 10px 0;" />
 
-                <div style="display: flex; justify-content: space-between; font-size: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px;">
                     <p style="margin: 0;">Cashier: <strong>UNIVERSAL MAN</strong></p>
                     <p style="margin: 0;">Customer: <strong>${customerName}</strong></p>
                 </div>
-                <table style="width: 100%; font-size: 10px; margin: 5px 0;">
+                <table style="width: 100%; font-size: 12px; margin: 10px 0;">
                     <thead>
                         <tr>
                             <th style="text-align: left;">Product</th>
@@ -89,20 +89,20 @@ function SaleDetail() {
                           .join("")}
                     </tbody>
                 </table>
-                <hr style="border-top: 1px dashed #000; margin: 5px 0;" />
+                <hr style="border-top: 1px dashed #000; margin: 10px 0;" />
 
-                <div style="display: flex; justify-content: space-between; font-size: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px;">
                     <p style="margin: 0;">Purchase Total: <strong>GH₵ ${totalPrice.toFixed(2)}</strong></p>
                     <p style="margin: 0;">Amount Paid: <strong>GH₵ ${Number(amountPaid).toFixed(2)}</strong></p>
                 </div>
-                <div style="display: flex; justify-content: space-between; font-size: 10px;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px;">
                     <p style="margin: 0;">Change: <strong>GH₵ ${(amountPaid - totalPrice).toFixed(2)}</strong></p>
                     <p style="margin: 0;">Total Due: <strong>GH₵ ${(totalPrice - amountPaid).toFixed(2) > 0 ? (totalPrice - amountPaid).toFixed(2) : "0.00"}</strong></p>
                 </div>
-                <p style="font-size: 10px; margin: 2px 0;">Date: ${new Date().toLocaleString()}</p>
-                <p style="font-size: 10px; margin: 2px 0;">MoMo Number: <strong>055 7960 396</strong></p>
-                <p style="font-size: 10px; margin: 2px 0;">Sale ID: <strong>${generateSaleID().toUpperCase()}</strong></p>
-                <p style="font-size: 10px; font-style: italic; text-align: center; margin: 5px 0;">Thank you for your patronage!</p>
+                <p style="font-size: 12px; margin: 5px 0;">Date: ${new Date().toLocaleString()}</p>
+                <p style="font-size: 12px; margin: 5px 0;">MoMo Number: <strong>055 7960 396</strong></p>
+                <p style="font-size: 12px; margin: 5px 0;">Sale ID: <strong>${generateSaleID().toUpperCase()}</strong></p>
+                <p style="font-size: 12px; font-style: italic; text-align: center; margin: 10px 0;">Thank you for your patronage!</p>
             </div>
         </div>`;
 
