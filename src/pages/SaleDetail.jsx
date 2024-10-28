@@ -165,6 +165,7 @@ function SaleDetail() {
     iframe.contentWindow.onafterprint = () => {
       document.body.removeChild(iframe);
     };
+    navigate("/sales/add/");
   }
 
   return (

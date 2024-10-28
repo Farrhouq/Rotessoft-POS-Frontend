@@ -144,8 +144,16 @@ function AddSale() {
         });
       //
 
-      if (!receipt) navigate("/sales/");
-      else navigate("/sale-detail/", { state: { savedSale: sales } });
+      if (!receipt) {
+        // setSales([]);
+        // setCurrentSale({
+        //   product: "",
+        //   quantity: "",
+        //   id: "",
+        // });
+        // window.location.reload();
+        navigate("/sales/");
+      } else navigate("/sale-detail/", { state: { savedSale: sales } });
     });
   };
 
