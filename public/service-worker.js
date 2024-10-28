@@ -4,11 +4,11 @@ self.addEventListener("install", (event) => {
       return cache.addAll([
         "/",
         "/index.html",
-        "/src/css/main.css", // Add paths to your CSS files
+        "/main.css", // Add paths to your CSS files
         // "/js/app.js", // Add paths to your JS files
         // "/icons/icon-192x192.png", // Add paths to your icons
         // "/icons/icon-512x512.png",
-        "/src/images/rotessoft-icon.png",
+        "/rotessoft-icon.png",
       ]);
     }),
   );
