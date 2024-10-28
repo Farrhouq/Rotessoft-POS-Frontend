@@ -316,11 +316,12 @@ function SaleDetail() {
           <span>Balance:</span>
           <span className="text-red-800">
             ₵
-            {savedSale.reduce((acc, curr) => {
-              const product = products.find((p) => p.name === curr.product);
-              const price = product ? product.selling_price : 0;
-              return acc + price * curr.quantity;
-            }, 0) - amountPaid}
+            {amountPaid -
+              savedSale.reduce((acc, curr) => {
+                const product = products.find((p) => p.name === curr.product);
+                const price = product ? product.selling_price : 0;
+                return acc + price * curr.quantity;
+              }, 0)}
           </span>
         </div>
       </div>
