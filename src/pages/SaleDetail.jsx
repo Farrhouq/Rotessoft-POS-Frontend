@@ -28,6 +28,32 @@ function SaleDetail() {
     }
   }, []);
 
+  // when they press enter, it should auto go to the next input, then finally the print button
+  function handleKeyDown(e) {
+    // I want to create an array of the input field, the amount entered field, and the print button
+    // then I want to get the index of the current input field and focus on the next one
+    // if the current input field is the last one, then focus on the print button
+    // I can get the index of the current input field by using the Array.prototype.indexOf.call method
+    // I can get the form of the current input field by using e.target.form
+    // I can get the next input field by using form.elements[index + 1]
+    // I can focus on the next input field by using form.elements[index + 1].focus()
+    // now please write the code for me
+    const focusArray = [
+      document.querySelector("input#customerName"),
+      document.querySelector("input#amountPaid"),
+      document.querySelector("button#printReceipt"),
+    ];
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const index = Array.prototype.indexOf.call(focusArray, e.target);
+      focusArray[index + 1].focus();
+    }
+  }
+
+  // now use this event handler in the input fields
+  // <input onKeyDown={handleKeyDown} />
+
   function generateSaleID() {
     return (
       Math.random().toString(36).substring(2, 15) +
@@ -155,6 +181,8 @@ function SaleDetail() {
             <input
               type="text"
               id="customerName"
+              autoFocus={true}
+              onKeyDown={handleKeyDown}
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               className="mt-1 block dark:text-black w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -169,6 +197,7 @@ function SaleDetail() {
             </label>
             <input
               type="number"
+              onKeyDown={handleKeyDown}
               id="amountPaid"
               value={amountPaid}
               onChange={(e) => setAmountPaid(e.target.value)}
@@ -262,20 +291,37 @@ function SaleDetail() {
           })}
         </div>
         <div className="mt-6 flex justify-between items-center">
-          <div className="text-xl font-semibold">
-            Total Price: ₵
-            {savedSale.reduce((acc, curr) => {
-              const product = products.find((p) => p.name === curr.product);
-              const price = product ? product.selling_price : 0;
-              return acc + price * curr.quantity;
-            }, 0)}
+          <div className="text-xl font-semibold flex justify-between gap-7">
+            <span>Total Price:</span>
+            <span>
+              ₵
+              {savedSale.reduce((acc, curr) => {
+                const product = products.find((p) => p.name === curr.product);
+                const price = product ? product.selling_price : 0;
+                return acc + price * curr.quantity;
+              }, 0)}
+            </span>
           </div>
           <button
             onClick={printReceipt}
+            id="printReceipt"
             className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 flex items-center"
           >
             Print Receipt
           </button>
+
+          {/* a big text to show the customers balance */}
+        </div>
+        <div className="text-xl font-semibold flex w-[16%] justify-between gap-7 mt-10">
+          <span>Balance:</span>
+          <span className="text-red-800">
+            ₵
+            {savedSale.reduce((acc, curr) => {
+              const product = products.find((p) => p.name === curr.product);
+              const price = product ? product.selling_price : 0;
+              return acc + price * curr.quantity;
+            }, 0) - amountPaid}
+          </span>
         </div>
       </div>
     </div>
