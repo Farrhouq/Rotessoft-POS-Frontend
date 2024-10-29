@@ -32,14 +32,28 @@ function AddSale() {
     }
   }, []);
 
+  function extractFirstPart(label) {
+    // Define the exact separator
+    const separator = "---------------------";
+
+    // Split the label by the exact separator
+    let parts = label.split(separator);
+
+    // The first part before the separator
+    let firstPart = parts[0].trim();
+
+    return firstPart;
+  }
+
   const handleInputChange = (e) => {
     const { value, label } = e;
-    // console.log(e);
     setCurrentSale({
-      product: label,
+      product: extractFirstPart(label),
       quantity: currentSale.quantity,
       id: value,
     });
+    // let p = products.find((p) => p.name === extractFirstPart(label));
+    // console.log(p);
   };
 
   const handleQtyChange = (e) => {
@@ -173,7 +187,7 @@ function AddSale() {
               className="dark:bg-gray-800"
               options={products.map((product) => ({
                 value: product.id,
-                label: product.name,
+                label: `${product.name} --------------------- ${product.amount_in_stock}`,
               }))}
               onChange={(e) => handleInputChange(e)}
               styles={{
@@ -209,6 +223,16 @@ function AddSale() {
             Add
           </button>
         </div>
+
+        {/* p tag showing the amount in stock of the selected product */}
+        <p className="text-gray-700 font-semibold mb-5 dark:text-gray-300">
+          {currentSale.product
+            ? `Amount in stock: ${
+                products.find((p) => p.name === currentSale.product)
+                  .amount_in_stock
+              }`
+            : ""}
+        </p>
 
         {/* table */}
         <div

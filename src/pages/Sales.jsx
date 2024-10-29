@@ -13,21 +13,13 @@ const Sales = () => {
   // processQueue();
 
   const fetchSales = async (role) => {
-    if (role == "staff")
-      return api.get("sale/").then((res) => {
-        setSales(res.data);
-        localStorage.setItem("sales", JSON.stringify(res.data));
-        let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
-        localStorage.setItem("todayTotal", today);
-      });
-    else {
-      return api.get(`sale/?store=${shopId}`).then((res) => {
-        setSales(res.data);
-        localStorage.setItem("sales", JSON.stringify(res.data));
-        let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
-        localStorage.setItem("todayTotal", today);
-      });
-    }
+    const salesUrl = role == "staff" ? "sale/" : `sale/?store=${shopId}`;
+    return api.get(salesUrl).then((res) => {
+      setSales(res.data);
+      localStorage.setItem("sales", JSON.stringify(res.data));
+      let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
+      localStorage.setItem("todayTotal", today);
+    });
   };
 
   useEffect(() => {
