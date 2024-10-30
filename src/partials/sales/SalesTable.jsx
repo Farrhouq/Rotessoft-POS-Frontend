@@ -1,4 +1,5 @@
-// import check
+import { useState, useEffect } from "react";
+import DateNavigator from "../../components/DateNavigator";
 
 function SalesTable({ sales }) {
   const getSaleDetail = (index) => {

@@ -5,6 +5,7 @@ import toaster from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { addRequestToQueue, processQueue } from "../utils/requestQueue";
 import { checkLogin } from "../utils/Utils";
+import { mergeAndSortSales } from "../utils/sales";
 
 function AddSale() {
   const navigate = useNavigate();
@@ -148,8 +149,10 @@ function AddSale() {
       apiClient
         .get(salesUrl)
         .then((res) => {
-          setSales(res.data);
-          localStorage.setItem("sales", JSON.stringify(res.data));
+          let localSales = JSON.parse(localStorage.getItem("sales"));
+          let allSales = mergeAndSortSales(res.data, localSales || []);
+          // setSales(allSales);
+          localStorage.setItem("sales", JSON.stringify(allSales));
           let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
           localStorage.setItem("todayTotal", today);
         })
