@@ -43,8 +43,8 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     setYesterdayTotal(
       data.length > 2 ? data.daily_sales.slice(-2)[0].total : 0,
     );
-    animateNumber(data.total_sales_today, setTodayTotal, 1);
-    localStorage.setItem("todayTotal", data.total_sales_today);
+    animateNumber(data.daily_sales.slice(-1)[0].total, setTodayTotal, 1);
+    localStorage.setItem("todayTotal", data.daily_sales.slice(-1)[0].total);
     setDailyTarget(data.daily_target);
     let weeklyTotal = 0;
     for (let week of data.daily_sales) {
@@ -65,6 +65,35 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     setDailyTotals(daily_totals);
   };
 
+  function ensureTodayEntry() {
+    // Retrieve and parse the stringified object from localStorage
+    let dashboardData = JSON.parse(localStorage.getItem("dashboardData"));
+    if (!dashboardData || !dashboardData.daily_sales) {
+      console.error("No dashboard data or daily sales found in localStorage.");
+      return;
+    }
+
+    // Get today's date in the same format (YYYY-MM-DD)
+    const today = new Date().toISOString().split("T")[0];
+
+    // Check if today's date is in daily_sales
+    const todayExists = dashboardData.daily_sales.some(
+      (entry) => entry.sale__created_at__date === today,
+    );
+
+    if (!todayExists) {
+      // If today's entry is not in daily_sales, add it with a total of 0.0
+      dashboardData.daily_sales.push({
+        total: 0.0,
+        sale__created_at__date: today,
+      });
+
+      // Save the updated dashboardData back to localStorage
+      localStorage.setItem("dashboardData", JSON.stringify(dashboardData));
+    }
+    return dashboardData;
+  }
+
   const loadDashboardData = () => {
     apiClient
       .get("dashboard/")
@@ -76,7 +105,8 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
       .catch((res) => {
         if (res.code == "ERR_NETWORK") toaster.error("You're offline");
         let dashboardData = JSON.parse(localStorage.getItem("dashboardData"));
-        useDashboardData(dashboardData);
+        console.log(ensureTodayEntry(dashboardData));
+        useDashboardData(ensureTodayEntry(dashboardData));
       });
   };
 

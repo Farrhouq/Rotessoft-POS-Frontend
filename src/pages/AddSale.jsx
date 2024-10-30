@@ -5,7 +5,8 @@ import toaster from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { addRequestToQueue, processQueue } from "../utils/requestQueue";
 import { checkLogin } from "../utils/Utils";
-import { mergeAndSortSales } from "../utils/sales";
+import { filterSales, mergeAndSortSales } from "../utils/sales";
+import { updateDashboardTotalSalesToday } from "../utils/dashboard";
 
 function AddSale() {
   const navigate = useNavigate();
@@ -139,7 +140,7 @@ function AddSale() {
       __str__: saleStr,
       total: calculateTotal(),
     };
-    localSales.unshift(newSale);
+    localSales.push(newSale);
     localStorage.setItem("sales", JSON.stringify(localSales));
     processQueue().finally(() => {
       setSales([]);
@@ -155,9 +156,17 @@ function AddSale() {
           localStorage.setItem("sales", JSON.stringify(allSales));
           let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
           localStorage.setItem("todayTotal", today);
+          updateDashboardTotalSalesToday(today);
         })
         .catch(() => {
           toaster.error("You're offline. Sales will sync when online."); // might remove this code. Or add info like: Sales will sync when you're online. But I just don't want to make the place messy. Also I want to make it seamless.
+          // do the offline updates here to the dashboard as well
+          console.clear();
+          console.log("wer're herese");
+          let localSales = JSON.parse(localStorage.getItem("sales"));
+          let todaySales = filterSales(localSales, 0);
+          let today = todaySales.reduce((acc, sale) => acc + sale.total, 0);
+          updateDashboardTotalSalesToday(today);
         });
       //
 

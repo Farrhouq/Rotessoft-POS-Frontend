@@ -20,3 +20,24 @@ export function mergeAndSortSales(sales1, sales2) {
 
   return uniqueSales;
 }
+
+export function filterSales(sales, range_1, range_2 = range_1) {
+  if (range_2 < range_1) {
+    throw new Error("range_2 must be greater than or equal to range_1");
+  }
+
+  const today = new Date();
+  const startDate = new Date(today);
+  const endDate = new Date(today);
+
+  // Set date boundaries
+  startDate.setDate(today.getDate() - range_2);
+  startDate.setHours(0, 0, 0, 0); // Start of the day
+  endDate.setDate(today.getDate() - range_1);
+  endDate.setHours(23, 59, 59, 999); // End of the day
+
+  return sales.filter((sale) => {
+    const saleDate = new Date(sale.created_at);
+    return saleDate >= startDate && saleDate <= endDate;
+  });
+}
