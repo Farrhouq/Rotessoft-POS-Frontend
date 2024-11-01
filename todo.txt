@@ -24,6 +24,8 @@ Now, for the sales...
 *handle the onafter print (the mechanism changed, y'know)
 *there's also something with how seamless it is to add another product
 *field for showing the balance for the customer
+*capitalize the customer name when printing (small details, but I have an urge to make quality)
+*(finally) recording the time of the sale (for offline sales when pushing back)
 ---
 
 
@@ -31,10 +33,8 @@ urgent!! (for parinjani)
 --
 sale detail, and print sale
 linking the customer details and amount given to the sale. (in the backend as well)
-capitalize the customer name when printing (small details, but I have an urge to make quality software)
-recording the time of the sale (for offline sales when pushing back)
 sale id, shortening it (linking it to the actual sale id from the backend)
-replacing items after sale is saved
+reversing sales
 when they press enter, it should navigate around (for the add sale page) (before the receipt)
 
 searchable products

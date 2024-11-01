@@ -75,11 +75,9 @@ function AddSale() {
   };
 
   const updateStock = (id, toSubtract) => {
-    console.log("updating stock...");
     // Update the products state
     let localProducts = JSON.parse(localStorage.getItem("products"));
     let product = localProducts.find((product) => product.id === id);
-    console.log(product, "product_found...");
     if (product.amount_in_stock < toSubtract) {
       toaster.error(`Not enough stock for product ${product.name}`);
       return null;
@@ -128,7 +126,7 @@ function AddSale() {
       return;
     }
 
-    addRequestToQueue("POST", salesUrl, { sales });
+    addRequestToQueue("POST", salesUrl, { sales, created_at: new Date() });
     let localSales = JSON.parse(localStorage.getItem("sales"));
     let saleStr = "";
     for (let s of sales) {
@@ -161,8 +159,6 @@ function AddSale() {
         .catch(() => {
           toaster.error("You're offline. Sales will sync when online."); // might remove this code. Or add info like: Sales will sync when you're online. But I just don't want to make the place messy. Also I want to make it seamless.
           // do the offline updates here to the dashboard as well
-          console.clear();
-          console.log("wer're herese");
           let localSales = JSON.parse(localStorage.getItem("sales"));
           let todaySales = filterSales(localSales, 0);
           let today = todaySales.reduce((acc, sale) => acc + sale.total, 0);
