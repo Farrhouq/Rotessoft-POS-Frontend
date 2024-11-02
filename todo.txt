@@ -43,3 +43,5 @@ add TOTAL column to admin products view
 sale made by: to sale object (backend)
 shop customizable receipts (a bit of a stretch)
 edit info on receipts (add shop description and address to shop)
+
+key features should highlight some words.
