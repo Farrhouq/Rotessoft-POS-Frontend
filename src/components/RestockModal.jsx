@@ -15,16 +15,6 @@ function RestockModal({ modalOpen, setModalOpen, products, setProducts }) {
   });
   const [loading, setLoading] = useState(false);
 
-  // close on click outside
-  // useEffect(() => {
-  //   const clickHandler = ({ target }) => {
-  //     if (!modalOpen || modalContent.current.contains(target)) return;
-  //     setModalOpen(false);
-  //   };
-  //   document.addEventListener("click", clickHandler);
-  //   return () => document.removeEventListener("click", clickHandler);
-  // });
-
   const handleInputChange = (e) => {
     const { value, label } = e;
     // setProductId(value);

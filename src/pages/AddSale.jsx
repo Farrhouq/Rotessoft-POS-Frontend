@@ -7,11 +7,13 @@ import { addRequestToQueue, processQueue } from "../utils/requestQueue";
 import { checkLogin } from "../utils/Utils";
 import { filterSales, mergeAndSortSales } from "../utils/sales";
 import { updateDashboardTotalSalesToday } from "../utils/dashboard";
+import { v4 as uuidv4 } from "uuid";
 
 function AddSale() {
   const navigate = useNavigate();
   const [sales, setSales] = useState([]);
   const shopId = localStorage.getItem("shopId");
+  const [customerName, setCustomerName] = useState("");
   const [currentSale, setCurrentSale] = useState({
     product: "",
     quantity: "",
@@ -125,8 +127,13 @@ function AddSale() {
       localStorage.setItem("products", JSON.stringify(oldProducts));
       return;
     }
-
-    addRequestToQueue("POST", salesUrl, { sales, created_at: new Date() });
+    let saleId = uuidv4();
+    addRequestToQueue("POST", salesUrl, {
+      sales,
+      created_at: new Date(),
+      id: saleId,
+      customer_name: customerName,
+    });
     let localSales = JSON.parse(localStorage.getItem("sales"));
     let saleStr = "";
     for (let s of sales) {
@@ -137,6 +144,7 @@ function AddSale() {
       created_at: new Date(),
       __str__: saleStr,
       total: calculateTotal(),
+      id: saleId,
     };
     localSales.push(newSale);
     localStorage.setItem("sales", JSON.stringify(localSales));
@@ -156,13 +164,17 @@ function AddSale() {
           localStorage.setItem("todayTotal", today);
           updateDashboardTotalSalesToday(today);
         })
-        .catch(() => {
-          toaster.error("You're offline. Sales will sync when online."); // might remove this code. Or add info like: Sales will sync when you're online. But I just don't want to make the place messy. Also I want to make it seamless.
-          // do the offline updates here to the dashboard as well
-          let localSales = JSON.parse(localStorage.getItem("sales"));
-          let todaySales = filterSales(localSales, 0);
-          let today = todaySales.reduce((acc, sale) => acc + sale.total, 0);
-          updateDashboardTotalSalesToday(today);
+        .catch((res) => {
+          if (res.code == "ERR_NETWORK") {
+            toaster.error("You're offline. Sales will sync when online."); // might remove this code. Or add info like: Sales will sync when you're online. But I just don't want to make the place messy. Also I want to make it seamless.
+            // do the offline updates here to the dashboard as well
+            let localSales = JSON.parse(localStorage.getItem("sales"));
+            let todaySales = filterSales(localSales, 0);
+            let today = todaySales.reduce((acc, sale) => acc + sale.total, 0);
+            updateDashboardTotalSalesToday(today);
+          } else {
+            toaster.error("An error occurred. Please try again.");
+          }
         });
       //
 
@@ -175,7 +187,7 @@ function AddSale() {
         // });
         // window.location.reload();
         navigate("/sales/");
-      } else navigate("/sale-detail/", { state: { savedSale: sales } });
+      } else navigate("/print/", { state: { savedSale: sales } });
     });
   };
 
@@ -242,6 +254,19 @@ function AddSale() {
             : ""}
         </p>
 
+        {/* give me an input field */}
+        {sales.length > 0 && (
+          <div className="mb-6">
+            <input
+              type="text"
+              name="customer"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              placeholder="Customer name"
+              className="w-full bg-white text-black border-gray-300 dark:border-gray-700 rounded-md p-2"
+            />
+          </div>
+        )}
         {/* table */}
         <div
           id="receipt"

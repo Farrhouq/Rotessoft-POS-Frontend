@@ -23,7 +23,8 @@
     "react-router-dom": "^6.20.1",
     "react-select": "^5.8.1",
     "react-select-search": "^4.1.8",
-    "react-transition-group": "^4.4.5"
+    "react-transition-group": "^4.4.5",
+    "uuid": "^11.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",

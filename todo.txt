@@ -29,8 +29,14 @@ Now, for the sales...
 ---
 
 
-urgent!! (for parinjani)
+urgent!!
 --
+focus on add product name input when the modal is first opened
+() admin cache the stores and dashboard info (and for main dash)
+main dashboard spinner not spinning when loading
+open the side nav when user enters first so they can see the tab labels (on large screens)
+trying to add sales without entering products first doesn't work
+
 sale detail, and print sale
 linking the customer details and amount given to the sale. (in the backend as well)
 sale id, shortening it (linking it to the actual sale id from the backend)

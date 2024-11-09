@@ -41,11 +41,12 @@ const Sales = () => {
   const fetchSales = async (role) => {
     const salesUrl = role == "staff" ? "sale/" : `sale/?store=${shopId}`;
     return api.get(salesUrl).then((res) => {
-      let localSales = JSON.parse(localStorage.getItem("sales"));
-      let allSales = mergeAndSortSales(res.data, localSales || []);
-      setSales(allSales);
-      console.log(allSales);
-      localStorage.setItem("sales", JSON.stringify(allSales));
+      // let localSales = JSON.parse(localStorage.getItem("sales"));
+      // let allSales = mergeAndSortSales(res.data, localSales || []);
+      // setSales(allSales);
+      // localStorage.setItem("sales", JSON.stringify(allSales));
+      setSales(mergeAndSortSales(res.data, []));
+      localStorage.setItem("sales", JSON.stringify(res.data));
       let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
       localStorage.setItem("todayTotal", today);
     });

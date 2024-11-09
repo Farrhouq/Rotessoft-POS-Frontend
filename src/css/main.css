@@ -2605,6 +2605,10 @@ span.flatpickr-weekday:is(.dark *){
   margin-left: 1rem;
 }
 
+.ml-auto{
+  margin-left: auto;
+}
+
 .mr-1{
   margin-right: 0.25rem;
 }
@@ -2655,22 +2659,6 @@ span.flatpickr-weekday:is(.dark *){
 
 .mt-auto{
   margin-top: auto;
-}
-
-.ml-5{
-  margin-left: 1.25rem;
-}
-
-.ml-6{
-  margin-left: 1.5rem;
-}
-
-.ml-7{
-  margin-left: 1.75rem;
-}
-
-.ml-20{
-  margin-left: 5rem;
 }
 
 .block{
@@ -3122,6 +3110,12 @@ span.flatpickr-weekday:is(.dark *){
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.space-y-4 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+
 .space-y-6 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -3239,6 +3233,11 @@ span.flatpickr-weekday:is(.dark *){
   border-end-start-radius: 0.375rem;
 }
 
+.rounded-t{
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
 .border{
   border-width: 1px;
 }
@@ -3261,6 +3260,10 @@ span.flatpickr-weekday:is(.dark *){
 
 .border-l{
   border-left-width: 1px;
+}
+
+.border-l-8{
+  border-left-width: 8px;
 }
 
 .border-r{
@@ -3405,6 +3408,10 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(103 191 255 / var(--tw-bg-opacity));
 }
 
+.bg-transparent{
+  background-color: transparent;
+}
+
 .bg-violet-500{
   --tw-bg-opacity: 1;
   background-color: rgb(132 112 255 / var(--tw-bg-opacity));
@@ -3421,6 +3428,10 @@ span.flatpickr-weekday:is(.dark *){
 
 .bg-opacity-50{
   --tw-bg-opacity: 0.5;
+}
+
+.bg-opacity-75{
+  --tw-bg-opacity: 0.75;
 }
 
 .bg-\[linear-gradient\(135deg\2c var\(--tw-gradient-stops\)\)\]{
@@ -3447,6 +3458,10 @@ span.flatpickr-weekday:is(.dark *){
 
 .fill-red-300{
   fill: #FF9494;
+}
+
+.fill-red-500{
+  fill: #FF5656;
 }
 
 .fill-violet-500{
@@ -4460,6 +4475,11 @@ span.flatpickr-weekday:is(.dark *){
   color: rgb(192 132 252 / var(--tw-text-opacity));
 }
 
+.dark\:text-red-500:is(.dark *){
+  --tw-text-opacity: 1;
+  color: rgb(255 86 86 / var(--tw-text-opacity));
+}
+
 .dark\:text-white:is(.dark *){
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -4712,6 +4732,10 @@ span.flatpickr-weekday:is(.dark *){
 
   .sm\:justify-between{
     justify-content: space-between;
+  }
+
+  .sm\:rounded-lg{
+    border-radius: 0.5rem;
   }
 
   .sm\:p-6{

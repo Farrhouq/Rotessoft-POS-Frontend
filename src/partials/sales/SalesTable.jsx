@@ -1,7 +1,11 @@
-import { useState, useEffect } from "react";
-import DateNavigator from "../../components/DateNavigator";
+import { checkLogin } from "../../utils/Utils";
+import SaleDetailModal from "../../components/SaleDetailModal";
+import { useState } from "react";
 
 function SalesTable({ sales }) {
+  const [saleDetailModalOpen, setSaleDetailModalOpen] = useState(false);
+  const [saleId, setSaleId] = useState(null);
+  const userRole = checkLogin();
   const getSaleDetail = (index) => {
     const saleUrl =
       userRole === "staff" ? "product/" : `product/?store=${shopId}`;
@@ -27,7 +31,11 @@ function SalesTable({ sales }) {
           >
             <td
               className="p-4 mb-5 hover:text-violet-600 cursor-pointer"
-              onClick={() => getSaleDetail(index)}
+              // onClick={() => getSaleDetail(index)}
+              onClick={() => {
+                setSaleDetailModalOpen(true);
+                setSaleId(sale.id);
+              }}
             >
               {sale.__str__}
             </td>
@@ -45,6 +53,11 @@ function SalesTable({ sales }) {
           </tr>
         ))}
       </tbody>
+      <SaleDetailModal
+        saleId={saleId}
+        modalOpen={saleDetailModalOpen}
+        setModalOpen={setSaleDetailModalOpen}
+      />
     </table>
   );
 }
