@@ -3,6 +3,7 @@ import Transition from "../utils/Transition";
 import api from "../apiClient";
 import { checkLogin } from "../utils/Utils";
 import { ArrowDownIcon } from "lucide-react";
+import toaster from "react-hot-toast";
 
 function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
   const [saleDetails, setSaleDetails] = useState({
@@ -24,15 +25,26 @@ function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
   });
 
   useEffect(() => {
+    let shopId = localStorage.getItem("shopId");
     if (modalOpen) {
       const userRole = checkLogin();
       let saleUrl =
-        userRole == "staff" ? `sale/${saleId}` : `sale/${saleId}?store=1`;
+        userRole == "staff"
+          ? `sale/${saleId}`
+          : `sale/${saleId}?store=${shopId}`;
+      console.log(saleUrl);
       setLoading(true);
-      api.get(saleUrl).then((res) => {
-        setSaleDetails(res.data);
-        setLoading(false);
-      });
+      api
+        .get(saleUrl)
+        .then((res) => {
+          setSaleDetails(res.data);
+          setLoading(false);
+        })
+        .catch(() => {
+          toaster.error("Sale not found!");
+          setLoading(false);
+          setModalOpen(false);
+        });
     }
   }, [modalOpen, saleId]);
 
