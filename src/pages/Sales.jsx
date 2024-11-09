@@ -56,7 +56,7 @@ const Sales = () => {
     let localSales = localStorage.getItem("sales");
     if (localSales) setSales(mergeAndSortSales(JSON.parse(localSales), []));
     fetchSales(userRole).catch(() => {
-      setSales(mergeAndSortSales(JSON.parse(localSales)));
+      setSales(mergeAndSortSales(JSON.parse(localSales), []));
     });
   }, [shopId, userRole]);
 
