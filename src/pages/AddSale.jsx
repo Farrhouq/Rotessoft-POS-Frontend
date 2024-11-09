@@ -134,7 +134,7 @@ function AddSale() {
       id: saleId,
       customer_name: customerName,
     });
-    let localSales = JSON.parse(localStorage.getItem("sales"));
+    let localSales = JSON.parse(localStorage.getItem("sales")) || [];
     let saleStr = "";
     for (let s of sales) {
       saleStr += s.product;
@@ -156,7 +156,7 @@ function AddSale() {
       apiClient
         .get(salesUrl)
         .then((res) => {
-          let localSales = JSON.parse(localStorage.getItem("sales"));
+          let localSales = JSON.parse(localStorage.getItem("sales")) || [];
           let allSales = mergeAndSortSales(res.data, localSales || []);
           // setSales(allSales);
           localStorage.setItem("sales", JSON.stringify(allSales));
@@ -168,7 +168,7 @@ function AddSale() {
           if (res.code == "ERR_NETWORK") {
             toaster.error("You're offline. Sales will sync when online."); // might remove this code. Or add info like: Sales will sync when you're online. But I just don't want to make the place messy. Also I want to make it seamless.
             // do the offline updates here to the dashboard as well
-            let localSales = JSON.parse(localStorage.getItem("sales"));
+            let localSales = JSON.parse(localStorage.getItem("sales")) || [];
             let todaySales = filterSales(localSales, 0);
             let today = todaySales.reduce((acc, sale) => acc + sale.total, 0);
             updateDashboardTotalSalesToday(today);

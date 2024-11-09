@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { checkLogin } from "../../utils/Utils";
 import apiClient from "../../apiClient";
 import { useNavigate } from "react-router-dom";
+import toaster from "react-hot-toast";
 
 function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [shops, setShops] = useState([]);
@@ -20,10 +21,20 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     if (userRole != "admin") {
       navigate("/");
     }
-    apiClient.get("store/").then((res) => {
-      setShops(res.data);
-      setTodayTotal(res.data.reduce((acc, shop) => acc + shop.today_total, 0));
-    });
+    setLoading(true);
+    apiClient
+      .get("store/")
+      .then((res) => {
+        setLoading(false);
+        setShops(res.data);
+        setTodayTotal(
+          res.data.reduce((acc, shop) => acc + shop.today_total, 0),
+        );
+      })
+      .catch(() => {
+        setLoading(false);
+        toaster.error("An error occurred while fetching dashboard data.");
+      });
   }, [reloadVar]);
 
   return (

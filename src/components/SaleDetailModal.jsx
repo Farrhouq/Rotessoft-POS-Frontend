@@ -32,7 +32,6 @@ function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
         userRole == "staff"
           ? `sale/${saleId}`
           : `sale/${saleId}?store=${shopId}`;
-      console.log(saleUrl);
       setLoading(true);
       api
         .get(saleUrl)

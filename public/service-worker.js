@@ -14,30 +14,30 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// self.addEventListener("fetch", (event) => {
-//   if (event.request.url.includes("/assets/")) {
-//     // Handle requests to the assets folder
-//     event.respondWith(
-//       caches.open("v1").then((cache) => {
-//         return cache.match(event.request).then((response) => {
-//           return (
-//             response ||
-//             fetch(event.request).then((fetchResponse) => {
-//               cache.put(event.request, fetchResponse.clone());
-//               return fetchResponse;
-//             })
-//           );
-//         });
-//       }),
-//     );
-//   } else {
-//     event.respondWith(
-//       caches.match(event.request).then((response) => {
-//         return response || fetch(event.request);
-//       }),
-//     );
-//   }
-// });
+self.addEventListener("fetch", (event) => {
+  if (event.request.url.includes("/assets/")) {
+    // Handle requests to the assets folder
+    event.respondWith(
+      caches.open("v1").then((cache) => {
+        return cache.match(event.request).then((response) => {
+          return (
+            response ||
+            fetch(event.request).then((fetchResponse) => {
+              cache.put(event.request, fetchResponse.clone());
+              return fetchResponse;
+            })
+          );
+        });
+      }),
+    );
+  } else {
+    event.respondWith(
+      caches.match(event.request).then((response) => {
+        return response || fetch(event.request);
+      }),
+    );
+  }
+});
 
 self.addEventListener("fetch", (event) => {
   event.respondWith(

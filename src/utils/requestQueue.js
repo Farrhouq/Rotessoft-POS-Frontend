@@ -43,47 +43,6 @@ async function addToQueue(request) {
     .catch((err) => console.error("Error adding request to queue:", err));
 }
 
-// Helper function to process a single request and continue
-// function processNextRequest(db) {
-//   const tx = db.transaction(storeName, "readwrite");
-//   const queueStore = tx.objectStore(storeName);
-//   const cursorRequest = queueStore.openCursor();
-
-//   cursorRequest.onsuccess = function (event) {
-//     const cursor = event.target.result;
-//     if (cursor) {
-//       const request = cursor.value;
-
-//       // Attempt to send the request using axios
-//       apiClient({
-//         method: request.method,
-//         url: request.url,
-//         data: request.data,
-//       })
-//         .then((response) => {
-//           console.log("Request succeeded:", response);
-
-//           // Delete the processed request from the queue
-//           cursor.delete(); // Deleting within the same active transaction
-
-//           // cursor.continue(); // Move to the next request immediately within the same transaction
-//         })
-//         .catch((error) => {
-//           console.error("Request failed, keeping in queue:", error);
-
-//           // Continue to the next request even if this one fails, without closing the transaction
-//           // cursor.continue();
-//         });
-//     } else {
-//       console.log("No more requests in queue");
-//     }
-//   };
-
-//   cursorRequest.onerror = function (event) {
-//     console.error("Cursor error:", event.target.error);
-//   };
-// }
-
 // Send all requests in the queue and remove successful ones
 async function processQueue() {
   await openDB()
@@ -119,7 +78,19 @@ async function processQueue() {
               };
             })
             .catch((error) => {
-              console.error("Request failed, keeping in queue:", error);
+              if (!(error.code == "ERR_NETWORK")) {
+                // console.log("Request failed, keeping in queue:", error.response);
+                const deleteTx = db.transaction(storeName, "readwrite");
+                const deleteStore = deleteTx.objectStore(storeName);
+                let curr = cursor.key;
+                const deleteRequest = deleteStore.delete(curr);
+
+                deleteRequest.onsuccess = function () {
+                  // console.log("Request deleted from queue");
+                  processQueue();
+                };
+                console.error("Request failed, keeping in queue:", error);
+              }
             });
         } else {
           // console.log("No more requests in queue");
