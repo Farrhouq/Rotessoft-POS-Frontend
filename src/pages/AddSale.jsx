@@ -142,7 +142,7 @@ function AddSale() {
     }
     let newSale = {
       created_at: new Date(),
-      __str__: saleStr,
+      product_string: saleStr,
       total: calculateTotal(),
       id: saleId,
     };

@@ -39,14 +39,17 @@ const Sales = () => {
   }
 
   const fetchSales = async (role) => {
+    console.log("fetching sales");
     const salesUrl = role == "staff" ? "sale/" : `sale/?store=${shopId}`;
     return api.get(salesUrl).then((res) => {
+      console.log("fetched sales");
       // let localSales = JSON.parse(localStorage.getItem("sales"));
       // let allSales = mergeAndSortSales(res.data, localSales || []);
       // setSales(allSales);
       // localStorage.setItem("sales", JSON.stringify(allSales));
       setSales(mergeAndSortSales(res.data, []));
       localStorage.setItem("sales", JSON.stringify(res.data));
+      console.log(res.data);
       let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
       localStorage.setItem("todayTotal", today);
     });
@@ -55,7 +58,8 @@ const Sales = () => {
   useEffect(() => {
     let localSales = localStorage.getItem("sales");
     if (localSales) setSales(mergeAndSortSales(JSON.parse(localSales), []));
-    fetchSales(userRole).catch(() => {
+    fetchSales(userRole).catch((res) => {
+      console.log("sfsdfasd");
       setSales(mergeAndSortSales(JSON.parse(localSales), []));
     });
   }, [shopId, userRole]);
