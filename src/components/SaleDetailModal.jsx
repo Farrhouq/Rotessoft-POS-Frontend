@@ -126,7 +126,7 @@ function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
                 </svg>
               </div>
             ) : (
-              <div className="p-4 space-y-4">
+              <div className="p-2 sm:p-4 space-y-4">
                 {/* details */}
                 <div className="flex justify-between flex-col sm:w-[50%] mb-5">
                   <div className="flex justify-between">
