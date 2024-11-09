@@ -54,7 +54,7 @@ const Sales = () => {
 
   useEffect(() => {
     let localSales = localStorage.getItem("sales");
-    if (localSales) setSales(JSON.parse(localSales));
+    if (localSales) setSales(mergeAndSortSales(JSON.parse(localSales), []));
     fetchSales(userRole).catch(() => {
       setSales(JSON.parse(localSales));
     });
