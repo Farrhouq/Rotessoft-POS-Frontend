@@ -31,13 +31,13 @@
 *trying to add sales without entering products first doesn't work
 *main dashboard spinner not spinning when loading
 *focus on add product name input when the modal is first opened
+*admin cache the stores and dashboard info (and for main dash)
 ---
 
 
 urgent!!
 --
 start caching the sale details
-() admin cache the stores and dashboard info (and for main dash)
 open the side nav when user enters first so they can see the tab labels (on large screens)
 
 

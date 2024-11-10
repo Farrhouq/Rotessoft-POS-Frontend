@@ -2742,8 +2742,20 @@ span.flatpickr-weekday:is(.dark *){
   height: fit-content;
 }
 
+.h-full{
+  height: 100%;
+}
+
 .h-screen{
   height: 100vh;
+}
+
+.h-7{
+  height: 1.75rem;
+}
+
+.h-11{
+  height: 2.75rem;
 }
 
 .max-h-\[128px\]{
@@ -3420,6 +3432,11 @@ span.flatpickr-weekday:is(.dark *){
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.bg-gray-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-30{
@@ -4184,6 +4201,11 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(230 57 57 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-gray-600:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
 .hover\:text-gray-400:hover{
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -4702,6 +4724,10 @@ span.flatpickr-weekday:is(.dark *){
     display: flex;
   }
 
+  .sm\:w-\[50\%\]{
+    width: 50%;
+  }
+
   .sm\:w-\[70\%\]{
     width: 70%;
   }
@@ -4736,6 +4762,10 @@ span.flatpickr-weekday:is(.dark *){
 
   .sm\:rounded-lg{
     border-radius: 0.5rem;
+  }
+
+  .sm\:p-4{
+    padding: 1rem;
   }
 
   .sm\:p-6{
