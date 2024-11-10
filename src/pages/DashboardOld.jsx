@@ -19,11 +19,8 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   const [dailyTotals, setDailyTotals] = useState([]);
   const [topProducts, setTopProducts] = useState([]);
   const [yesterdayTotal, setYesterdayTotal] = useState(0);
-  const shopId = localStorage.getItem("shopId");
   const navigate = useNavigate();
-  const userRole = checkLogin();
-  const [reloadVar, setReloadVar] = useState(false); // I'll be alternating this when you click on refresh so that useEffect will run again, reloading the data.
-  const [loading, setLoading] = useState(false);
+  // const [reloadVar, setReloadVar] = useState(false); // I'll be alternating this when you click on refresh so that useEffect will run again, reloading the data.
 
   function animateNumber(target, setValue, duration) {
     const start = 0; // Starting number
@@ -98,45 +95,31 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   }
 
   const loadDashboardData = () => {
-    console.log("running fetch...");
-    let dashUrl =
-      userRole == "staff" ? "dashboard/" : `dashboard/?store=${shopId}`;
-    setLoading(true);
     apiClient
-      .get(dashUrl)
+      .get("dashboard/")
       .then((res) => {
-        setLoading(false);
         setDashboardData(res.data);
         localStorage.setItem("dashboardData", JSON.stringify(res.data));
         useDashboardData(res.data);
       })
       .catch((res) => {
-        setLoading(false);
         if (res.code == "ERR_NETWORK") toaster.error("You're offline");
         let dashboardData = JSON.parse(localStorage.getItem("dashboardData"));
-        if (dashboardData) useDashboardData(ensureTodayEntry(dashboardData));
+        console.log(ensureTodayEntry(dashboardData));
+        useDashboardData(ensureTodayEntry(dashboardData));
       });
   };
 
   useEffect(() => {
     const userRole = checkLogin();
-    if (userRole == "admin" && shopId == null) {
-      navigate("/admin/");
-      return;
-    }
-    loadDashboardData();
-  }, [reloadVar]);
-
-  useEffect(() => {
-    const userRole = checkLogin();
     // localStorage.removeItem("products");
-    // if (userRole == "admin") {
-    //   navigate("/admin/");
-    // }
+    if (userRole == "admin") {
+      navigate("/admin/");
+    }
     let dashboardData = JSON.parse(localStorage.getItem("dashboardData"));
-    // console.log(ensureTodayEntry(dashboardData));
-    if (dashboardData) useDashboardData(ensureTodayEntry(dashboardData));
-    // loadDashboardData();
+    console.log(ensureTodayEntry(dashboardData));
+    useDashboardData(ensureTodayEntry(dashboardData));
+    loadDashboardData();
   }, []);
 
   return (
@@ -149,14 +132,6 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
             <div className="mb-4 sm:mb-0">
               <h1 className="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
                 Dashboard
-                <svg
-                  onClick={() => setReloadVar(!reloadVar)}
-                  className={`w-9 rounded-xl ${loading && `animate-spin`} ml-4 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 p-2 inline-block fill-purple-600 dark:fill-purple-400`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M105.1 202.6c7.7-21.8 20.2-42.3 37.8-59.8c62.5-62.5 163.8-62.5 226.3 0L386.3 160 352 160c-17.7 0-32 14.3-32 32s14.3 32 32 32l111.5 0c0 0 0 0 0 0l.4 0c17.7 0 32-14.3 32-32l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 35.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0C73.2 122 55.6 150.7 44.8 181.4c-5.9 16.7 2.9 34.9 19.5 40.8s34.9-2.9 40.8-19.5zM39 289.3c-5 1.5-9.8 4.2-13.7 8.2c-4 4-6.7 8.8-8.1 14c-.3 1.2-.6 2.5-.8 3.8c-.3 1.7-.4 3.4-.4 5.1L16 432c0 17.7 14.3 32 32 32s32-14.3 32-32l0-35.1 17.6 17.5c0 0 0 0 0 0c87.5 87.4 229.3 87.4 316.7 0c24.4-24.4 42.1-53.1 52.9-83.8c5.9-16.7-2.9-34.9-19.5-40.8s-34.9 2.9-40.8 19.5c-7.7 21.8-20.2 42.3-37.8 59.8c-62.5 62.5-163.8 62.5-226.3 0l-.1-.1L125.6 352l34.4 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L48.4 288c-1.6 0-3.2 .1-4.8 .3s-3.1 .5-4.6 1z" />
-                </svg>
               </h1>
             </div>
 

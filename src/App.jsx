@@ -62,8 +62,14 @@ function App() {
           <Route
             exact
             path="/"
+            // element={
+            //   <MasterDashboard
+            //     sidebarOpen={sidebarOpen}
+            //     setSidebarOpen={setSidebarOpen}
+            //   />
+            // }
             element={
-              <MasterDashboard
+              <Dashboard
                 sidebarOpen={sidebarOpen}
                 setSidebarOpen={setSidebarOpen}
               />

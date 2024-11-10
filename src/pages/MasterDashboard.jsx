@@ -1,5 +1,5 @@
 import React from "react";
-import Dashboard from "./Dashboard"; // staff dashboard
+import Dashboard from "./DashboardOld"; // staff dashboard
 import AdminDashboard from "./AdminDashboard"; // admin dashboard
 import { checkLogin } from "../utils/Utils";
 

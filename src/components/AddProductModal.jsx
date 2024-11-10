@@ -67,6 +67,10 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
+  useEffect(() => {
+    document.querySelector("#product-name").focus();
+  }, [modalOpen]);
+
   return (
     <>
       {/* Modal backdrop */}
@@ -117,6 +121,7 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
                   value={productName}
                   onChange={(e) => setProductName(e.target.value)} // Update state
                   required
+                  id="product-name"
                 />
               </div>
 
