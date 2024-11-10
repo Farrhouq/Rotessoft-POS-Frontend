@@ -86,7 +86,10 @@ function Inventory({
         />
         {/*  */}
         <div>
-          <button className="btn h-full bg-gray-500 hover:bg-gray-600 text-white dark:bg-gray-600 dark:hover:bg-gray-700">
+          <button
+            onClick={() => setSearchProduct("")}
+            className="btn h-full bg-gray-500 hover:bg-gray-600 text-white dark:bg-gray-600 dark:hover:bg-gray-700"
+          >
             <span className="">Clear</span>
           </button>
         </div>
