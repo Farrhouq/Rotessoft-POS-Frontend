@@ -25,15 +25,29 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
     apiClient
       .get("store/")
       .then((res) => {
+        localStorage.setItem("shopsData", JSON.stringify(res.data));
         setLoading(false);
         setShops(res.data);
         setTodayTotal(
           res.data.reduce((acc, shop) => acc + shop.today_total, 0),
         );
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false);
-        toaster.error("An error occurred while fetching dashboard data.");
+        if (err.code == "ERR_NETWORK") {
+          toaster.error("You're offline.");
+          let shopsData = localStorage.getItem("shopsData");
+          if (shopsData) {
+            setShops(JSON.parse(shopsData));
+            setTodayTotal(
+              JSON.parse(shopsData).reduce(
+                (acc, shop) => acc + shop.today_total,
+                0,
+              ),
+            );
+          }
+        } else
+          toaster.error("An error occurred while fetching dashboard data.");
       });
   }, [reloadVar]);
 
