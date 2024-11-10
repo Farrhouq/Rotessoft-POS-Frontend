@@ -98,7 +98,6 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   }
 
   const loadDashboardData = () => {
-    console.log("running fetch...");
     let dashUrl =
       userRole == "staff" ? "dashboard/" : `dashboard/?store=${shopId}`;
     setLoading(true);
@@ -128,6 +127,12 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
   }, [reloadVar]);
 
   useEffect(() => {
+    if (window.matchMedia("(min-width: 640px)").matches) {
+      let svgElement = document.getElementById("open-side-bar");
+      svgElement.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true }),
+      );
+    }
     const userRole = checkLogin();
     // localStorage.removeItem("products");
     // if (userRole == "admin") {
