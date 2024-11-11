@@ -3478,10 +3478,6 @@ span.flatpickr-weekday:is(.dark *){
   fill: #FF5656;
 }
 
-.fill-violet-500{
-  fill: #8470FF;
-}
-
 .fill-white{
   fill: #fff;
 }
@@ -3651,10 +3647,6 @@ span.flatpickr-weekday:is(.dark *){
   padding-left: 2.25rem;
 }
 
-.pr-10{
-  padding-right: 2.5rem;
-}
-
 .pr-3{
   padding-right: 0.75rem;
 }
@@ -3729,12 +3721,6 @@ span.flatpickr-weekday:is(.dark *){
 
 .text-\[18px\]{
   font-size: 18px;
-}
-
-.text-base{
-  font-size: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.01em;
 }
 
 .text-lg{
@@ -3985,6 +3971,11 @@ span.flatpickr-weekday:is(.dark *){
 .shadow-black\/\[0\.08\]{
   --tw-shadow-color: rgb(0 0 0 / 0.08);
   --tw-shadow: var(--tw-shadow-colored);
+}
+
+.blur{
+  --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
 .filter{

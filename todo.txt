@@ -42,12 +42,12 @@
 *linking the customer details to the sale. (in the backend as well)
 *loader when submitting employee information (admin)
 *loader when submitting when editing product
+*when they press enter, it should navigate around (for the add sale page) (before the receipt)
+*remove the default 1 when restocking product
 ---
 
 urgent!!
 --
-when they press enter, it should navigate around (for the add sale page) (before the receipt)
-
 payment system
 feature segregation
 print sale when viewing sale details (after saving)

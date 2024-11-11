@@ -56,8 +56,7 @@ function AddSale() {
       quantity: currentSale.quantity,
       id: value,
     });
-    // let p = products.find((p) => p.name === extractFirstPart(label));
-    // console.log(p);
+    document.querySelector("#product-sale-quantity").focus();
   };
 
   const handleQtyChange = (e) => {
@@ -74,6 +73,7 @@ function AddSale() {
       setSales((prev) => [...prev, currentSale]);
       setCurrentSale({ product: "", quantity: "", id: "" });
     }
+    document.querySelector("#save-sale").focus();
   };
 
   const updateStock = (id, toSubtract) => {
@@ -191,6 +191,13 @@ function AddSale() {
     });
   };
 
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.querySelector("#add-sale-btn").click();
+    }
+  }
+
   const totalPrice = sales.reduce((sum, sale) => {
     const product = products.find((p) => p.name === sale.product);
     return sum + (product ? product.selling_price * sale.quantity : 0);
@@ -228,6 +235,8 @@ function AddSale() {
             type="number"
             name="quantity"
             min="1"
+            id="product-sale-quantity"
+            onKeyDown={handleKeyDown}
             value={currentSale.quantity}
             onChange={handleQtyChange}
             placeholder="Quantity"
@@ -235,6 +244,7 @@ function AddSale() {
           />
           <button
             onClick={addSale}
+            id="add-sale-btn"
             className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 flex items-center"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -387,6 +397,7 @@ function AddSale() {
           <div className="flex gap-2">
             <button
               onClick={() => saveSales(false)}
+              id="save-sale"
               className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 flex items-center"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">

@@ -10,7 +10,7 @@ function AddProductModal({ modalOpen, setModalOpen, products, setProducts }) {
   const [productName, setProductName] = useState("");
   const [sellingPrice, setSellingPrice] = useState("");
   const [costPrice, setCostPrice] = useState("");
-  const [amountInStock, setAmountInStock] = useState(1);
+  const [amountInStock, setAmountInStock] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Handle form submission
