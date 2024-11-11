@@ -2750,14 +2750,6 @@ span.flatpickr-weekday:is(.dark *){
   height: 100vh;
 }
 
-.h-7{
-  height: 1.75rem;
-}
-
-.h-11{
-  height: 2.75rem;
-}
-
 .max-h-\[128px\]{
   max-height: 128px;
 }
@@ -3367,6 +3359,11 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
+.bg-gray-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+}
+
 .bg-gray-800{
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
@@ -3429,14 +3426,19 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(132 112 255 / var(--tw-bg-opacity));
 }
 
+.bg-violet-700{
+  --tw-bg-opacity: 1;
+  background-color: rgb(93 71 222 / var(--tw-bg-opacity));
+}
+
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.bg-gray-500{
+.bg-red-700{
   --tw-bg-opacity: 1;
-  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+  background-color: rgb(230 57 57 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-30{
@@ -4181,6 +4183,11 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-gray-600:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-gray-800:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
@@ -4201,9 +4208,9 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(230 57 57 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-gray-600:hover{
+.hover\:bg-red-800:hover{
   --tw-bg-opacity: 1;
-  background-color: rgb(75 85 99 / var(--tw-bg-opacity));
+  background-color: rgb(197 39 39 / var(--tw-bg-opacity));
 }
 
 .hover\:text-gray-400:hover{
@@ -4314,6 +4321,11 @@ span.flatpickr-weekday:is(.dark *){
 
 .focus\:ring-transparent:focus{
   --tw-ring-color: transparent;
+}
+
+.focus\:ring-red-300:focus{
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(255 148 148 / var(--tw-ring-opacity));
 }
 
 .focus\:ring-offset-2:focus{
@@ -4427,6 +4439,11 @@ span.flatpickr-weekday:is(.dark *){
 .dark\:bg-red-700:is(.dark *){
   --tw-bg-opacity: 1;
   background-color: rgb(230 57 57 / var(--tw-bg-opacity));
+}
+
+.dark\:bg-red-600:is(.dark *){
+  --tw-bg-opacity: 1;
+  background-color: rgb(250 73 73 / var(--tw-bg-opacity));
 }
 
 .dark\:bg-opacity-50:is(.dark *){
@@ -4596,6 +4613,11 @@ span.flatpickr-weekday:is(.dark *){
   background-color: rgb(55 65 81 / 0.2);
 }
 
+.dark\:hover\:bg-red-700:hover:is(.dark *){
+  --tw-bg-opacity: 1;
+  background-color: rgb(230 57 57 / var(--tw-bg-opacity));
+}
+
 .dark\:hover\:text-gray-100:hover:is(.dark *){
   --tw-text-opacity: 1;
   color: rgb(243 244 246 / var(--tw-text-opacity));
@@ -4639,6 +4661,11 @@ span.flatpickr-weekday:is(.dark *){
 .dark\:focus\:ring-blue-800:focus:is(.dark *){
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(30 64 175 / var(--tw-ring-opacity));
+}
+
+.dark\:focus\:ring-red-800:focus:is(.dark *){
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(197 39 39 / var(--tw-ring-opacity));
 }
 
 .group:hover .dark\:group-hover\:text-gray-400:is(.dark *){

@@ -4,8 +4,16 @@ import api from "../apiClient";
 import { checkLogin } from "../utils/Utils";
 import { ArrowDownIcon } from "lucide-react";
 import toaster from "react-hot-toast";
+import { updateStock } from "../utils/products";
+import { getDateWithOffset } from "../utils/dates";
 
-function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
+function SaleDetailModal({
+  saleId,
+  modalOpen,
+  setModalOpen,
+  setSales,
+  offset,
+}) {
   const [saleDetails, setSaleDetails] = useState({
     made_by: null,
     customer_name: null,
@@ -14,6 +22,7 @@ function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
     total: null,
   });
   const [loading, setLoading] = useState(false);
+  const [reverseSaleLoading, setReverseSaleLoading] = useState(false);
 
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
@@ -54,6 +63,55 @@ function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
         });
     }
   }, [modalOpen, saleId]);
+
+  const reverseSale = () => {
+    if (!window.confirm("Are you sure you want to reverse this sale?")) return;
+    let shopId = localStorage.getItem("shopId");
+    setReverseSaleLoading(true);
+    const userRole = checkLogin();
+    let saleUrl =
+      userRole == "staff"
+        ? `sale/${saleId}/`
+        : `sale/${saleId}/?store=${shopId}`;
+    api
+      .delete(saleUrl)
+      .then(() => {
+        setLoading(false);
+        toaster.success("Sale reversed!");
+        setReverseSaleLoading(false);
+        setModalOpen(false);
+
+        // reverse the stock changes
+        saleDetails.products.forEach((product) => {
+          let products = JSON.parse(localStorage.getItem("products")) || [];
+          let productStock = products.find(
+            (p) => p.name == product.product__name,
+          ).amount_in_stock;
+          updateStock(product.product__name, productStock + product.quantity);
+        });
+
+        // remove the sale from the sales list
+        if (offset == 0) {
+          let sales = JSON.parse(localStorage.getItem("sales")) || [];
+          sales = sales.filter((sale) => sale.id != saleId);
+          localStorage.setItem("sales", JSON.stringify(sales));
+          setSales(sales);
+        } else {
+          let dayDate = getDateWithOffset(offset);
+          let dateSales = JSON.parse(localStorage.getItem("dateSales")) || {};
+          dateSales[dayDate] = dateSales[dayDate].filter(
+            (sale) => sale.id != saleId,
+          );
+          localStorage.setItem("dateSales", JSON.stringify(dateSales));
+          setSales(dateSales[dayDate]);
+        }
+      })
+      .catch((err) => {
+        if (err.code == "ERR_NETWORK") toaster.error("You're offline.");
+        else toaster.error("An error occurred!");
+        setReverseSaleLoading(false);
+      });
+  };
 
   return (
     <>
@@ -236,6 +294,46 @@ function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
                       ))}
                     </tbody>
                   </table>
+                </div>
+
+                {/* buttons */}
+                <div className="flex gap-2">
+                  <button
+                    onClick={reverseSale}
+                    className="text-white w-fit bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                  >
+                    {reverseSaleLoading ? (
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    ) : (
+                      "Reverse Sale"
+                    )}
+                  </button>
+                  {/* <button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    className="text-white dark:text-white w-fit bg-red-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center hover:bg-red-700 dark:focus:ring-blue-800"
+                  >
+                    Cancel
+                  </button> */}
                 </div>
               </div>
             )}

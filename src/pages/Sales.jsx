@@ -6,7 +6,7 @@ import { checkLogin } from "../utils/Utils";
 import { addRequestToQueue, processQueue } from "../utils/requestQueue";
 import DateNavigator from "../components/DateNavigator";
 import { mergeAndSortSales } from "../utils/sales";
-import { subtractDays, getDateWithOffset } from "../utils/dates";
+import { getDateWithOffset } from "../utils/dates";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
@@ -159,7 +159,9 @@ const Sales = () => {
         </div>
         <SalesTable
           sales={[...currentSales].reverse() /* to display the latest first */}
+          setSales={setSales}
           loading={loading}
+          offset={offset}
         />
       </div>
     </main>

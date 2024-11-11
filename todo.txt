@@ -35,11 +35,11 @@
 *open the side nav when user enters first so they can see the tab labels (on large screens)
 *searchable products
 *sale made by: to sale object (backend)
+*start caching the sale details
 ---
 
 urgent!!
 --
-start caching the sale details
 reversing sales
 payment system
 feature segregation

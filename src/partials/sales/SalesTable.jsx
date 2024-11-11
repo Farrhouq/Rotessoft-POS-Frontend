@@ -2,7 +2,7 @@ import { checkLogin } from "../../utils/Utils";
 import SaleDetailModal from "../../components/SaleDetailModal";
 import { useState } from "react";
 
-function SalesTable({ sales }) {
+function SalesTable({ sales, setSales, offset }) {
   const [saleDetailModalOpen, setSaleDetailModalOpen] = useState(false);
   const [saleId, setSaleId] = useState(null);
 
@@ -54,6 +54,8 @@ function SalesTable({ sales }) {
         saleId={saleId}
         modalOpen={saleDetailModalOpen}
         setModalOpen={setSaleDetailModalOpen}
+        setSales={setSales}
+        offset={offset}
       />
     </>
   );
