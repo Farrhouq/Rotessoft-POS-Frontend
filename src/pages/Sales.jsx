@@ -77,7 +77,7 @@ const Sales = () => {
     if (offset === 0) {
       let localSales = JSON.parse(localStorage.getItem("sales"));
       let filteredSales = filterSales(localSales, 0);
-      setCurrentSales(filteredSales);
+      setCurrentSales(mergeAndSortSales(filteredSales, []));
       setCurrentDayTotal(
         filteredSales.reduce((acc, sale) => acc + sale.total, 0),
       );
@@ -87,7 +87,7 @@ const Sales = () => {
     setLoading(true);
     api.get(salesUrl).then((res) => {
       setLoading(false);
-      setCurrentSales(res.data);
+      setCurrentSales(mergeAndSortSales(res.data, []));
       setCurrentDayTotal(res.data.reduce((acc, sale) => acc + sale.total, 0));
     });
     // setCurrentSales(filterSales(sales, -offset)); // representing the selected day (offset is 0 at the start)
