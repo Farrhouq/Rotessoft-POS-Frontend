@@ -5,11 +5,6 @@ import { useState } from "react";
 function SalesTable({ sales }) {
   const [saleDetailModalOpen, setSaleDetailModalOpen] = useState(false);
   const [saleId, setSaleId] = useState(null);
-  const userRole = checkLogin();
-  const getSaleDetail = (index) => {
-    const saleUrl =
-      userRole === "staff" ? "product/" : `product/?store=${shopId}`;
-  };
 
   return (
     <>

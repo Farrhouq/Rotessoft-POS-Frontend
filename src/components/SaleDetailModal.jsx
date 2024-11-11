@@ -33,11 +33,19 @@ function SaleDetailModal({ saleId, modalOpen, setModalOpen }) {
           ? `sale/${saleId}`
           : `sale/${saleId}?store=${shopId}`;
       setLoading(true);
+      let saleDetails = JSON.parse(localStorage.getItem("saleDetails")) || {};
+      if (saleDetails[saleId]) {
+        setSaleDetails(saleDetails[saleId]);
+        setLoading(false);
+        return;
+      }
       api
         .get(saleUrl)
         .then((res) => {
           setSaleDetails(res.data);
           setLoading(false);
+          saleDetails[saleId] = res.data;
+          localStorage.setItem("saleDetails", JSON.stringify(saleDetails));
         })
         .catch(() => {
           toaster.error("Sale not found!");

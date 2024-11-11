@@ -6,6 +6,7 @@ import { checkLogin } from "../utils/Utils";
 import { addRequestToQueue, processQueue } from "../utils/requestQueue";
 import DateNavigator from "../components/DateNavigator";
 import { mergeAndSortSales } from "../utils/sales";
+import { subtractDays, getDateWithOffset } from "../utils/dates";
 
 const Sales = () => {
   const [sales, setSales] = useState([]);
@@ -81,11 +82,28 @@ const Sales = () => {
       );
       return;
     }
+
+    let dateSales = JSON.parse(localStorage.getItem("dateSales")) || {};
+    if (dateSales[getDateWithOffset(offset)]) {
+      setCurrentSales(
+        mergeAndSortSales(dateSales[getDateWithOffset(offset)], []),
+      );
+      setCurrentDayTotal(
+        dateSales[getDateWithOffset(offset)].reduce(
+          (acc, sale) => acc + sale.total,
+          0,
+        ),
+      );
+      return;
+    }
+
     setLoading(true);
     api.get(salesUrl).then((res) => {
       setLoading(false);
       setCurrentSales(mergeAndSortSales(res.data, []));
       setCurrentDayTotal(res.data.reduce((acc, sale) => acc + sale.total, 0));
+      dateSales[getDateWithOffset(offset)] = res.data;
+      localStorage.setItem("dateSales", JSON.stringify(dateSales));
     });
   }, [sales, offset]);
 

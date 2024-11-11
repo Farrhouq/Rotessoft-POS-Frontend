@@ -21,6 +21,13 @@ export function subtractDays(dateString, days) {
   return formatDate(date);
 }
 
+// get the datestring of the current date or a date with an offset
+export function getDateWithOffset(offset) {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return formatDate(date);
+}
+
 // Fill up missing dates until the array has 7 dates
 export function fillBackwardDates(arr, targetLength = 7) {
   while (arr.length < targetLength) {
