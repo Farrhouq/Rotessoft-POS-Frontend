@@ -32,15 +32,17 @@
 *main dashboard spinner not spinning when loading
 *focus on add product name input when the modal is first opened
 *admin cache the stores and dashboard info (and for main dash)
+*open the side nav when user enters first so they can see the tab labels (on large screens)
+*searchable products
+*sale made by: to sale object (backend)
 ---
-
 
 urgent!!
 --
 start caching the sale details
-open the side nav when user enters first so they can see the tab labels (on large screens)
-
-
+payment system
+feature segregation
+change logo on sidenav to Rotessoft logo
 print sale when viewing sale details (after saving)
 linking the customer details and amount given to the sale. (in the backend as well)
 sale id, shortening it (linking it to the actual sale id from the backend)
@@ -49,12 +51,6 @@ when they press enter, it should navigate around (for the add sale page) (before
 loader when submitting employee information (admin)
 loader when submitting when editing product
 fetching of sales from different dates (from backend) (and cache them too)
-
-searchable products
 add TOTAL column to admin products view
-
-sale made by: to sale object (backend)
 shop customizable receipts (a bit of a stretch)
 edit info on receipts (add shop description and address to shop)
-
-key features should highlight some words.
