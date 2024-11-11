@@ -7,13 +7,13 @@ import { useNavigate } from "react-router-dom";
 import toaster from "react-hot-toast";
 
 const EditProductForm = () => {
-  // const [selectedProduct, setSelectedProduct] = useState("");
   const [products, setProducts] = useState([]);
   const [productName, setProductName] = useState("");
   const [costPrice, setCostPrice] = useState("");
   const [sellingPrice, setSellingPrice] = useState("");
   const [stock, setStock] = useState("");
   const shopId = localStorage.getItem("shopId");
+  const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState({
     id: null,
     label: "",
@@ -71,6 +71,7 @@ const EditProductForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     apiClient
       .patch(`product/${selectedProduct.id}/?store=${shopId}`, {
         name: productName,
@@ -78,7 +79,8 @@ const EditProductForm = () => {
         selling_price: sellingPrice,
         amount_in_stock: stock,
       })
-      .then((res) => {
+      .then(() => {
+        setLoading(false);
         toaster.success("Product updated successfully!");
         navigate("/products/");
         updateProduct(selectedProduct.id, {
@@ -86,8 +88,12 @@ const EditProductForm = () => {
           costPrice,
           sellingPrice,
         });
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.code == "ERR_NETWORK") toaster.error("You're offline.");
+        else toaster.error("An error occurred.");
       });
-    // Here you would typically send the data to your backend
   };
 
   const handleInputChange = (e) => {
@@ -103,7 +109,7 @@ const EditProductForm = () => {
     if (confirmDelete) {
       apiClient
         .delete(`product/${selectedProduct.id}/?store=${shopId}`)
-        .then((res) => {
+        .then(() => {
           toaster.success("Product deleted successfully!");
           products.splice(
             products.findIndex((p) => p.id === selectedProduct.id),
@@ -130,19 +136,6 @@ const EditProductForm = () => {
               Select Product
             </label>
             <div className="relative">
-              {/* <select
-                id="product-select"
-                value={selectedProduct}
-                onChange={(e) => setSelectedProduct(e.target.value)}
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-              >
-                <option value="">Select a product</option>
-                {products.map((product) => (
-                  <option key={product.id} value={product.name}>
-                    {product.name}
-                  </option>
-                ))}
-              </select> */}
               <Select
                 className="dark:bg-gray-800"
                 options={products.map((product) => ({
@@ -231,7 +224,30 @@ const EditProductForm = () => {
             type="submit"
             className="w-fit flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 dark:bg-purple-700 dark:hover:bg-purple-800"
           >
-            Update Product
+            {loading ? (
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : (
+              "Update Product"
+            )}
           </button>
           {selectedProduct.id && (
             <button

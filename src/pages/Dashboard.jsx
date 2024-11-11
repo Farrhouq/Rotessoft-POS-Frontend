@@ -111,7 +111,7 @@ function Dashboard({ sidebarOpen, setSidebarOpen }) {
       })
       .catch((res) => {
         setLoading(false);
-        if (res.code == "ERR_NETWORK") toaster.error("You're offline");
+        if (res.code == "ERR_NETWORK") toaster.error("You're offline.");
         let dashboardData = JSON.parse(localStorage.getItem("dashboardData"));
         if (dashboardData) useDashboardData(ensureTodayEntry(dashboardData));
       });

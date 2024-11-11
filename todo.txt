@@ -36,21 +36,22 @@
 *searchable products
 *sale made by: to sale object (backend)
 *start caching the sale details
+*reversing sales
+*change logo on sidenav to Rotessoft logo
+*fetching of sales from different dates (from backend) (and cache them too)
+*linking the customer details to the sale. (in the backend as well)
+*loader when submitting employee information (admin)
+*loader when submitting when editing product
 ---
 
 urgent!!
 --
-reversing sales
+when they press enter, it should navigate around (for the add sale page) (before the receipt)
+
 payment system
 feature segregation
-change logo on sidenav to Rotessoft logo
 print sale when viewing sale details (after saving)
-linking the customer details and amount given to the sale. (in the backend as well)
-sale id, shortening it (linking it to the actual sale id from the backend)
-when they press enter, it should navigate around (for the add sale page) (before the receipt)
-loader when submitting employee information (admin)
-loader when submitting when editing product
-fetching of sales from different dates (from backend) (and cache them too)
-add TOTAL column to admin products view
+
+add TOTAL column to admin products view (and make the table scrollable)
 shop customizable receipts (a bit of a stretch)
 edit info on receipts (add shop description and address to shop)
