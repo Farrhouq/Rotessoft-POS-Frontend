@@ -40,13 +40,13 @@
 urgent!!
 --
 start caching the sale details
+reversing sales
 payment system
 feature segregation
 change logo on sidenav to Rotessoft logo
 print sale when viewing sale details (after saving)
 linking the customer details and amount given to the sale. (in the backend as well)
 sale id, shortening it (linking it to the actual sale id from the backend)
-reversing sales
 when they press enter, it should navigate around (for the add sale page) (before the receipt)
 loader when submitting employee information (admin)
 loader when submitting when editing product

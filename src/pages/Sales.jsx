@@ -46,10 +46,6 @@ const Sales = () => {
     return api.get(salesUrl).then((res) => {
       console.log("fetched sales successfully");
       setLoading(false);
-      // let localSales = JSON.parse(localStorage.getItem("sales"));
-      // let allSales = mergeAndSortSales(res.data, localSales || []);
-      // setSales(allSales);
-      // localStorage.setItem("sales", JSON.stringify(allSales));
       setSales(mergeAndSortSales(res.data, []));
       localStorage.setItem("sales", JSON.stringify(res.data));
       let today = res.data.reduce((acc, sale) => acc + sale.total, 0);
@@ -67,15 +63,17 @@ const Sales = () => {
   }, [shopId, userRole]);
 
   useEffect(() => {
+    if (offset > 1) {
+      setOffset(0); // redirect back to today
+      return;
+    }
     let role = checkLogin();
     let salesUrl =
       role == "staff"
         ? `sale/?offset=${offset}`
         : `sale/?store=${shopId}&offset=${offset}`;
-
-    if (offset > 1) return;
     if (offset === 0) {
-      let localSales = JSON.parse(localStorage.getItem("sales"));
+      let localSales = JSON.parse(localStorage.getItem("sales")) || [];
       let filteredSales = filterSales(localSales, 0);
       setCurrentSales(mergeAndSortSales(filteredSales, []));
       setCurrentDayTotal(
@@ -83,17 +81,12 @@ const Sales = () => {
       );
       return;
     }
-
     setLoading(true);
     api.get(salesUrl).then((res) => {
       setLoading(false);
       setCurrentSales(mergeAndSortSales(res.data, []));
       setCurrentDayTotal(res.data.reduce((acc, sale) => acc + sale.total, 0));
     });
-    // setCurrentSales(filterSales(sales, -offset)); // representing the selected day (offset is 0 at the start)
-    // setCurrentDayTotal(
-    //   filterSales(sales, -offset).reduce((acc, sale) => acc + sale.total, 0),
-    // );
   }, [sales, offset]);
 
   const dailyTarget = localStorage.getItem("dailyTarget");
