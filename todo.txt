@@ -47,7 +47,7 @@
 ---
 
 urgent!!
---
+---
 payment system
 feature segregation
 print sale when viewing sale details (after saving)
